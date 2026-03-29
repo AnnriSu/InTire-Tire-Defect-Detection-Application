@@ -3,243 +3,743 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>InTIRE Inspection</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>InTIRE | Inspection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --dark-card: #2b2b2b;
+            --dark-card-2: #3d3d3d;
+            --accent: #f39c12;
+            --accent-dark: #d4891a;
+            --accent-glow: rgba(243, 156, 18, 0.35);
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --text-primary: #111111;
+            --text-muted: #888888;
+            --border: #e8e8e8;
+            --radius-card: 20px;
+            --radius-btn: 50px;
+            --font: 'Segoe UI', Tahoma, sans-serif;
+        }
+
         body {
-            background-color: #f8f9fa;
-            /* Applying Poppins to everything */
-            font-family: 'Poppins', sans-serif;
+            font-family: var(--font);
+            background: var(--bg);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            padding-bottom: 120px; 
+            padding-bottom: 110px;
         }
 
-        /* Branding Header */
-        .app-header {
-            margin-top: 25px;
+        /* ─── Header (matches dashboard) ─── */
+        .site-header {
+            background: var(--surface);
+            display: grid;
+            grid-template-columns: 40px 1fr 40px;
+            align-items: center;
+            padding: 0 20px;
+            height: 65px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 20px;
+            cursor: pointer;
+            width: 36px;
             text-align: center;
+            transition: opacity 0.2s;
         }
+        .menu-toggle:hover { opacity: 0.7; }
 
-        .app-logo {
-            max-width: 120px; /* Adjust based on your logo size */
-            height: auto;
-            margin-bottom: 5px;
-        }
+        .header-logo { text-align: center; }
+        .header-logo img { height: 35px; object-fit: contain; padding-top: 8px; }
 
-        .sub-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #6c757d;
-            font-weight: 400;
-            display: block;
-        }
-
-        .video-container, .canvas-container {
+        /* ─── Tab Nav (matches dashboard pill style) ─── */
+        .tab-nav {
             position: relative;
-            max-width: 500px;
-            width: 95%; 
-            margin: 15px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8e8e8;
+            border-radius: 30px;
+            padding: 5px;
+            margin: 12px 16px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .tab-nav::-webkit-scrollbar { display: none; }
+
+        .tab-slider {
+            position: absolute;
+            top: 5px;
+            height: calc(100% - 10px);
+            background: var(--dark-card);
+            border-radius: 25px;
+            transition: left 0.3s ease, width 0.3s ease;
+            z-index: 0;
         }
 
-        video, canvas {
+        .tab-link {
+            position: relative;
+            z-index: 1;
+            text-decoration: none;
+            color: #777;
+            padding: 7px 16px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+        .tab-link.active { background: transparent; color: #ffffff; }
+        .tab-link:hover:not(.active) { color: #333; }
+
+        /* ─── Main Content ─── */
+        .page-content {
+            flex: 1;
+            padding: 20px 16px;
+            max-width: 600px;
+            margin: 0 auto;
             width: 100%;
-            height: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .greeting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ─── Camera Card ─── */
+        .camera-card {
+            background: var(--dark-card);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+        }
+
+        .camera-card-header {
+            padding: 14px 18px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .header-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(243,156,18,0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 15px;
+        }
+
+        .header-label {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .header-sub {
+            font-size: 0.68rem;
+            color: #aaaaaa;
+            font-weight: 400;
+        }
+
+        /* ─── Video / Canvas ─── */
+        .media-wrapper {
+            position: relative;
+            background: #0d0d0d;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-wrapper video,
+        .media-wrapper canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
 
-        #results {
-            display: none;
-            max-width: 500px;
-            width: 95%;
-            margin: 10px auto;
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            font-weight: 600;
-            font-size: 16px;
-            color: #d9534f;
+        /* Corner-bracket viewfinder */
+        .viewfinder { position: absolute; inset: 0; pointer-events: none; }
+        .viewfinder::before, .viewfinder::after {
+            content: '';
+            position: absolute;
+            width: 36px; height: 36px;
+            border-color: var(--accent);
+            border-style: solid;
+            opacity: 0.85;
+        }
+        .viewfinder::before { top: 18px; left: 18px; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+        .viewfinder::after  { bottom: 18px; right: 18px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+        .corner-tr, .corner-bl {
+            position: absolute;
+            width: 36px; height: 36px;
+            border-color: var(--accent);
+            border-style: solid;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+        .corner-tr { top: 18px; right: 18px; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+        .corner-bl { bottom: 18px; left: 18px; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+
+        .scan-line {
+            position: absolute;
+            left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: scan 2.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0%   { top: 15%; opacity: 0.9; }
+            50%  { top: 80%; opacity: 0.6; }
+            100% { top: 15%; opacity: 0.9; }
         }
 
-        .controls-wrapper {
+        /* ─── Results Panel ─── */
+        .results-panel {
+            padding: 14px 16px;
+            display: none;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .results-panel.visible { display: block; }
+
+        .results-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaaaaa;
+            margin-bottom: 10px;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(243,156,18,0.08);
+            border: 1px solid rgba(243,156,18,0.2);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .result-icon {
+            width: 28px; height: 28px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .result-conf {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .result-no-damage {
+            text-align: center;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 12px 0 4px;
+        }
+        .result-no-damage i { margin-right: 6px; }
+
+        .result-loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aaaaaa;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 4px 0;
+        }
+
+        .spinner {
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ─── Action Buttons ─── */
+        .action-row {
+            padding: 14px 16px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .btn-capture {
+            flex: 1;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: var(--radius-btn);
+            padding: 13px;
+            font-family: var(--font);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px var(--accent-glow);
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-capture:hover { background: var(--accent-dark); box-shadow: 0 6px 20px rgba(243,156,18,0.5); }
+        .btn-capture:active { transform: scale(0.97); }
+
+        .btn-secondary-action {
+            background: rgba(255,255,255,0.08);
+            color: #ffffff;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius-btn);
+            padding: 13px 18px;
+            font-family: var(--font);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-secondary-action:hover { background: rgba(255,255,255,0.14); }
+
+        .btn-success-action {
+            flex: 1;
+            background: var(--success);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-btn);
+            padding: 13px;
+            font-family: var(--font);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(39,174,96,0.35);
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-success-action:hover { background: #219a52; }
+        .btn-success-action:active { transform: scale(0.97); }
+
+        .hidden { display: none !important; }
+
+        /* ─── Bottom Nav (matches dashboard pill style) ─── */
+        .bottom-nav {
             position: fixed;
-            bottom: 25px;
-            width: 100%;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 88%;
+            max-width: 380px;
+            background-color: var(--accent);
+            height: 70px;
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 8px 25px var(--accent-glow);
+            padding: 0 8px;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            z-index: 1000;
-        }
-
-        .btn-custom {
-            width: 90%;
-            max-width: 250px;
-            border-radius: 14px;
-            padding: 12px;
+            justify-content: center;
+            font-size: 10px;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            cursor: pointer;
+            width: 80px;
+            height: 55px;
+            border-radius: 20px;
+            transition: all 0.25s ease;
+            gap: 3px;
+            font-family: var(--font);
+        }
+        .nav-item i { font-size: 19px; transition: transform 0.25s ease; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.2); }
+        .nav-item:hover i { transform: translateY(-2px); }
+
+        /* ─── Modal ─── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            z-index: 500;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal-sheet {
+            background: var(--surface);
+            border-radius: 28px 28px 0 0;
+            padding: 24px 24px 40px;
+            width: 100%;
+            max-width: 600px;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(60px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
         }
 
-        #retake-btn, #done-btn {
-            display: none; 
+        .modal-handle {
+            width: 44px; height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            margin: 0 auto 20px;
         }
 
-        /* Modal Polish */
-        .modal-content { border-radius: 25px; border: none; font-family: 'Poppins', sans-serif; }
-        .modal-footer { flex-direction: column; border-top: none; }
-        .modal-footer .btn { width: 100%; margin: 5px 0; border-radius: 12px; }
+        .modal-icon {
+            width: 64px; height: 64px;
+            background: rgba(39,174,96,0.12);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 28px;
+            color: var(--success);
+        }
+
+        .modal-title {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .modal-body {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+
+        .modal-btn-primary {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: var(--radius-btn);
+            padding: 14px;
+            font-family: var(--font);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px var(--accent-glow);
+            transition: background 0.2s;
+        }
+        .modal-btn-primary:hover { background: var(--accent-dark); }
+
+        .modal-btn-outline {
+            background: none;
+            color: var(--text-muted);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-btn);
+            padding: 14px;
+            font-family: var(--font);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .modal-btn-outline:hover { border-color: #aaa; color: var(--text-primary); }
     </style>
 </head>
 
-<body class="d-flex flex-column align-items-center">
+<body>
 
-<div class="app-header">
-    <img src="assets\img\InTire.svg" alt="InTIRE Logo" class="app-logo">
-    <span class="sub-title">Inspection</span>
-</div>
+<!-- ─── Header ─── -->
+<header class="site-header">
 
-<div class="video-container">
-    <video id="video" autoplay playsinline class="d-block"></video>
-</div>
-
-<div class="canvas-container" style="display:none;">
-    <canvas id="canvas"></canvas>
-</div>
-
-<div id="results"></div>
-
-<div class="controls-wrapper">
-    <button class="btn btn-warning btn-lg shadow btn-custom" id="capture-btn" onclick="capture()">Capture</button>
-    <button class="btn btn-secondary btn-lg shadow btn-custom" id="retake-btn" onclick="retake()">Retake</button>
-    <button class="btn btn-success btn-lg shadow btn-custom" id="done-btn" onclick="done()">Done</button>
-</div>
-
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3 shadow">
-      <div class="modal-header border-0">
-        <h5 class="modal-title fw-bold" id="successModalLabel">Process Complete</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center text-muted">
-        Your inspection data has been saved successfully.
-      </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-success btn-lg w-100 py-3 mb-2 shadow-sm" onclick="location.href='overview.html'">
-            Home
-        </button>
-        <button type="button" class="btn btn-outline-secondary btn-lg w-100 py-3" onclick="location.href='history.html'">
-            View History
-        </button>
-      </div>
+    <div style="width: 40px;"></div>
+    <div class="header-logo">
+        <img src="assets/img/InTire.svg" alt="InTire">
     </div>
-  </div>
-</div>
+    <div style="width: 40px;"></div>
+    
+</header>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ─── Content ─── -->
+<main class="page-content">
+
+    <div class="greeting-row">
+        <h1 class="page-title">Tire Inspection</h1>
+        <span class="page-subtitle" id="todayDate"></span>
+    </div>
+
+    <div class="camera-card">
+
+        <!-- Card header -->
+        <div class="camera-card-header">
+            <div class="header-icon"><i class="fas fa-camera"></i></div>
+            <div>
+                <div class="header-label">Live Camera</div>
+                <div class="header-sub">Point at your tire tread</div>
+            </div>
+        </div>
+
+        <!-- Media area -->
+        <div class="media-wrapper" id="mediaWrapper">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas" class="hidden"></canvas>
+            <div class="viewfinder" id="viewfinder"></div>
+            <span class="corner-tr" id="cornerTR"></span>
+            <span class="corner-bl" id="cornerBL"></span>
+            <div class="scan-line" id="scanLine"></div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-panel" id="resultsPanel">
+            <div class="results-title">Detection Results</div>
+            <div id="resultsContent"></div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="action-row" id="captureRow">
+            <button class="btn-capture" id="captureBtn" onclick="capture()">
+                <i class="fas fa-camera"></i> Capture
+            </button>
+        </div>
+
+        <div class="action-row hidden" id="postCaptureRow">
+            <button class="btn-secondary-action" onclick="retake()">
+                <i class="fas fa-redo"></i> Retake
+            </button>
+            <button class="btn-success-action" onclick="done()">
+                <i class="fas fa-check"></i> Done
+            </button>
+        </div>
+
+    </div>
+</main>
+
+<!-- ─── Bottom Nav ─── -->
+<footer class="bottom-nav">
+    <button class="nav-item" onclick="location.href='overview.html'"><i class="fas fa-home"></i><span>Home</span></button>
+    <button class="nav-item" onclick="location.href='notifications.html'"><i class="fas fa-bell"></i><span>Notifications</span></button>
+    <button class="nav-item" onclick="location.href='analytics.html'"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
+    <button class="nav-item" onclick="location.href='more.html'"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+</footer>
+
+<!-- ─── Success Modal ─── -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-sheet">
+        <div class="modal-handle"></div>
+        <div class="modal-icon"><i class="fas fa-check"></i></div>
+        <div class="modal-title">Inspection Saved!</div>
+        <div class="modal-body">Your inspection data has been saved successfully.</div>
+        <div class="modal-btn-group">
+            <button class="modal-btn-primary" onclick="location.href='overview.html'">Go to Home</button>
+            <button class="modal-btn-outline" onclick="location.href='history.html'">View History</button>
+        </div>
+    </div>
+</div>
 
 <script>
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const resultsDiv = document.getElementById('results');
-const captureBtn = document.getElementById('capture-btn');
-const retakeBtn = document.getElementById('retake-btn');
-const doneBtn = document.getElementById('done-btn');
-const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    /* ── Date ── */
+    const dateEl = document.getElementById('todayDate');
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-const API_URL = "http://127.0.0.1:5000/predict";
-const classes = ["Puncture", "Crack", "Bulge", "Worn Tread"];
+    /* ── Camera ── */
+    const video   = document.getElementById('video');
+    const canvas  = document.getElementById('canvas');
+    const ctx     = canvas.getContext('2d');
+    const classes = ["Puncture", "Crack", "Bulge", "Worn Tread"];
+    const API_URL = "http://127.0.0.1:5000/predict";
 
-navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-.then(stream => video.srcObject = stream)
-.catch(err => alert("Camera error: " + err));
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(stream => video.srcObject = stream)
+        .catch(err => alert("Camera error: " + err));
 
-async function capture() {
-    if(video.videoWidth === 0 || video.videoHeight === 0){
-        alert("Camera not ready!");
-        return;
+    /* ── Capture ── */
+    async function capture() {
+        if (!video.videoWidth) { alert("Camera not ready!"); return; }
+
+        video.classList.add('hidden');
+        canvas.classList.remove('hidden');
+        hideViewfinder(true);
+
+        canvas.width  = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+
+        document.getElementById('captureRow').classList.add('hidden');
+        document.getElementById('postCaptureRow').classList.remove('hidden');
+
+        const panel   = document.getElementById('resultsPanel');
+        const content = document.getElementById('resultsContent');
+        panel.classList.add('visible');
+        content.innerHTML = `<div class="result-loading"><div class="spinner"></div>Analyzing tire condition…</div>`;
+
+        canvas.toBlob(async (blob) => {
+            const fd = new FormData();
+            fd.append("image", blob, "image.jpg");
+            try {
+                const res  = await fetch(API_URL, { method: "POST", body: fd });
+                const data = await res.json();
+
+                ctx.lineWidth   = 4;
+                ctx.strokeStyle = "#f39c12";
+                ctx.fillStyle   = "#f39c12";
+                ctx.font        = "bold 18px 'Segoe UI', sans-serif";
+
+                if (!data.length) {
+                    content.innerHTML = `<div class="result-no-damage"><i class="fas fa-check-circle"></i>No damage detected</div>`;
+                    return;
+                }
+
+                content.innerHTML = "";
+                data.forEach(d => {
+                    const [x1, y1, x2, y2] = d.bbox;
+                    const name  = classes[d.class];
+                    const conf  = (d.confidence * 100).toFixed(1);
+                    const label = `${name} ${conf}%`;
+
+                    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+                    const tw = ctx.measureText(label).width;
+                    ctx.fillRect(x1, y1 - 30, tw + 12, 30);
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(label, x1 + 6, y1 - 8);
+                    ctx.fillStyle = "#f39c12";
+
+                    content.innerHTML += `
+                        <div class="result-item">
+                            <div class="result-icon"><i class="fas ${iconFor(name)}"></i></div>
+                            <span>${name}</span>
+                            <span class="result-conf">${conf}%</span>
+                        </div>`;
+                });
+            } catch {
+                content.innerHTML = `<div class="result-item" style="border-color:rgba(231,76,60,0.3);background:rgba(231,76,60,0.08);color:#e74c3c;">
+                    <div class="result-icon" style="background:#e74c3c"><i class="fas fa-wifi"></i></div>
+                    <span>Error connecting to AI server</span>
+                </div>`;
+            }
+        }, "image/jpeg");
     }
 
-    document.querySelector('.video-container').style.display = 'none';
-    document.querySelector('.canvas-container').style.display = 'block';
-    
-    resultsDiv.style.display = 'block';
-    resultsDiv.innerHTML = "Analyzing tire condition...";
+    /* ── Retake ── */
+    function retake() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.classList.add('hidden');
+        video.classList.remove('hidden');
+        hideViewfinder(false);
+        document.getElementById('resultsPanel').classList.remove('visible');
+        document.getElementById('resultsContent').innerHTML = '';
+        document.getElementById('captureRow').classList.remove('hidden');
+        document.getElementById('postCaptureRow').classList.add('hidden');
+    }
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0);
+    /* ── Done ── */
+    function done() {
+        document.getElementById('modalOverlay').classList.add('open');
+    }
 
-    captureBtn.style.display = 'none';
-    retakeBtn.style.display = 'block';
-    doneBtn.style.display = 'block';
+    document.getElementById('modalOverlay').addEventListener('click', function(e){
+        if (e.target === this) this.classList.remove('open');
+    });
 
-    canvas.toBlob(async (blob) => {
-        const formData = new FormData();
-        formData.append("image", blob, "image.jpg");
+    /* ── Helpers ── */
+    function hideViewfinder(hide) {
+        ['viewfinder','cornerTR','cornerBL','scanLine'].forEach(id => {
+            document.getElementById(id).style.display = hide ? 'none' : '';
+        });
+    }
 
-        try {
-            const res = await fetch(API_URL, { method: "POST", body: formData });
-            const data = await res.json();
+    function iconFor(name) {
+        const map = { Puncture: 'fa-circle-dot', Crack: 'fa-icicles', Bulge: 'fa-circle', 'Worn Tread': 'fa-exclamation-triangle' };
+        return map[name] || 'fa-exclamation-circle';
+    }
 
-            resultsDiv.innerHTML = "";
-            ctx.lineWidth = 5; 
-            ctx.strokeStyle = "#ff0000";
-            ctx.fillStyle = "#ff0000";
-            // Match canvas text to Poppins style as much as possible
-            ctx.font = "bold 24px sans-serif"; 
+    /* ── Tab slider ── */
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const slider   = document.getElementById('tabSlider');
 
-            if(data.length === 0){
-                resultsDiv.innerHTML = "No damage detected";
-                return;
-            }
+    function moveSlider(el) {
+        slider.style.left  = el.offsetLeft + 'px';
+        slider.style.width = el.offsetWidth + 'px';
+    }
 
-            data.forEach(d => {
-                const [x1, y1, x2, y2] = d.bbox;
-                const label = classes[d.class] + " " + (d.confidence*100).toFixed(1) + "%";
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            tabLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            moveSlider(this);
+            setTimeout(() => window.location.href = this.getAttribute('href'), 280);
+        });
+    });
 
-                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-                const textWidth = ctx.measureText(label).width;
-                ctx.fillRect(x1, y1 - 35, textWidth + 10, 35);
-                ctx.fillStyle = "white";
-                ctx.fillText(label, x1 + 5, y1 - 10);
-                ctx.fillStyle = "#ff0000";
-
-                resultsDiv.innerHTML += `<div class="mb-1">⚠️ ${label}</div>`;
-            });
-
-        } catch(err) {
-            resultsDiv.innerHTML = "Error connecting to AI server.";
-        }
-    }, "image/jpeg");
-}
-
-function retake() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    resultsDiv.style.display = 'none';
-    document.querySelector('.canvas-container').style.display = 'none';
-    document.querySelector('.video-container').style.display = 'block';
-    captureBtn.style.display = 'block';
-    retakeBtn.style.display = 'none';
-    doneBtn.style.display = 'none';
-}
-
-function done() {
-    successModal.show();
-}
+    window.addEventListener('resize', () => {
+        const active = document.querySelector('.tab-link.active');
+        if (active) moveSlider(active);
+    });
 </script>
-
 </body>
 </html>

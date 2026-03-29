@@ -906,3 +906,451 @@ body {
     }
 }
 
+/* ================================
+   tutorial.css
+   Scoped styles for tutorial.html
+   Extends recommendations base styles
+   ================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #333;
+    padding-bottom: 120px;
+}
+
+/* ---- Header ---- */
+.site-header {
+    background: #ffffff;
+    height: 65px;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #f39c12;
+    width: 36px;
+    text-align: center;
+}
+
+.header-logo {
+    text-align: center;
+}
+
+.logo-img {
+    height: 35px;
+}
+
+/* ---- Tab Navigation ---- */
+.tab-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeeeee;
+    border-radius: 30px;
+    padding: 5px;
+    margin: 10px 16px 0;
+}
+
+.tab-slider {
+    position: absolute;
+    top: 5px;
+    height: calc(100% - 10px);
+    background: #333333;
+    border-radius: 25px;
+    transition: left 0.3s ease, width 0.3s ease;
+    z-index: 0;
+}
+
+.tab-link {
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+    color: #666;
+    padding: 7px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.tab-link.active {
+    background: transparent;
+    color: #ffffff;
+}
+
+.tab-link:hover:not(.active) {
+    color: #333;
+}
+
+/* ---- Main Content ---- */
+.dashboard-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+}
+
+.page-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+.title-divider {
+    border: none;
+    border-top: 1.5px solid #ddd;
+    margin-bottom: 20px;
+}
+
+/* ---- Video Placeholder ---- */
+.tutorial-video-placeholder {
+    background-color: #e0e0e0;
+    border-radius: 12px;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    margin-bottom: 6px;
+}
+
+.tutorial-video-label {
+    font-size: 0;
+    color: transparent;
+}
+
+.tutorial-video-caption {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* ---- Steps ---- */
+.tip {
+    margin-bottom: 18px;
+}
+
+.tip h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 3px;
+}
+
+.tip p {
+    font-size: 0.82rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* ---- Bottom Nav ---- */
+.bottom-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 380px;
+    background-color: #f39c12;
+    height: 70px;
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+    padding: 0 8px;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 80px;
+    height: 55px;
+    border-radius: 20px;
+    transition: all 0.25s ease;
+    gap: 3px;
+}
+
+.nav-item i {
+    font-size: 19px;
+    transition: transform 0.25s ease;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+.nav-item:hover i {
+    transform: translateY(-2px);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+    .tab-link {
+        font-size: 11px;
+        padding: 7px 12px;
+    }
+
+    .page-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* ================================
+   dashboard.css
+   Scoped styles for dashboard.html
+   ================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #333;
+    padding-bottom: 120px;
+}
+
+/* ---- Header ---- */
+.site-header {
+    background: #ffffff;
+    height: 65px;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.menu-toggle,
+.search-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #f39c12;
+    width: 36px;
+    text-align: center;
+}
+
+.header-logo {
+    text-align: center;
+}
+
+.logo-img {
+    height: 35px;
+}
+
+/* ---- Tab Navigation ---- */
+.tab-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeeeee;
+    border-radius: 30px;
+    padding: 5px;
+    margin: 10px 16px 0;
+}
+
+.tab-slider {
+    position: absolute;
+    top: 5px;
+    height: calc(100% - 10px);
+    background: #333333;
+    border-radius: 25px;
+    transition: left 0.3s ease, width 0.3s ease;
+    z-index: 0;
+}
+
+.tab-link {
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+    color: #666;
+    padding: 7px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.tab-link.active {
+    background: transparent;
+    color: #ffffff;
+}
+
+.tab-link:hover:not(.active) {
+    color: #333;
+}
+
+/* ---- Main Content ---- */
+.dashboard-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+}
+
+.page-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 20px;
+}
+
+/* ---- Inspection Summary Card ---- */
+.summary-card {
+    background-color: #2b2b2b;
+    border-radius: 20px;
+    padding: 24px 20px 28px;
+}
+
+.summary-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.summary-card-title {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.summary-expand-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.summary-expand-btn:hover {
+    opacity: 1;
+}
+
+/* ---- Stats Row ---- */
+.summary-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #f39c12;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.72rem;
+    color: #cccccc;
+    font-weight: 400;
+}
+
+/* ---- Bottom Nav ---- */
+.bottom-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 380px;
+    background-color: #f39c12;
+    height: 70px;
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+    padding: 0 8px;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 80px;
+    height: 55px;
+    border-radius: 20px;
+    transition: all 0.25s ease;
+    gap: 3px;
+}
+
+.nav-item i {
+    font-size: 19px;
+    transition: transform 0.25s ease;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+.nav-item:hover i {
+    transform: translateY(-2px);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+    .tab-link {
+        font-size: 11px;
+        padding: 7px 12px;
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+    }
+}
+
+

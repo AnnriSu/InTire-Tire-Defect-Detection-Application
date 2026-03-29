@@ -9,7 +9,7 @@ app = Flask(__name__, static_folder=".")
 CORS(app)
 
 # Load your model
-model = YOLO("best.pt")
+model = YOLO("assets\\ai model\\best.pt")
 
 # Route to serve HTML pages
 @app.route("/")

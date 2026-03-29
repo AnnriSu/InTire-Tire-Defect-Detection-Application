@@ -24,6 +24,7 @@
 
     <!-- Tab Navigation -->
     <nav class="tab-nav">
+        <div class="tab-slider"></div>
         <a href="overview.html" class="tab-link">Overview</a>
         <a href="history.html" class="tab-link active">History</a>
         <a href="tutorial.html" class="tab-link">Tutorial</a>
@@ -153,13 +154,14 @@
     </main>
 
     <footer class="bottom-nav">
-        <button class="nav-item"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></button>
-        <button class="nav-item"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
-        <button class="nav-item"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+        <a href="overview.html" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="notifications.html" class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></a>
+        <a href="analytics.html" class="nav-item"><i class="fas fa-chart-bar"></i><span>Analytics</span></a>
+        <a href="more.html" class="nav-item"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
     </footer>
 
     <script>
+        // Filter functionality
         const dom = {
             filterBtn: document.querySelector('#filterBtn'),
             filterDropdown: document.querySelector('#filterDropdown'),
@@ -178,7 +180,6 @@
         dom.applyBtn.addEventListener('click', () => {
             const sortVal = dom.sortOrder.value;
             const targetDate = dom.dateSelect.value;
-
             const allCards = dom.cards();
 
             allCards.forEach(card => {
@@ -208,7 +209,36 @@
                 dom.filterDropdown.classList.remove('show');
             }
         });
+
+        // Tab slider functionality
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const slider = document.querySelector('.tab-slider');
+
+        function moveSlider(el) {
+            slider.style.left = el.offsetLeft + 'px';
+            slider.style.width = el.offsetWidth + 'px';
+        }
+
+        const activeTab = document.querySelector('.tab-link.active');
+        if (activeTab) moveSlider(activeTab);
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                tabLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                moveSlider(this);
+                const href = this.getAttribute('href');
+                setTimeout(() => window.location.href = href, 300);
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            const active = document.querySelector('.tab-link.active');
+            if (active) moveSlider(active);
+        });
     </script>
+
 </body>
 
 </html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/dashboard.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <!-- Left: Hamburger -->
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+
+        <!-- Center: Logo -->
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
+        </div>
+
+        <!-- Right: Search -->
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+        <div class="tab-slider"></div>
+        <a href="dashboard.html" class="tab-link active">Overview</a>
+        <a href="history.html" class="tab-link">History</a>
+        <a href="tutorial.html" class="tab-link">Tutorial</a>
+        <a href="recommendations.html" class="tab-link">Recommendations</a>
+    </nav>
+
+    <main class="dashboard-container">
+        <h1 class="page-title">Your Dashboard</h1>
+
+        <!-- Inspection Summary Card -->
+        <div class="summary-card">
+            <div class="summary-card-header">
+                <span class="summary-card-title">Inspection Summary</span>
+                <button class="summary-expand-btn"><i class="fas fa-expand-alt"></i></button>
+            </div>
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">resolved issues</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">active issues</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">total inspected</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item active-nav"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+    </footer>
+
+    <script>
+        // Tab slider functionality
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const slider = document.querySelector('.tab-slider');
+
+        function moveSlider(el) {
+            slider.style.left = el.offsetLeft + 'px';
+            slider.style.width = el.offsetWidth + 'px';
+        }
+
+        const activeTab = document.querySelector('.tab-link.active');
+        if (activeTab) moveSlider(activeTab);
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                tabLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                moveSlider(this);
+                const href = this.getAttribute('href');
+                setTimeout(() => window.location.href = href, 300);
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            const active = document.querySelector('.tab-link.active');
+            if (active) moveSlider(active);
+        });
+    </script>
+
+</body>
+
+</html>

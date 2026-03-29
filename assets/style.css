@@ -1,0 +1,336 @@
+/* =====================
+   InTire - styles.css
+   ===================== */
+
+/* index.html */
+/* Divider */
+.divider {
+    border: 1px solid #ff9900;
+    margin: 3rem auto;
+    width: 50%;
+}
+
+/* Hero / Logo Section */
+.hero-subtitle {
+    font-size: 0.875rem;
+}
+
+/* Get Started Section */
+.get-started-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 750;
+    font-size: 1.32rem;
+}
+
+.get-started-subtitle {
+    font-size: 0.875rem;
+}
+
+/* Buttons */
+.btn-signin {
+    font-size: 1rem;
+    background-color: #FFBD59;
+    border-color: #FFBD59;
+    color: #ffffff;
+}
+
+.btn-signup {
+    font-size: 1rem;
+    background-color: #ffffff;
+    border-color: #000000;
+    color: #000000;
+}
+
+.btn-guest {
+    font-size: 1rem;
+    background-color: #ffffff;
+    border-color: #FFBD59;
+    color: #FFBD59;
+}
+
+/* "Or" separator text */
+.or-separator {
+    font-size: 0.875rem;
+}
+
+/* Agreement Box */
+.agreement-box {
+    border: 1px solid #000000;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Checkboxes */
+.form-check-input {
+    border: 1px solid #000000;
+    background-color: #FFBD59;
+}
+
+/* Checkbox label text */
+.form-check-label {
+    font-size: 0.775rem;
+}
+
+/* Agreement links */
+.agreement-link {
+    color: #a36407;
+}
+/* index.html */
+
+/* ================================
+   termsAndConditions
+   privacyPolicy
+   Scoped styles for T&C page only
+   ================================ */
+
+/* Page wrapper */
+.tac-wrapper {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Title */
+.tac-title {
+    font-size: 1rem;
+}
+
+.tac-title .highlight-tire {
+    color: #FFBD59;
+}
+
+/* Last updated */
+.tac-last-updated {
+    font-size: 0.7rem;
+}
+
+/* Content box */
+.tac-content-box {
+    background-color: #FFF2DE;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    border: 2px solid #FFBD59;
+}
+
+/* All paragraph text inside content box */
+.tac-content-box p,
+.tac-content-box ul,
+.tac-content-box li {
+    font-size: 0.7rem;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+/* Inline "Tire" yellow highlight inside content */
+.tac-content-box .highlight-tire {
+    color: #FFBD59;
+}
+
+/* Close button */
+.tac-close-btn {
+    background-color: #FFBD59;
+    border-color: #FFBD59;
+    color: #000000;
+    font-weight: 700;
+    font-size: 0.875rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.tac-close-btn:hover {
+    background-color: #e6a800;
+    border-color: #e6a800;
+    color: #000000;
+}
+
+/* ================================
+   signUp.css
+   Scoped styles for signUp.html
+   ================================ */
+
+/* ---- Form Section ---- */
+.signup-wrapper {
+    padding: 2.5rem 1.5rem 2rem;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
+
+.signup-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.signup-subtitle {
+    font-size: 0.7rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.signup-form-area {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Inputs */
+.signup-input {
+    border: 1.5px solid #FFBD59;
+    border-radius: 8px;
+    background-color: #FFEED5;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.85rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+.signup-input::placeholder {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.signup-input:focus {
+    border-color: #e6a800;
+    box-shadow: 0 0 0 0.15rem rgba(255, 189, 89, 0.3);
+    background-color: #FFEED5;
+    outline: none;
+}
+
+/* Checkbox */
+.signup-checkbox {
+    border: 1.5px solid #FFBD59;
+    background-color: #FFEED5;
+}
+
+.signup-checkbox:checked {
+    background-color: #FFBD59;
+    border-color: #FFBD59;
+}
+
+.signup-checkbox-label {
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+/* Sign Up Button */
+.signup-btn {
+    background-color: #FFBD59;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    color: #000000;
+    padding: 0.6rem 3rem;
+    width: 100%;
+    max-width: 280px;
+}
+
+.signup-btn:hover {
+    background-color: #e6a800;
+    color: #000000;
+}
+
+/* ---- Brand Section ---- */
+.signup-brand-section {
+    background-color: #FFBD59;
+    border-radius: 30px 30px 0 0;
+    padding: 2rem 1.5rem 1.5rem;
+    font-family: 'Inter', sans-serif;
+    margin-top: 2rem;
+}
+
+.signup-brand-logo {
+    width: 80px;
+}
+
+.signup-brand-text {
+    font-size: 0.78rem;
+    color: #000000;
+    margin-bottom: 0.9rem;
+    line-height: 1.55;
+}
+
+/* "Tire" yellow highlight — works on both white and yellow bg */
+.highlight-tire {
+    color: #7a4f00;
+}
+
+/* Video placeholder */
+.signup-video-placeholder {
+    background-color: #ffffff;
+    border-radius: 10px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-video-label {
+    font-size: 0.8rem;
+    color: #aaa;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Footer tagline */
+.signup-footer-tagline {
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #000000;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+}
+
+.highlight-tire-italic {
+    color: #7a4f00;
+    font-style: italic;
+    font-weight: 700;
+}
+
+/* ================================
+   signIn.css
+   Scoped overrides for signIn.html
+   Extends signUp.css
+   ================================ */
+
+/* Welcome Back Banner */
+.signin-welcome-banner {
+    background-color: #FFBD59;
+    border-radius: 0 0 0 50px;
+    padding: 0.6rem 1.5rem;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.signin-welcome-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #000000;
+    letter-spacing: 0.5px;
+}
+
+/* Forgot Password link */
+.signin-forgot-link {
+    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    color: #888;
+    text-decoration: none;
+}
+
+.signin-forgot-link:hover {
+    color: #FFBD59;
+    text-decoration: underline;
+}
+
+/* "Ready to check your InTIREs?" */
+.signin-redirect-text {
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+.signin-redirect-tire {
+    color: #FFBD59;
+    font-weight: 700;
+}

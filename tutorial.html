@@ -75,11 +75,21 @@
     </main>
 
     <footer class="bottom-nav">
-        <a href="overview.html" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="notifications.html" class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></a>
-        <a href="analytics.html" class="nav-item"><i class="fas fa-chart-bar"></i><span>Analytics</span></a>
-        <a href="more.html" class="nav-item"><i class="fas fa-ellipsis-h"></i><span>More</span></a>
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i
+                class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="window.location.href='notifications.html'"><i
+                class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'"><i
+                class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="window.location.href='more.html'"><i
+                class="fas fa-ellipsis-h"></i><span>More</span></button>
     </footer>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
 
     <script>
         const tabLinks = document.querySelectorAll('.tab-link');

@@ -17,7 +17,7 @@
         body {
             background-color: #f4f7f6;
             color: #333;
-            padding-bottom: 120px;
+            padding-bottom: 150px;
         }
 
         .site-header {
@@ -109,104 +109,188 @@
             padding: 0 20px;
         }
 
-        .page-title h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .page-title p {
-            color: #888;
-            font-size: 14px;
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
         }
 
-        .web-card {
+        .page-title h1 {
+            font-size: 28px;
+        }
+
+        .filter-wrapper {
+            position: relative;
+        }
+
+        .filter-btn {
+            background: #222;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: white;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            width: 280px;
+            display: none;
+            z-index: 50;
+        }
+
+        .filter-dropdown.show {
+            display: block;
+        }
+
+        .filter-group {
+            margin-bottom: 18px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            color: #aaa;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            outline: none;
+            background-color: #fafafa;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .apply-btn {
+            flex: 2;
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .reset-btn {
+            flex: 1;
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .inspection-card {
             background: #fff;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px 25px;
+            margin-bottom: 15px;
             border-radius: 15px;
-            margin-bottom: 12px;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eee;
+            transition: 0.3s ease;
         }
 
-        .web-card:hover {
+        .inspection-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             border-color: #f39c12;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .card-info {
+        .card-accent {
+            width: 12px;
+            background: #f39c12;
+            align-self: stretch;
+        }
+
+        .card-content {
             display: flex;
-            align-items: center;
-            gap: 20px;
-            flex: 0 0 300px;
-        }
-
-        .gear-icon {
-            color: #f39c12;
-            font-size: 18px;
-        }
-
-        .card-info h3 {
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .sub {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .card-status {
             flex: 1;
-            display: flex;
-            justify-content: center;
+            padding: 18px 25px;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .pill {
+        .info-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px;
+        }
+
+        .tire-circle {
+            color: #f39c12;
+            font-size: 22px;
+        }
+
+        .car-details h3 {
+            font-size: 15px;
+            margin: 0;
+            color: #222;
+        }
+
+        .car-details p {
+            font-size: 13px;
+            color: #777;
+            font-weight: bold;
+        }
+
+        .action-group {
+            text-align: right;
+        }
+
+        .view-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 6px 22px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
-            color: #555;
+            cursor: pointer;
+            margin-bottom: 5px;
         }
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
+        .date-label {
+            font-size: 10px;
+            color: #999;
+            display: block;
         }
 
-        .red .dot {
-            background: #ff4d4d;
-        }
-
-        .yellow .dot {
-            background: #f1c40f;
-        }
-
-        .green .dot {
-            background: #2ecc71;
-        }
-
-        .orange .dot {
-            background: #e67e22;
-        }
-
-        .card-action {
-            flex: 0 0 50px;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .graph-icon {
-            font-size: 20px;
-            color: #444;
+        .date-value {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
         }
 
         .bottom-nav {
@@ -214,7 +298,7 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            width: 400px;
+            width: 420px;
             background-color: #f39c12;
             height: 75px;
             border-radius: 40px;
@@ -237,25 +321,19 @@
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-            width: 85px;
+            width: 90px;
             height: 60px;
-            border-radius: 20px;
+            border-radius: 25px;
             transition: all 0.3s ease;
-            text-decoration: none;
         }
 
         .nav-item i {
             font-size: 20px;
             margin-bottom: 4px;
-            transition: transform 0.3s ease;
         }
 
         .nav-item:hover {
             background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .nav-item:hover i {
-            transform: translateY(-3px);
         }
 
         @media (max-width: 768px) {
@@ -263,14 +341,6 @@
             .main-nav,
             .header-right {
                 display: none;
-            }
-
-            .card-info {
-                flex: 1;
-            }
-
-            .card-status {
-                justify-content: flex-end;
             }
 
             .bottom-nav {
@@ -298,72 +368,130 @@
         <div class="header-right">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search...">
+                <input type="text" id="searchInput" placeholder="Search vehicle...">
             </div>
             <div class="user-profile"><i class="fas fa-user-circle"></i></div>
         </div>
     </header>
 
     <main class="dashboard-container">
-        <div class="page-title">
-            <h1>Inspection History</h1>
+        <div class="title-row">
+            <div class="page-title">
+                <h1>Inspection History</h1>
+            </div>
+            <div class="filter-wrapper">
+                <button class="filter-btn" id="filterBtn">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <div class="filter-dropdown" id="filterDropdown">
+                    <div class="filter-group">
+                        <label>Sort by Date</label>
+                        <select id="sortOrder">
+                            <option value="desc">Newest First</option>
+                            <option value="asc">Oldest First</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Specific Date</label>
+                        <input type="date" id="dateSelect">
+                    </div>
+                    <div class="btn-group">
+                        <button class="apply-btn" id="applyBtn">Apply</button>
+                        <button class="reset-btn" id="resetBtn">Reset</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <section class="list-wrapper">
-            <div class="web-card">
-                <div class="card-info">
-                    <i class="fa-solid fa-gear gear-icon"></i>
-                    <div>
-                        <h3>Toyota Corolla UHA 198</h3>
-                        <span class="sub">Front Right</span>
+        <section class="list-wrapper" id="cardList">
+            <div class="inspection-card" data-date="2026-03-30">
+                <div class="card-accent"></div>
+                <div class="card-content">
+                    <div class="info-group">
+                        <i class="fa-regular fa-circle-dot tire-circle"></i>
+                        <div class="car-details">
+                            <h3>Toyota Corolla UHA 198</h3>
+                            <p>Front Right</p>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <button class="view-btn">View</button>
+                        <span class="date-label">Date of Inspection</span>
+                        <span class="date-value">03-30-2026</span>
                     </div>
                 </div>
-                <div class="card-status">
-                    <div class="pill red"><span class="dot"></span> Action Required!</div>
-                </div>
-                <div class="card-action"></div>
             </div>
 
-            <div class="web-card">
-                <div class="card-info">
-                    <i class="fa-solid fa-gear gear-icon"></i>
-                    <div>
-                        <h3>Toyota Corolla UHA 198</h3>
-                        <span class="sub">Front Right</span>
+            <div class="inspection-card" data-date="2026-03-25">
+                <div class="card-accent"></div>
+                <div class="card-content">
+                    <div class="info-group">
+                        <i class="fa-regular fa-circle-dot tire-circle"></i>
+                        <div class="car-details">
+                            <h3>Toyota Corolla UHA 198</h3>
+                            <p>Rear Left</p>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <button class="view-btn">View</button>
+                        <span class="date-label">Date of Inspection</span>
+                        <span class="date-value">03-25-2026</span>
                     </div>
                 </div>
-                <div class="card-status">
-                    <div class="pill yellow"><span class="dot"></span> Monitoring Required</div>
-                </div>
-                <div class="card-action"><i class="fas fa-chart-line graph-icon"></i></div>
             </div>
 
-            <div class="web-card">
-                <div class="card-info">
-                    <i class="fa-solid fa-gear gear-icon"></i>
-                    <div>
-                        <h3>Toyota Corolla UHA 198</h3>
-                        <span class="sub">Front Right</span>
+            <div class="inspection-card" data-date="2026-03-15">
+                <div class="card-accent"></div>
+                <div class="card-content">
+                    <div class="info-group">
+                        <i class="fa-regular fa-circle-dot tire-circle"></i>
+                        <div class="car-details">
+                            <h3>Honda Civic BBA 123</h3>
+                            <p>Front Left</p>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <button class="view-btn">View</button>
+                        <span class="date-label">Date of Inspection</span>
+                        <span class="date-value">03-15-2026</span>
                     </div>
                 </div>
-                <div class="card-status">
-                    <div class="pill green"><span class="dot"></span> Good Condition</div>
-                </div>
-                <div class="card-action"><i class="fas fa-chart-line graph-icon"></i></div>
             </div>
 
-            <div class="web-card">
-                <div class="card-info">
-                    <i class="fa-solid fa-gear gear-icon"></i>
-                    <div>
-                        <h3>Toyota Corolla UHA 198</h3>
-                        <span class="sub">Front Right</span>
+            <div class="inspection-card" data-date="2026-02-10">
+                <div class="card-accent"></div>
+                <div class="card-content">
+                    <div class="info-group">
+                        <i class="fa-regular fa-circle-dot tire-circle"></i>
+                        <div class="car-details">
+                            <h3>Mitsubishi Montero XYZ 789</h3>
+                            <p>Rear Right</p>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <button class="view-btn">View</button>
+                        <span class="date-label">Date of Inspection</span>
+                        <span class="date-value">02-10-2026</span>
                     </div>
                 </div>
-                <div class="card-status">
-                    <div class="pill orange"><span class="dot"></span> Overdue!</div>
+            </div>
+
+            <div class="inspection-card" data-date="2026-01-05">
+                <div class="card-accent"></div>
+                <div class="card-content">
+                    <div class="info-group">
+                        <i class="fa-regular fa-circle-dot tire-circle"></i>
+                        <div class="car-details">
+                            <h3>Toyota Vios ABC 456</h3>
+                            <p>Front Right</p>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <button class="view-btn">View</button>
+                        <span class="date-label">Date of Inspection</span>
+                        <span class="date-value">01-05-2026</span>
+                    </div>
                 </div>
-                <div class="card-action"><i class="fas fa-chart-line graph-icon"></i></div>
             </div>
         </section>
     </main>
@@ -375,6 +503,65 @@
         <button class="nav-item"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
     </footer>
 
+    <script>
+        const dom = {
+            filterBtn: document.querySelector('#filterBtn'),
+            filterDropdown: document.querySelector('#filterDropdown'),
+            applyBtn: document.querySelector('#applyBtn'),
+            resetBtn: document.querySelector('#resetBtn'),
+            list: document.querySelector('#cardList'),
+            cards: () => Array.from(document.querySelectorAll('.inspection-card')),
+            searchInput: document.querySelector('#searchInput'),
+            sortOrder: document.querySelector('#sortOrder'),
+            dateSelect: document.querySelector('#dateSelect')
+        };
+
+        const toggleDropdown = () => dom.filterDropdown.classList.toggle('show');
+
+        dom.filterBtn.addEventListener('click', toggleDropdown);
+
+        dom.applyBtn.addEventListener('click', () => {
+            const sortVal = dom.sortOrder.value;
+            const targetDate = dom.dateSelect.value;
+
+            const allCards = dom.cards();
+
+            allCards.forEach(card => {
+                const isMatch = targetDate ? card.dataset.date === targetDate : true;
+                card.style.display = isMatch ? 'flex' : 'none';
+            });
+
+            const sorted = allCards
+                .filter(card => card.style.display !== 'none')
+                .sort((a, b) => {
+                    const diff = new Date(a.dataset.date) - new Date(b.dataset.date);
+                    return sortVal === 'desc' ? -diff : diff;
+                });
+
+            sorted.forEach(card => dom.list.appendChild(card));
+            toggleDropdown();
+        });
+
+        dom.resetBtn.addEventListener('click', () => {
+            dom.cards().forEach(card => card.style.display = 'flex');
+            dom.dateSelect.value = '';
+            toggleDropdown();
+        });
+
+        dom.searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            dom.cards().forEach(card => {
+                const match = card.textContent.toLowerCase().includes(query);
+                card.style.display = match ? 'flex' : 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!dom.filterBtn.contains(e.target) && !dom.filterDropdown.contains(e.target)) {
+                dom.filterDropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 
 </html>

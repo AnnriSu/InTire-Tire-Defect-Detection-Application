@@ -8,21 +8,222 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/history.css">
+    <style>
+        /* ---- View Detail Sheet ---- */
+        .detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 500;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .detail-overlay.open { display: flex; }
+
+        .detail-sheet {
+            background: #ffffff;
+            border-radius: 28px 28px 0 0;
+            padding: 20px 24px 40px;
+            width: 100%;
+            max-width: 600px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(60px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        .detail-handle {
+            width: 44px;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 0 auto 18px;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .detail-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #111;
+        }
+
+        .detail-date {
+            font-size: 0.72rem;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        .detail-close-btn {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #555;
+            transition: background 0.2s;
+        }
+        .detail-close-btn:hover { background: #e0e0e0; }
+
+        .detail-divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin-bottom: 16px;
+        }
+
+        /* Info row */
+        .detail-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .detail-info-item {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .detail-info-label {
+            font-size: 0.65rem;
+            color: #aaa;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .detail-info-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #111;
+        }
+
+        /* Findings section */
+        .detail-section-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .detail-finding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid;
+        }
+
+        .detail-finding.warning {
+            background: rgba(243, 156, 18, 0.07);
+            border-color: rgba(243, 156, 18, 0.25);
+        }
+
+        .detail-finding.danger {
+            background: rgba(231, 76, 60, 0.07);
+            border-color: rgba(231, 76, 60, 0.25);
+        }
+
+        .detail-finding.safe {
+            background: rgba(39, 174, 96, 0.07);
+            border-color: rgba(39, 174, 96, 0.25);
+        }
+
+        .detail-finding-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .warning .detail-finding-icon { background: #f39c12; color: #fff; }
+        .danger  .detail-finding-icon { background: #e74c3c; color: #fff; }
+        .safe    .detail-finding-icon { background: #27ae60; color: #fff; }
+
+        .detail-finding-name {
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .detail-finding-desc {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .detail-finding-conf {
+            margin-left: auto;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .warning .detail-finding-conf { color: #f39c12; }
+        .danger  .detail-finding-conf { color: #e74c3c; }
+        .safe    .detail-finding-conf { color: #27ae60; }
+
+        /* Status badge */
+        .detail-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-top: 14px;
+        }
+
+        .detail-status-label {
+            font-size: 0.72rem;
+            color: #888;
+            font-weight: 600;
+        }
+
+        .detail-status-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .badge-active   { background: rgba(231,76,60,0.12); color: #e74c3c; }
+        .badge-resolved { background: rgba(39,174,96,0.12);  color: #27ae60; }
+    </style>
 </head>
 
 <body>
 
     <header class="site-header">
-        <!-- Left: Hamburger -->
         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-
-        <!-- Center: Logo -->
         <div class="header-logo">
             <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
         </div>
     </header>
 
-    <!-- Tab Navigation -->
     <nav class="tab-nav">
         <div class="tab-slider"></div>
         <a href="overview.html" class="tab-link">Overview</a>
@@ -61,7 +262,8 @@
         </div>
 
         <section class="list-wrapper" id="cardList">
-            <div class="inspection-card" data-date="2026-03-30">
+
+            <div class="inspection-card" data-date="2026-03-30" data-id="1">
                 <div class="card-accent"></div>
                 <div class="card-content">
                     <div class="info-group">
@@ -72,14 +274,14 @@
                         </div>
                     </div>
                     <div class="action-group">
-                        <button class="view-btn">View</button>
+                        <button class="view-btn" onclick="openDetail('1')">View</button>
                         <span class="date-label">Date of Inspection</span>
                         <span class="date-value">03-30-2026</span>
                     </div>
                 </div>
             </div>
 
-            <div class="inspection-card" data-date="2026-03-25">
+            <div class="inspection-card" data-date="2026-03-25" data-id="2">
                 <div class="card-accent"></div>
                 <div class="card-content">
                     <div class="info-group">
@@ -90,14 +292,14 @@
                         </div>
                     </div>
                     <div class="action-group">
-                        <button class="view-btn">View</button>
+                        <button class="view-btn" onclick="openDetail('2')">View</button>
                         <span class="date-label">Date of Inspection</span>
                         <span class="date-value">03-25-2026</span>
                     </div>
                 </div>
             </div>
 
-            <div class="inspection-card" data-date="2026-03-15">
+            <div class="inspection-card" data-date="2026-03-15" data-id="3">
                 <div class="card-accent"></div>
                 <div class="card-content">
                     <div class="info-group">
@@ -108,14 +310,14 @@
                         </div>
                     </div>
                     <div class="action-group">
-                        <button class="view-btn">View</button>
+                        <button class="view-btn" onclick="openDetail('3')">View</button>
                         <span class="date-label">Date of Inspection</span>
                         <span class="date-value">03-15-2026</span>
                     </div>
                 </div>
             </div>
 
-            <div class="inspection-card" data-date="2026-02-10">
+            <div class="inspection-card" data-date="2026-02-10" data-id="4">
                 <div class="card-accent"></div>
                 <div class="card-content">
                     <div class="info-group">
@@ -126,14 +328,14 @@
                         </div>
                     </div>
                     <div class="action-group">
-                        <button class="view-btn">View</button>
+                        <button class="view-btn" onclick="openDetail('4')">View</button>
                         <span class="date-label">Date of Inspection</span>
                         <span class="date-value">02-10-2026</span>
                     </div>
                 </div>
             </div>
 
-            <div class="inspection-card" data-date="2026-01-05">
+            <div class="inspection-card" data-date="2026-01-05" data-id="5">
                 <div class="card-accent"></div>
                 <div class="card-content">
                     <div class="info-group">
@@ -144,34 +346,180 @@
                         </div>
                     </div>
                     <div class="action-group">
-                        <button class="view-btn">View</button>
+                        <button class="view-btn" onclick="openDetail('5')">View</button>
                         <span class="date-label">Date of Inspection</span>
                         <span class="date-value">01-05-2026</span>
                     </div>
                 </div>
             </div>
+
         </section>
     </main>
 
     <footer class="bottom-nav">
-        <button class="nav-item" onclick="window.location.href='overview.html'"><i
-                class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item" onclick="window.location.href='notifications.html'"><i
-                class="fas fa-bell"></i><span>Notifications</span></button>
-        <button class="nav-item" onclick="window.location.href='analytics.html'"><i
-                class="fas fa-chart-bar"></i><span>Analytics</span></button>
-        <button class="nav-item" onclick="window.location.href='more.html'"><i
-                class="fas fa-ellipsis-h"></i><span>More</span></button>
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="window.location.href='notifications.html'"><i class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
+
     </footer>
 
-    <script>
-        function navigateTo(page) {
-            window.location.href = page;
-        }
-    </script>
+    <!-- ─── Detail Sheet ─── -->
+    <div class="detail-overlay" id="detailOverlay">
+        <div class="detail-sheet">
+            <div class="detail-handle"></div>
+            <div class="detail-header">
+                <div>
+                    <div class="detail-title" id="detailTitle">—</div>
+                    <div class="detail-date" id="detailDate">—</div>
+                </div>
+                <button class="detail-close-btn" onclick="closeDetail()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-info-grid">
+                <div class="detail-info-item">
+                    <div class="detail-info-label">Tire Position</div>
+                    <div class="detail-info-value" id="detailPosition">—</div>
+                </div>
+                <div class="detail-info-item">
+                    <div class="detail-info-label">Tread Depth</div>
+                    <div class="detail-info-value" id="detailTread">—</div>
+                </div>
+                <div class="detail-info-item">
+                    <div class="detail-info-label">Tire Pressure</div>
+                    <div class="detail-info-value" id="detailPressure">—</div>
+                </div>
+                <div class="detail-info-item">
+                    <div class="detail-info-label">Inspected By</div>
+                    <div class="detail-info-value" id="detailUser">—</div>
+                </div>
+            </div>
+
+            <div class="detail-section-title">Detected Issues</div>
+            <div id="detailFindings"></div>
+
+            <div class="detail-status-row">
+                <span class="detail-status-label">Inspection Status</span>
+                <span class="detail-status-badge" id="detailStatus">—</span>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Filter functionality
+        /* ── Mock inspection data ── */
+        const inspectionData = {
+            '1': {
+                title: 'Toyota Corolla UHA 198',
+                date: 'March 30, 2026 · 10:24 AM',
+                position: 'Front Right',
+                tread: '4.2 mm',
+                pressure: '32 PSI',
+                user: 'Juan dela Cruz',
+                status: 'active',
+                findings: [
+                    { type: 'danger', icon: 'fa-icicles', name: 'Surface Crack', desc: 'Visible crack on sidewall — immediate attention needed', conf: '91.4%' },
+                    { type: 'warning', icon: 'fa-exclamation-triangle', name: 'Worn Tread', desc: 'Tread depth approaching minimum safe level', conf: '78.2%' }
+                ]
+            },
+            '2': {
+                title: 'Toyota Corolla UHA 198',
+                date: 'March 25, 2026 · 02:15 PM',
+                position: 'Rear Left',
+                tread: '5.8 mm',
+                pressure: '31 PSI',
+                user: 'Juan dela Cruz',
+                status: 'resolved',
+                findings: [
+                    { type: 'warning', icon: 'fa-circle', name: 'Minor Bulge', desc: 'Small bulge detected on inner sidewall', conf: '83.7%' }
+                ]
+            },
+            '3': {
+                title: 'Honda Civic BBA 123',
+                date: 'March 15, 2026 · 09:05 AM',
+                position: 'Front Left',
+                tread: '6.1 mm',
+                pressure: '33 PSI',
+                user: 'Maria Santos',
+                status: 'resolved',
+                findings: [
+                    { type: 'safe', icon: 'fa-check-circle', name: 'No Damage Detected', desc: 'Tire is in good condition — no issues found', conf: '97.1%' }
+                ]
+            },
+            '4': {
+                title: 'Mitsubishi Montero XYZ 789',
+                date: 'February 10, 2026 · 04:45 PM',
+                position: 'Rear Right',
+                tread: '3.1 mm',
+                pressure: '28 PSI',
+                user: 'Carlos Reyes',
+                status: 'active',
+                findings: [
+                    { type: 'danger', icon: 'fa-circle-dot', name: 'Puncture', desc: 'Nail puncture detected near center tread', conf: '95.6%' },
+                    { type: 'danger', icon: 'fa-exclamation-triangle', name: 'Severely Worn Tread', desc: 'Tread depth below minimum — replace immediately', conf: '89.3%' }
+                ]
+            },
+            '5': {
+                title: 'Toyota Vios ABC 456',
+                date: 'January 5, 2026 · 11:30 AM',
+                position: 'Front Right',
+                tread: '7.0 mm',
+                pressure: '34 PSI',
+                user: 'Ana Lim',
+                status: 'resolved',
+                findings: [
+                    { type: 'safe', icon: 'fa-check-circle', name: 'No Damage Detected', desc: 'Tire is in excellent condition', conf: '98.8%' }
+                ]
+            }
+        };
+
+        function openDetail(id) {
+            const d = inspectionData[id];
+            if (!d) return;
+
+             document.querySelector('.bottom-nav').style.display = 'none';
+
+            document.getElementById('detailTitle').textContent    = d.title;
+            document.getElementById('detailDate').textContent     = d.date;
+            document.getElementById('detailPosition').textContent = d.position;
+            document.getElementById('detailTread').textContent    = d.tread;
+            document.getElementById('detailPressure').textContent = d.pressure;
+            document.getElementById('detailUser').textContent     = d.user;
+
+            // Status badge
+            const statusEl = document.getElementById('detailStatus');
+            statusEl.textContent = d.status === 'active' ? 'Active Issue' : 'Resolved';
+            statusEl.className = 'detail-status-badge ' + (d.status === 'active' ? 'badge-active' : 'badge-resolved');
+
+            // Findings
+            const findingsEl = document.getElementById('detailFindings');
+            findingsEl.innerHTML = d.findings.map(f => `
+                <div class="detail-finding ${f.type}">
+                    <div class="detail-finding-icon"><i class="fas ${f.icon}"></i></div>
+                    <div>
+                        <div class="detail-finding-name">${f.name}</div>
+                        <div class="detail-finding-desc">${f.desc}</div>
+                    </div>
+                    <span class="detail-finding-conf">${f.conf}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('detailOverlay').classList.add('open');
+        }
+
+        function closeDetail() {
+            document.getElementById('detailOverlay').classList.remove('open');
+            document.querySelector('.bottom-nav').style.display = 'flex';
+        }
+
+        // Close on backdrop tap
+        document.getElementById('detailOverlay').addEventListener('click', function (e) {
+            if (e.target === this) closeDetail();
+        });
+
+        /* ── Filter ── */
         const dom = {
             filterBtn: document.querySelector('#filterBtn'),
             filterDropdown: document.querySelector('#filterDropdown'),
@@ -184,7 +532,6 @@
         };
 
         const toggleDropdown = () => dom.filterDropdown.classList.toggle('show');
-
         dom.filterBtn.addEventListener('click', toggleDropdown);
 
         dom.applyBtn.addEventListener('click', () => {
@@ -220,7 +567,7 @@
             }
         });
 
-        // Tab slider functionality
+        /* ── Tab slider ── */
         const tabLinks = document.querySelectorAll('.tab-link');
         const slider = document.querySelector('.tab-slider');
 

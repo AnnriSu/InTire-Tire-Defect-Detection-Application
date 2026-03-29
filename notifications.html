@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Notifications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/notifications.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
+        </div>
+        <button class="mark-all-btn" onclick="markAllRead()" title="Mark all as read">
+            <i class="fas fa-check-double"></i>
+        </button>
+    </header>
+
+    <main class="notif-container">
+
+        <div class="greeting-row">
+            <h1 class="page-title">Notifications</h1>
+            <span class="unread-count" id="unreadCount">4 unread</span>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="notif-filter-row">
+            <button class="notif-filter-btn active" onclick="filterNotifs('all', this)">All</button>
+            <button class="notif-filter-btn" onclick="filterNotifs('alert', this)">Alerts</button>
+            <button class="notif-filter-btn" onclick="filterNotifs('info', this)">Info</button>
+            <button class="notif-filter-btn" onclick="filterNotifs('system', this)">System</button>
+        </div>
+
+        <!-- Notification list -->
+        <section id="notifList">
+
+            <!-- Today -->
+            <p class="notif-group-label">Today</p>
+
+            <div class="notif-card unread" data-type="alert" onclick="markRead(this)">
+                <div class="notif-icon-wrap alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notif-body">
+                    <p class="notif-title">Critical Tire Damage Detected</p>
+                    <p class="notif-desc">Puncture found on Toyota Corolla UHA 198 — Front Right. Immediate action required.</p>
+                    <span class="notif-time">10:24 AM</span>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-card unread" data-type="alert" onclick="markRead(this)">
+                <div class="notif-icon-wrap alert">
+                    <i class="fas fa-circle-exclamation"></i>
+                </div>
+                <div class="notif-body">
+                    <p class="notif-title">Low Tire Pressure Warning</p>
+                    <p class="notif-desc">Mitsubishi Montero XYZ 789 — Rear Right tire pressure is at 28 PSI. Recommended: 32 PSI.</p>
+                    <span class="notif-time">08:51 AM</span>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-card unread" data-type="info" onclick="markRead(this)">
+                <div class="notif-icon-wrap info">
+                    <i class="fas fa-rotate"></i>
+                </div>
+                <div class="notif-body">
+                    <p class="notif-title">Tire Rotation Due</p>
+                    <p class="notif-desc">Honda Civic BBA 123 is due for tire rotation. Last rotated 8,200 km ago.</p>
+                    <span class="notif-time">07:30 AM</span>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <!-- Yesterday -->
+            <p class="notif-group-label">Yesterday</p>
+
+            <div class="notif-card unread" data-type="system" onclick="markRead(this)">
+                <div class="notif-icon-wrap system">
+                    <i class="fas fa-cloud-arrow-up"></i>
+                </div>
+                <div class="notif-body">
+                    <p class="notif-title">App Update Available</p>
+                    <p class="notif-desc">InTire v2.1.0 is available. Update now for improved detection accuracy.</p>
+                    <span class="notif-time">Yesterday, 6:00 PM</span>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-card" data-type="info" onclick="markRead(this)">
+                <div class="notif-icon-wrap info">
+                    <i class="fas fa-file-circle-check"></i>
+                </div>
+                <div class="notif-body">
+                    <p class="notif-title">Inspection Report Ready</p>
+                    <p class="notif-desc">Your inspection report for Toyota Vios ABC 456 has been saved and is ready to view.</p>
+                    <span class="notif-time">Yesterday, 2:15 PM</span>
+                </div>
+            </div>
+
+            <div class="notif-card" data-type="system" onclick="markRead(this)">
+                <div class="notif-icon-wrap system">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+                <div class="notif-body">
+                    <p class="notif-title">Account Login Detected</p>
+                    <p class="notif-desc">A new login was detected on your account from an Android device.</p>
+                    <span class="notif-time">Yesterday, 10:02 AM</span>
+                </div>
+            </div>
+
+            <!-- Empty state (hidden by default) -->
+            <div class="notif-empty hidden" id="emptyState">
+                <i class="fas fa-bell-slash"></i>
+                <p>No notifications here</p>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item active-nav" onclick="window.location.href='notifications.html'"><i class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="window.location.href='more.html'"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+    </footer>
+
+    <script>
+        function markRead(card) {
+            card.classList.remove('unread');
+            const dot = card.querySelector('.notif-dot');
+            if (dot) dot.remove();
+            updateUnreadCount();
+        }
+
+        function markAllRead() {
+            document.querySelectorAll('.notif-card.unread').forEach(card => markRead(card));
+        }
+
+        function updateUnreadCount() {
+            const count = document.querySelectorAll('.notif-card.unread').length;
+            const el = document.getElementById('unreadCount');
+            el.textContent = count > 0 ? `${count} unread` : 'All caught up';
+            el.style.color = count > 0 ? '#f39c12' : '#27ae60';
+        }
+
+        function filterNotifs(type, btn) {
+            // Update active button
+            document.querySelectorAll('.notif-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Show/hide cards
+            const cards = document.querySelectorAll('.notif-card');
+            let visible = 0;
+
+            cards.forEach(card => {
+                const match = type === 'all' || card.dataset.type === type;
+                card.style.display = match ? 'flex' : 'none';
+                if (match) visible++;
+            });
+
+            // Show/hide group labels
+            document.querySelectorAll('.notif-group-label').forEach(label => {
+                // Check if any visible card follows this label
+                let next = label.nextElementSibling;
+                let hasVisible = false;
+                while (next && !next.classList.contains('notif-group-label')) {
+                    if (next.classList.contains('notif-card') && next.style.display !== 'none') {
+                        hasVisible = true;
+                    }
+                    next = next.nextElementSibling;
+                }
+                label.style.display = hasVisible ? 'block' : 'none';
+            });
+
+            document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
+        }
+    </script>
+
+</body>
+
+</html>

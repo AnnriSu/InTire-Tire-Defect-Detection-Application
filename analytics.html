@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/analytics.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
+        </div>
+        <div style="width:36px"></div>
+    </header>
+
+    <main class="analytics-container">
+
+        <div class="greeting-row">
+            <h1 class="page-title">Analytics</h1>
+            <span class="page-subtitle" id="todayDate"></span>
+        </div>
+
+        <!-- Period Selector -->
+        <div class="period-row">
+            <button class="period-btn active" onclick="setPeriod('week', this)">Week</button>
+            <button class="period-btn" onclick="setPeriod('month', this)">Month</button>
+            <button class="period-btn" onclick="setPeriod('year', this)">Year</button>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-icon total">
+                    <i class="fas fa-tire"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-card-number" id="statTotal">24</span>
+                    <span class="stat-card-label">Total Inspections</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon danger">
+                    <i class="fas fa-circle-exclamation"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-card-number" id="statActive">6</span>
+                    <span class="stat-card-label">Active Issues</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-card-number" id="statResolved">18</span>
+                    <span class="stat-card-label">Resolved</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon info">
+                    <i class="fas fa-gauge-high"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-card-number" id="statRate">75%</span>
+                    <span class="stat-card-label">Resolution Rate</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inspections Bar Chart -->
+        <div class="analytics-card">
+            <div class="analytics-card-header">
+                <span class="analytics-card-title">Inspections Over Time</span>
+                <span class="analytics-card-sub" id="chartLabel">This Week</span>
+            </div>
+            <div class="bar-chart" id="barChart"></div>
+            <div class="bar-labels" id="barLabels"></div>
+        </div>
+
+        <!-- Issue Breakdown -->
+        <div class="analytics-card">
+            <div class="analytics-card-header">
+                <span class="analytics-card-title">Issue Breakdown</span>
+            </div>
+            <div class="breakdown-list">
+                <div class="breakdown-item">
+                    <div class="breakdown-label-row">
+                        <span class="breakdown-name"><i class="fas fa-circle-dot"></i> Puncture</span>
+                        <span class="breakdown-count">8</span>
+                    </div>
+                    <div class="breakdown-bar-track">
+                        <div class="breakdown-bar" style="width: 67%; background: #e74c3c;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label-row">
+                        <span class="breakdown-name"><i class="fas fa-icicles"></i> Crack</span>
+                        <span class="breakdown-count">5</span>
+                    </div>
+                    <div class="breakdown-bar-track">
+                        <div class="breakdown-bar" style="width: 42%; background: #f39c12;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label-row">
+                        <span class="breakdown-name"><i class="fas fa-circle"></i> Bulge</span>
+                        <span class="breakdown-count">4</span>
+                    </div>
+                    <div class="breakdown-bar-track">
+                        <div class="breakdown-bar" style="width: 33%; background: #e67e22;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label-row">
+                        <span class="breakdown-name"><i class="fas fa-exclamation-triangle"></i> Worn Tread</span>
+                        <span class="breakdown-count">7</span>
+                    </div>
+                    <div class="breakdown-bar-track">
+                        <div class="breakdown-bar" style="width: 58%; background: #f39c12;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label-row">
+                        <span class="breakdown-name"><i class="fas fa-check-circle" style="color:#27ae60"></i> No Damage</span>
+                        <span class="breakdown-count">12</span>
+                    </div>
+                    <div class="breakdown-bar-track">
+                        <div class="breakdown-bar" style="width: 100%; background: #27ae60;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Inspected Vehicles -->
+        <div class="analytics-card">
+            <div class="analytics-card-header">
+                <span class="analytics-card-title">Most Inspected Vehicles</span>
+            </div>
+            <div class="vehicle-list">
+                <div class="vehicle-item">
+                    <div class="vehicle-rank">1</div>
+                    <div class="vehicle-info">
+                        <span class="vehicle-name">Toyota Corolla UHA 198</span>
+                        <span class="vehicle-count">9 inspections</span>
+                    </div>
+                    <div class="vehicle-bar-wrap">
+                        <div class="vehicle-bar" style="width:90%"></div>
+                    </div>
+                </div>
+                <div class="vehicle-item">
+                    <div class="vehicle-rank">2</div>
+                    <div class="vehicle-info">
+                        <span class="vehicle-name">Mitsubishi Montero XYZ 789</span>
+                        <span class="vehicle-count">7 inspections</span>
+                    </div>
+                    <div class="vehicle-bar-wrap">
+                        <div class="vehicle-bar" style="width:70%"></div>
+                    </div>
+                </div>
+                <div class="vehicle-item">
+                    <div class="vehicle-rank">3</div>
+                    <div class="vehicle-info">
+                        <span class="vehicle-name">Honda Civic BBA 123</span>
+                        <span class="vehicle-count">5 inspections</span>
+                    </div>
+                    <div class="vehicle-bar-wrap">
+                        <div class="vehicle-bar" style="width:50%"></div>
+                    </div>
+                </div>
+                <div class="vehicle-item">
+                    <div class="vehicle-rank">4</div>
+                    <div class="vehicle-info">
+                        <span class="vehicle-name">Toyota Vios ABC 456</span>
+                        <span class="vehicle-count">3 inspections</span>
+                    </div>
+                    <div class="vehicle-bar-wrap">
+                        <div class="vehicle-bar" style="width:30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="window.location.href='notifications.html'"><i class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item active-nav" onclick="window.location.href='analytics.html'"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="window.location.href='more.html'"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+    </footer>
+
+    <script>
+        // Date
+        const dateEl = document.getElementById('todayDate');
+        const now = new Date();
+        dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+        // Chart data per period
+        const chartData = {
+            week: {
+                label: 'This Week',
+                bars: [2, 5, 3, 7, 4, 6, 3],
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                total: 24, active: 6, resolved: 18, rate: '75%'
+            },
+            month: {
+                label: 'This Month',
+                bars: [8, 12, 7, 15],
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                total: 42, active: 10, resolved: 32, rate: '76%'
+            },
+            year: {
+                label: 'This Year',
+                bars: [5, 8, 6, 10, 14, 9, 12, 16, 11, 18, 13, 20],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                total: 142, active: 28, resolved: 114, rate: '80%'
+            }
+        };
+
+        function setPeriod(period, btn) {
+            document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const d = chartData[period];
+            document.getElementById('chartLabel').textContent  = d.label;
+            document.getElementById('statTotal').textContent   = d.total;
+            document.getElementById('statActive').textContent  = d.active;
+            document.getElementById('statResolved').textContent = d.resolved;
+            document.getElementById('statRate').textContent    = d.rate;
+            renderChart(d.bars, d.labels);
+        }
+
+        function renderChart(bars, labels) {
+            const max = Math.max(...bars);
+            const barChart = document.getElementById('barChart');
+            const barLabels = document.getElementById('barLabels');
+
+            barChart.innerHTML = bars.map((val, i) => {
+                const h = Math.round((val / max) * 100);
+                return `<div class="bar-col">
+                    <span class="bar-value">${val}</span>
+                    <div class="bar-fill" style="height:${h}%"></div>
+                </div>`;
+            }).join('');
+
+            barLabels.innerHTML = labels.map(l =>
+                `<span class="bar-label-text">${l}</span>`
+            ).join('');
+        }
+
+        // Init
+        renderChart(chartData.week.bars, chartData.week.labels);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Recommendations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    body {
+        background-color: #f4f7f6;
+        color: #333;
+        padding-bottom: 120px;
+    }
+
+    .site-header {
+        background: #fff;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1;
+    }
+
+    .logo-img {
+        height: 35px;
+    }
+
+    .menu-toggle {
+        background: none;
+        border: none;
+        color: #f39c12;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .main-nav {
+        display: flex;
+        background: #eee;
+        padding: 5px;
+        border-radius: 30px;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: #666;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .nav-link.active {
+        background: #444;
+        color: #fff;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .search-box {
+        background: #f0f0f0;
+        padding: 6px 15px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .search-box input {
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 150px;
+    }
+
+    .user-profile {
+        font-size: 24px;
+        color: #ccc;
+    }
+
+    .dashboard-container {
+        max-width: 800px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .page-title-text {
+        display: inline-block;
+        font-size: 32px;
+        font-weight: 800;
+        padding-bottom: 12px;
+        margin-bottom: 50px;
+        color: #222;
+    }
+
+    .tip {
+        margin-bottom: 45px;
+    }
+
+    .tip h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .tip p {
+        font-size: 16px;
+        color: #444;
+        line-height: 1.8;
+        text-align: left;
+    }
+
+    .bottom-nav {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        background-color: #f39c12;
+        height: 75px;
+        border-radius: 40px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        padding: 0 10px;
+    }
+
+    .nav-item {
+        background: none;
+        border: none;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 85px;
+        height: 60px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-item i {
+        font-size: 20px;
+        margin-bottom: 4px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-item:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-item:hover i {
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+
+        .main-nav,
+        .header-right {
+            display: none;
+        }
+
+        .page-title-text {
+            font-size: 24px;
+        }
+
+        .bottom-nav {
+            width: 90%;
+        }
+    }
+</style>
+
+<body>
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <img src="images/Blue and Red Car Tire Parts Business Logo 2.svg" alt="InTire Logo" class="logo-img">
+        </div>
+
+        <nav class="main-nav">
+            <a href="overview.html" class="nav-link">Overview</a>
+            <a href="history.html" class="nav-link">History</a>
+            <a href="tutorial.html" class="nav-link">Tutorial</a>
+            <a href="recommendations.html" class="nav-link active">Recommendations</a>
+        </nav>
+
+        <div class="header-right">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-profile">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="title-wrapper">
+            <h1 class="page-title-text">Maintenance Recommendations</h1>
+        </div>
+
+        <section class="info-content">
+            <div class="tip">
+                <h3>1. Check Tire Pressure Regularly</h3>
+                <p>Maintain the recommended tire pressure to ensure safety, better fuel efficiency, and longer tire
+                    life. Check at least once a week or before long trips.</p>
+            </div>
+
+            <div class="tip">
+                <h3>2. Inspect for Damage</h3>
+                <p>Regularly examine your tires for cracks, cuts, punctures, or bulges. If any damage is detected, have
+                    the tire repaired or replaced immediately.</p>
+            </div>
+
+            <div class="tip">
+                <h3>3. Monitor Tread Depth</h3>
+                <p>Ensure your tire tread is not too worn out. Low tread depth reduces grip, especially on wet roads,
+                    increasing the risk of accidents.</p>
+            </div>
+
+            <div class="tip">
+                <h3>4. Rotate Tires Periodically</h3>
+                <p>Rotate your tires every 5,000-10,000 km to ensure even wear and extend their lifespan.</p>
+            </div>
+
+            <div class="tip">
+                <h3>5. Keep Tires Properly Aligned</h3>
+                <p>Wheel misalignment can cause uneven tire wear and poor handling. Have your alignment checked if the
+                    vehicle pulls to one side.</p>
+            </div>
+
+            <div class="tip">
+                <h3>6. Balance Your Tires</h3>
+                <p>Proper tire balancing ensures a smooth ride and prevents uneven wear. Do this whenever you install or
+                    rotate tires.</p>
+            </div>
+
+            <div class="tip">
+                <h3>7. Avoid Overloading</h3>
+                <p>Do not exceed the recommended load capacity of your vehicle. Overloading puts excessive pressure on
+                    tires and can lead to damage or blowouts.</p>
+            </div>
+
+            <div class="tip">
+                <h3>8. Drive Carefully</h3>
+                <p>Avoid sudden braking, sharp turns, and hitting potholes. Smooth driving helps extend tire life.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+    </footer>
+
+</body>
+
+</html>

@@ -6,373 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InTire | Inspection History</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-        }
-
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            padding-bottom: 150px;
-        }
-
-        .site-header {
-            background: #fff;
-            height: 70px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-        }
-
-        .logo-img {
-            height: 35px;
-        }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            color: #f39c12;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .main-nav {
-            display: flex;
-            background: #eee;
-            padding: 5px;
-            border-radius: 30px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #666;
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 13px;
-            transition: 0.3s;
-        }
-
-        .nav-link.active {
-            background: #444;
-            color: #fff;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex: 1;
-            justify-content: flex-end;
-        }
-
-        .search-box {
-            background: #f0f0f0;
-            padding: 6px 15px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .search-box input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 150px;
-        }
-
-        .user-profile {
-            font-size: 24px;
-            color: #ccc;
-        }
-
-        .dashboard-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .page-title h1 {
-            font-size: 28px;
-        }
-
-        .filter-wrapper {
-            position: relative;
-        }
-
-        .filter-btn {
-            background: #222;
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.2s;
-        }
-
-        .filter-dropdown {
-            position: absolute;
-            top: 55px;
-            right: 0;
-            background: white;
-            border: 1px solid #eee;
-            padding: 20px;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-            width: 280px;
-            display: none;
-            z-index: 50;
-        }
-
-        .filter-dropdown.show {
-            display: block;
-        }
-
-        .filter-group {
-            margin-bottom: 18px;
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: 10px;
-            font-weight: 800;
-            color: #aaa;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .filter-group input,
-        .filter-group select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-            outline: none;
-            background-color: #fafafa;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .apply-btn {
-            flex: 2;
-            background: #f39c12;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .reset-btn {
-            flex: 1;
-            background: #f0f0f0;
-            color: #333;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .inspection-card {
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-            border: 1px solid #eee;
-            transition: 0.3s ease;
-        }
-
-        .inspection-card:hover {
-            transform: translateY(-5px);
-            border-color: #f39c12;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-accent {
-            width: 12px;
-            background: #f39c12;
-            align-self: stretch;
-        }
-
-        .card-content {
-            display: flex;
-            flex: 1;
-            padding: 18px 25px;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .info-group {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .tire-circle {
-            color: #f39c12;
-            font-size: 22px;
-        }
-
-        .car-details h3 {
-            font-size: 15px;
-            margin: 0;
-            color: #222;
-        }
-
-        .car-details p {
-            font-size: 13px;
-            color: #777;
-            font-weight: bold;
-        }
-
-        .action-group {
-            text-align: right;
-        }
-
-        .view-btn {
-            background: #f39c12;
-            color: white;
-            border: none;
-            padding: 6px 22px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 5px;
-        }
-
-        .date-label {
-            font-size: 10px;
-            color: #999;
-            display: block;
-        }
-
-        .date-value {
-            font-size: 12px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 420px;
-            background-color: #f39c12;
-            height: 75px;
-            border-radius: 40px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 0 10px;
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 90px;
-            height: 60px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        @media (max-width: 768px) {
-
-            .main-nav,
-            .header-right {
-                display: none;
-            }
-
-            .bottom-nav {
-                width: 90%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/history.css">
 </head>
 
 <body>
 
     <header class="site-header">
-        <div class="header-left">
-            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-            <img src="images/Blue and Red Car Tire Parts Business Logo 2.svg" alt="InTire Logo" class="logo-img">
-        </div>
+        <!-- Left: Hamburger -->
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
 
-        <nav class="main-nav">
-            <a href="overview.html" class="nav-link">Overview</a>
-            <a href="history.html" class="nav-link active">History</a>
-            <a href="tutorial.html" class="nav-link">Tutorial</a>
-            <a href="recommendations.html" class="nav-link">Recommendations</a>
-        </nav>
-
-        <div class="header-right">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search vehicle...">
-            </div>
-            <div class="user-profile"><i class="fas fa-user-circle"></i></div>
+        <!-- Center: Logo -->
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
         </div>
     </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+        <a href="overview.html" class="tab-link">Overview</a>
+        <a href="history.html" class="tab-link active">History</a>
+        <a href="tutorial.html" class="tab-link">Tutorial</a>
+        <a href="recommendations.html" class="tab-link">Recommendations</a>
+    </nav>
 
     <main class="dashboard-container">
         <div class="title-row">
@@ -511,7 +167,6 @@
             resetBtn: document.querySelector('#resetBtn'),
             list: document.querySelector('#cardList'),
             cards: () => Array.from(document.querySelectorAll('.inspection-card')),
-            searchInput: document.querySelector('#searchInput'),
             sortOrder: document.querySelector('#sortOrder'),
             dateSelect: document.querySelector('#dateSelect')
         };
@@ -546,14 +201,6 @@
             dom.cards().forEach(card => card.style.display = 'flex');
             dom.dateSelect.value = '';
             toggleDropdown();
-        });
-
-        dom.searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            dom.cards().forEach(card => {
-                const match = card.textContent.toLowerCase().includes(query);
-                card.style.display = match ? 'flex' : 'none';
-            });
         });
 
         window.addEventListener('click', (e) => {

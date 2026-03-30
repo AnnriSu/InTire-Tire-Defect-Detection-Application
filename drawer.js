@@ -52,6 +52,6 @@ fetch('drawer.html')
     // Logout helper
     window.logoutUser = () => {
         alert("Logged out successfully!");
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     };
 });

@@ -75,6 +75,79 @@
 .agreement-link {
     color: #a36407;
 }
+
+.btn-signup:active,
+.btn-signup:focus {
+    background-color: #FFBD59 !important;
+    border-color: #FFBD59 !important;
+    color: #000000 !important;
+}
+
+/* ---- Index page entrance animations ---- */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero logo + subtitle */
+.text-center.mt-5.pt-5 img,
+.hero-subtitle {
+    animation: fadeUp 0.5s ease both;
+}
+
+.hero-subtitle {
+    animation-delay: 0.15s;
+}
+
+/* Divider */
+.divider {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.25s;
+}
+
+/* Get Started text */
+.get-started-title {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.35s;
+}
+
+.get-started-subtitle {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.42s;
+}
+
+/* Buttons staggered */
+.btn-signin {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.5s;
+}
+
+.btn-signup {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.58s;
+}
+
+.or-separator {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.64s;
+}
+
+.btn-guest {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.7s;
+}
+
+/* Agreement box last */
+.agreement-box {
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.8s;
+}
 /* index.html */
 
 /* ================================

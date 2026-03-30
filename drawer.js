@@ -17,6 +17,7 @@ fetch('drawer.html')
     const emailEl = document.getElementById('drawer-email');
     const drawer = document.getElementById('drawer');
     const overlay = document.getElementById('overlay');
+    const footer = document.querySelector('.bottom-nav'); // <-- grab footer
 
     // Update profile dynamically
     usernameEl.textContent = currentUser.name;
@@ -34,11 +35,15 @@ fetch('drawer.html')
     menuBtn.addEventListener('click', () => {
         drawer.classList.add('active');
         overlay.classList.add('active');
+        if (footer) footer.style.display = 'none'; // <-- hide footer
+        document.body.style.overflow = 'hidden'; // <-- disable scroll
     });
 
     overlay.addEventListener('click', () => {
         drawer.classList.remove('active');
         overlay.classList.remove('active');
+        if (footer) footer.style.display = ''; // <-- restore footer
+        document.body.style.overflow = ''; // <-- restore scroll
     });
 
     // Navigation helper

@@ -2,80 +2,181 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>InTire | Settings</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="assets/style.css" />
-  <link rel="stylesheet" href="assets/dashboard.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/settings.css">
 </head>
 
 <body>
-  <header class="site-header">
-    <button onclick="window.history.back()" class="menu-toggle">
-      <i class="fas fa-arrow-left"></i>
-    </button>
 
-    <div class="header-logo">
-      <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3" />
-    </div>
-  </header>
-
-  <main class="dashboard-container">
-    <h1 class="page-title">Settings</h1>
-
-    <div class="settings-card">
-      <!-- Account Settings -->
-      <div class="settings-section">
-        <h3>Account</h3>
-        <div class="settings-item">
-          <span>Password</span>
-          <button>Edit <i class="fas fa-chevron-right"></i></button>
+    <header class="site-header">
+        <button onclick="window.history.back()" class="menu-toggle">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
         </div>
-        <div class="settings-item">
-          <span>Email</span>
-          <button>Edit <i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
+        <div style="width:36px"></div>
+    </header>
 
-      <!-- Preferences -->
-      <div class="settings-section">
-        <h3>Preferences</h3>
-        <div class="settings-item">
-          <span>Language</span>
-          <button>English <i class="fas fa-chevron-right"></i></button>
+    <main class="settings-container">
+
+        <h1 class="page-title">Settings</h1>
+
+        <!-- Account -->
+        <div class="settings-section-card">
+            <p class="settings-section-label">Account</p>
+
+            <button class="settings-item" onclick="window.location.href='profile.html'">
+                <div class="settings-item-icon accent">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="settings-item-label">Edit Profile</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+
+            <div class="settings-divider"></div>
+
+            <button class="settings-item" onclick="window.location.href='#'">
+                <div class="settings-item-icon accent">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <span class="settings-item-label">Change Password</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+
+            <div class="settings-divider"></div>
+
+            <button class="settings-item" onclick="window.location.href='#'">
+                <div class="settings-item-icon accent">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <span class="settings-item-label">Change Email</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+        </div>
+
+        <!-- Preferences -->
+        <div class="settings-section-card">
+            <p class="settings-section-label">Preferences</p>
+
+            <div class="settings-item">
+                <div class="settings-item-icon neutral">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <span class="settings-item-label">Language</span>
+                <span class="settings-item-value">English</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-item">
+                <div class="settings-item-icon neutral">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <span class="settings-item-label">Notifications</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
         </div>
 
         <!-- About -->
-        <div class="settings-section">
-          <h3>About</h3>
-          <div class="settings-item">
-            <span>App Version</span>
-            <p>1.0.0</p>
-          </div>
-          <div class="settings-item">
-            <span>Terms & Conditions</span>
-            <button>View <i class="fas fa-chevron-right"></i></button>
-          </div>
+        <div class="settings-section-card">
+            <p class="settings-section-label">About</p>
+
+            <button class="settings-item" onclick="window.location.href='about.html'">
+                <div class="settings-item-icon neutral">
+                    <i class="fas fa-circle-info"></i>
+                </div>
+                <span class="settings-item-label">About InTire</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+
+            <div class="settings-divider"></div>
+
+            <button class="settings-item" onclick="window.location.href='termsAndConditions.html'">
+                <div class="settings-item-icon neutral">
+                    <i class="fas fa-file-lines"></i>
+                </div>
+                <span class="settings-item-label">Terms &amp; Conditions</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+
+            <div class="settings-divider"></div>
+
+            <button class="settings-item" onclick="window.location.href='privacyPolicy.html'">
+                <div class="settings-item-icon neutral">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <span class="settings-item-label">Privacy Policy</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-item no-hover">
+                <div class="settings-item-icon neutral">
+                    <i class="fas fa-tag"></i>
+                </div>
+                <span class="settings-item-label">App Version</span>
+                <span class="settings-item-value">v1.0.0</span>
+            </div>
         </div>
-      </div>
-  </main>
 
-  <footer class="bottom-nav">
-    <button class="nav-item" onclick="window.location.href='overview.html'">
-      <i class="fas fa-home"></i><span>Home</span>
-    </button>
-    <button class="nav-item" onclick="window.location.href='notifications.html'">
-      <i class="fas fa-bell"></i><span>Notifications</span>
-    </button>
-    <button class="nav-item" onclick="window.location.href='analytics.html'">
-      <i class="fas fa-chart-bar"></i><span>Analytics</span>
-    </button>
-    <button class="nav-item" onclick="window.location.href='more.html'">
-      <i class="fas fa-ellipsis-h"></i><span>More</span>
-    </button>
-  </footer>
+        <!-- Danger Zone -->
+        <div class="settings-section-card">
+            <p class="settings-section-label">Account Actions</p>
+
+            <button class="settings-item danger-item" onclick="window.location.href='index.html'">
+                <div class="settings-item-icon danger">
+                    <i class="fas fa-right-from-bracket"></i>
+                </div>
+                <span class="settings-item-label danger-label">Log Out</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+
+            <div class="settings-divider"></div>
+
+            <button class="settings-item danger-item" onclick="confirmDelete()">
+                <div class="settings-item-icon danger">
+                    <i class="fas fa-trash"></i>
+                </div>
+                <span class="settings-item-label danger-label">Delete Account</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </button>
+        </div><br><br><br><br>
+
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item" onclick="window.location.href='overview.html'">
+            <i class="fas fa-home"></i><span>Home</span>
+        </button>
+        <button class="nav-item" onclick="window.location.href='notifications.html'">
+            <i class="fas fa-bell"></i><span>Notifications</span>
+        </button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'">
+            <i class="fas fa-chart-bar"></i><span>Analytics</span>
+        </button>
+        <button class="nav-item" onclick="window.location.href='more.html'">
+            <i class="fas fa-ellipsis-h"></i><span>More</span>
+        </button>
+    </footer>
+
+    <script>
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
 </body>
-
 </html>

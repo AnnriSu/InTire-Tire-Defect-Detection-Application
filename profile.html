@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Profile</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/dashboard.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <button onclick="window.history.back()" class="menu-toggle">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+
+    <div class="header-logo">
+        <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
+    </div>
+</header>
+
+<main class="dashboard-container">
+
+    <h1 class="page-title">Profile</h1>
+
+    <div class="profile-card">
+
+        <div class="profile-avatar-large"></div>
+
+        <h2>Anne Ritchel Sumague</h2>
+        <p class="email">annesumague@gmail.com</p>
+
+        <div class="profile-details">
+            <div class="detail-item">
+                <span>Phone</span>
+                <p>+63 912 345 6789</p>
+            </div>
+
+            <div class="detail-item">
+                <span>Address</span>
+                <p>Philippines</p>
+            </div>
+        </div>
+
+        <button class="edit-btn">Edit Profile</button>
+
+    </div>
+
+</main>
+
+<footer class="bottom-nav">
+    <button class="nav-item" onclick="window.location.href='overview.html'">
+        <i class="fas fa-home"></i><span>Home</span>
+    </button>
+    <button class="nav-item" onclick="window.location.href='notifications.html'">
+        <i class="fas fa-bell"></i><span>Notifications</span>
+    </button>
+    <button class="nav-item" onclick="window.location.href='analytics.html'">
+        <i class="fas fa-chart-bar"></i><span>Analytics</span>
+    </button>
+    <button class="nav-item" onclick="window.location.href='more.html'">
+        <i class="fas fa-ellipsis-h"></i><span>More</span>
+    </button>
+</footer>
+
+</body>
+</html>

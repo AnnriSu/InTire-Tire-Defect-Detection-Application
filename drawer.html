@@ -1,0 +1,42 @@
+<!-- drawer.html -->
+<div id="overlay" class="overlay"></div>
+
+<div id="drawer" class="drawer">
+
+    <!-- Profile -->
+    <div class="drawer-profile">
+        <div class="drawer-avatar"></div>
+        <div>
+            <h4 id="drawer-username">User Name</h4>
+            <p id="drawer-email">user@example.com</p>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <ul class="drawer-menu">
+        <li onclick="navigateTo('overview.html')">
+            <i class="fas fa-home"></i> Home <span>›</span>
+        </li>
+        <li onclick="navigateTo('profile.html')">
+            <i class="fas fa-user"></i> Profile <span>›</span>
+        </li>
+        <li onclick="navigateTo('notifications.html')">
+            <i class="fas fa-bell"></i> Notifications <span>›</span>
+        </li>
+        <li onclick="navigateTo('settings.html')">
+            <i class="fas fa-cog"></i> Settings <span>›</span>
+        </li>
+        <li onclick="navigateTo('about.html')">
+            <i class="fas fa-info-circle"></i> About <span>›</span>
+        </li>
+    </ul>
+
+    <!-- Bottom -->
+    <div class="drawer-bottom">
+        <div class="logout" onclick="logoutUser()">
+            <i class="fas fa-sign-out-alt"></i> Logout <span>›</span>
+        </div>
+        <p>All rights reserved | InTire App 2026</p>
+    </div>
+
+</div>

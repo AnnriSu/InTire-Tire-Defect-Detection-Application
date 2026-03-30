@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>InTire | Settings</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/dashboard.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <button onclick="window.history.back()" class="menu-toggle">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+
+    <div class="header-logo">
+      <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3" />
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+    <h1 class="page-title">Settings</h1>
+
+    <div class="settings-card">
+      <!-- Account Settings -->
+      <div class="settings-section">
+        <h3>Account</h3>
+        <div class="settings-item">
+          <span>Password</span>
+          <button>Edit <i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="settings-item">
+          <span>Email</span>
+          <button>Edit <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Preferences -->
+      <div class="settings-section">
+        <h3>Preferences</h3>
+        <div class="settings-item">
+          <span>Language</span>
+          <button>English <i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <!-- About -->
+        <div class="settings-section">
+          <h3>About</h3>
+          <div class="settings-item">
+            <span>App Version</span>
+            <p>1.0.0</p>
+          </div>
+          <div class="settings-item">
+            <span>Terms & Conditions</span>
+            <button>View <i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+  </main>
+
+  <footer class="bottom-nav">
+    <button class="nav-item" onclick="window.location.href='overview.html'">
+      <i class="fas fa-home"></i><span>Home</span>
+    </button>
+    <button class="nav-item" onclick="window.location.href='notifications.html'">
+      <i class="fas fa-bell"></i><span>Notifications</span>
+    </button>
+    <button class="nav-item" onclick="window.location.href='analytics.html'">
+      <i class="fas fa-chart-bar"></i><span>Analytics</span>
+    </button>
+    <button class="nav-item" onclick="window.location.href='more.html'">
+      <i class="fas fa-ellipsis-h"></i><span>More</span>
+    </button>
+  </footer>
+</body>
+
+</html>

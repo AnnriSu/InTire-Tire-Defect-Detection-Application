@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | More Options</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/dashboard.css">
+    <style>
+        /* Modern feature list */
+        .more-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .more-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .more-item i {
+            font-size: 1.8em;
+            color: #F4B04F;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .more-item span {
+            flex: 1;
+            font-size: 1.05em;
+        }
+
+        .more-item:hover {
+            background: #FDF2E5;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Map smaller and rounded */
+        .map-container iframe {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            border: none;
+            margin-top: 10px;
+        }
+
+        /* Chatbot modal modern */
+        .chatbot-modal {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 280px;
+            height: 380px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        .chatbot-header {
+            background: #F4B04F;
+            padding: 12px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .chatbot-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-footer {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        .chatbot-footer input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 0.95em;
+        }
+
+        .chatbot-footer button {
+            border: none;
+            background: #F4B04F;
+            color: #fff;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .chat-message {
+            margin: 6px 0;
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            background: #F4B04F;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .chat-message.bot {
+            background: #e2e2e2;
+            color: #333;
+            align-self: flex-start;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <h1 class="page-title">More Options</h1>
+
+        <div class="more-container">
+
+            <!-- Repair Suggestions -->
+            <div class="more-item" onclick="toggleRepairBot()">
+                <i class="fas fa-wrench"></i>
+                <span>Repair Suggestions</span>
+            </div>
+
+            <!-- Nearby Repair Shops -->
+            <div class="more-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Nearby Repair Shops</span>
+            </div>
+
+            <div id="map" style="width:100%;height:400px;border-radius:12px;margin-top:15px;"></div>
+
+            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+            <script>
+                const shops = [
+                    { name: "Larisma Vulcanizing Shop", lat: 14.084487, lng: 121.139102 },
+                    { name: "M. Antioqua Vulcanizing Shop", lat: 14.0758496, lng: 121.14632489678952 },
+                    { name: "Emon 3 Sisters Tire Supply", lat: 14.124652, lng: 121.136088 },
+                    { name: "L.F Tire and Vulcanizing Shop", lat: 13.782977, lng: 121.065955 }
+                ];
+
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 10,
+                    center: { lat: 14.0, lng: 121.13 }
+                });
+
+                shops.forEach(shop => {
+                    const marker = new google.maps.Marker({
+                        position: { lat: shop.lat, lng: shop.lng },
+                        map: map,
+                        title: shop.name
+                    });
+
+                    const infowindow = new google.maps.InfoWindow({
+                        content: `<strong>${shop.name}</strong>`
+                    });
+
+                    marker.addListener("click", () => {
+                        infowindow.open(map, marker);
+                    });
+                });
+            </script>
+
+            <!-- Usage Recommendations (LTO Base) -->
+            <div class="more-item" onclick="showAppNotification()">
+                <i class="fas fa-chart-line"></i>
+                <span>Usage Recommendations</span>
+            </div>
+
+            <!-- Custom Notification -->
+            <div id="appNotification" class="app-notification">
+                <p>Still in improvement, in discussion with partner</p>
+                <button onclick="closeNotification()">Close</button>
+            </div>
+
+            <!-- Styles for Notification -->
+            <style>
+                .app-notification {
+                    display: none;
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #f4b04f;
+                    color: white;
+                    padding: 20px 30px;
+                    border-radius: 10px;
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+                    z-index: 1000;
+                    max-width: 90%;
+                    text-align: center;
+                    font-size: 16px;
+                    font-family: Arial, sans-serif;
+                }
+
+                .app-notification button {
+                    background-color: #fff;
+                    color: #f4b04f;
+                    border: none;
+                    padding: 8px 15px;
+                    margin-top: 15px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    font-weight: bold;
+                }
+
+                .app-notification button:hover {
+                    background-color: #f0e0a4;
+                }
+            </style>
+
+            <!-- JavaScript for Notification Behavior -->
+            <script>
+                function showAppNotification() {
+                    const notification = document.getElementById("appNotification");
+                    notification.style.display = "block";
+                }
+
+                function closeNotification() {
+                    const notification = document.getElementById("appNotification");
+                    notification.style.display = "none";
+                }
+            </script>
+
+            <!-- Profile / Settings / About -->
+            <div class="more-item" onclick="window.location.href='profile.html'">
+                <i class="fas fa-user"></i>
+                <span>User Info</span>
+            </div>
+
+            <div class="more-item" onclick="window.location.href='settings.html'">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+
+            <div class="more-item" onclick="window.location.href='about.html'">
+                <i class="fas fa-info-circle"></i>
+                <span>About InTire</span>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i
+                class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="window.location.href='notifications.html'"><i
+                class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'"><i
+                class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="window.location.href='more.html'"><i
+                class="fas fa-ellipsis-h"></i><span>More</span></button>
+    </footer>
+
+    <!-- Repair AI Bot -->
+    <div id="repairBot" class="chatbot-modal">
+        <div class="chatbot-header">Repair AI Bot</div>
+        <div class="chatbot-body" id="repairChatBody"></div>
+        <div class="chatbot-footer">
+            <input type="text" id="repairChatInput" placeholder="Ask about tire repair">
+            <button onclick="sendRepairMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Maintenance Bot -->
+    <div id="maintenanceBot" class="chatbot-modal">
+        <div class="chatbot-header">Maintenance Tips Bot</div>
+        <div class="chatbot-body" id="maintenanceChatBody"></div>
+        <div class="chatbot-footer">
+            <input type="text" id="maintenanceChatInput" placeholder="Ask maintenance tips">
+            <button onclick="sendMaintenanceMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Repair AI Bot
+        function toggleRepairBot() {
+            const bot = document.getElementById('repairBot');
+            bot.style.display = bot.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function sendRepairMessage() {
+            const input = document.getElementById('repairChatInput');
+            const chatBody = document.getElementById('repairChatBody');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.innerText = msg;
+            chatBody.appendChild(userMsg);
+
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            if (msg.toLowerCase().includes("replace")) botMsg.innerText = "If tread < 1.6mm or cracks, replace the tire.";
+            else if (msg.toLowerCase().includes("patch")) botMsg.innerText = "Small punctures can be patched if on the tread.";
+            else if (msg.toLowerCase().includes("safe")) botMsg.innerText = "Check cracks, bulges, low tread; if any, do not drive.";
+            else botMsg.innerText = "Tip: Ask 'replace', 'patch', or 'safe'.";
+            chatBody.appendChild(botMsg);
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // Maintenance Bot
+        function toggleMaintenanceBot() {
+            const bot = document.getElementById('maintenanceBot');
+            bot.style.display = bot.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function sendMaintenanceMessage() {
+            const input = document.getElementById('maintenanceChatInput');
+            const chatBody = document.getElementById('maintenanceChatBody');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.innerText = msg;
+            chatBody.appendChild(userMsg);
+
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            if (msg.toLowerCase().includes("inflate")) botMsg.innerText = "Keep tire pressure at manufacturer recommended PSI.";
+            else if (msg.toLowerCase().includes("rotate")) botMsg.innerText = "Rotate tires every 10,000 km to extend lifespan.";
+            else if (msg.toLowerCase().includes("clean")) botMsg.innerText = "Clean tires regularly to prevent wear from dirt and debris.";
+            else botMsg.innerText = "Ask about 'inflate', 'rotate', or 'clean'.";
+            chatBody.appendChild(botMsg);
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    </script>
+
+</body>
+
+</html>

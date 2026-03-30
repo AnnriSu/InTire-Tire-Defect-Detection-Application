@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InTire | About</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/dashboard.css">
+    <link rel="stylesheet" href="assets/about.css">
 </head>
 
 <body>
@@ -17,46 +16,144 @@
         <button onclick="window.history.back()" class="menu-toggle">
             <i class="fas fa-arrow-left"></i>
         </button>
-
         <div class="header-logo">
             <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
         </div>
+        <div style="width:36px"></div>
     </header>
 
-    <main class="dashboard-container">
-        <h1 class="page-title">About InTire</h1>
+    <main class="about-container">
 
-        <div class="about-card">
-            <h2 style="text-align: center; font-weight: bold;">About the App</h2>
-            <p>
+        <!-- Hero -->
+        <div class="about-hero">
+            <div class="about-hero-bg"></div>
+            <div class="about-logo-wrap">
+                <img src="assets/img/InTireLogo.svg" alt="InTire Logo" class="about-logo">
+            </div>
+            <p class="about-hero-tagline">Smart Tire Inspection Powered by AI</p>
+        </div>
+
+        <!-- About the App -->
+        <div class="about-section-card">
+            <div class="about-section-header">
+                <div class="about-section-icon">
+                    <i class="fas fa-circle-info"></i>
+                </div>
+                <span class="about-section-title">About the App</span>
+            </div>
+            <p class="about-section-text">
                 The InTIRE System is a digital tire inspection and monitoring platform designed to help users
                 efficiently assess and manage the condition of their vehicle tires. It provides an organized system for
                 recording inspection data, tracking tire status, and identifying potential issues such as wear, damage,
                 or low pressure. With its user-friendly interface and structured workflow, the system ensures that
                 inspections are consistent, accurate, and easy to perform. Overall, the InTIRE System enhances vehicle
-                safety and maintenance by offering a reliable and convenient solution for tire monitoring. </p>
+                safety and maintenance by offering a reliable and convenient solution for tire monitoring.
+            </p>
+        </div>
 
-            <h2 style="text-align: center; font-weight: bold;">Our Team</h2>
-            <p>
-We are a group of five BSIT students from the Polytechnic University of the Philippines. 
-    As a team of dedicated female students, we collaboratively developed InTIRE as part of our academic project. 
-    This application reflects our skills, teamwork, and commitment to creating a practical solution for tire inspection and vehicle safety.            </p>
-
-            <h2>Team Members</h2>
-            <ul class="team-list">
-                <li>Anne Ritchel Sumague</li>
-                <li>Karylle Cabrido</li>
-                <li>Julia Allary Aquino</li>
-                <li>Rochelle Mae Velasco</li>
-                <li>Akhicia Mae Torreliza</li>
-            </ul>
-
-            <h2 style="text-align: center; font-weight: bold;">Our Mission</h2>
-            <p>
+        <!-- Mission -->
+        <div class="about-section-card">
+            <div class="about-section-header">
+                <div class="about-section-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <span class="about-section-title">Our Mission</span>
+            </div>
+            <p class="about-section-text">
                 To provide a reliable and accessible tool for vehicle owners and technicians to improve tire safety
                 using AI technology.
             </p>
         </div>
+
+        <!-- Features -->
+        <div class="about-section-card">
+            <div class="about-section-header">
+                <div class="about-section-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <span class="about-section-title">Key Features</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-camera"></i></div>
+                    <span>AI Camera Inspection</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-history"></i></div>
+                    <span>Inspection History</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <span>Analytics Dashboard</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                    <span>Smart Recommendations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Team -->
+        <div class="about-section-card">
+            <div class="about-section-header">
+                <div class="about-section-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span class="about-section-title">Our Team</span>
+            </div>
+            <p class="about-section-text">
+                We are a group of five BSIT students from the Polytechnic University of the Philippines.
+                As a team of dedicated female students, we collaboratively developed InTIRE as part of our academic
+                project. This application reflects our skills, teamwork, and commitment to creating a practical
+                solution for tire inspection and vehicle safety.
+            </p>
+
+            <div class="team-list">
+                <div class="team-member">
+                    <div class="team-avatar">AS</div>
+                    <div class="team-info">
+                        <span class="team-name">Anne Ritchel Sumague</span>
+                        <span class="team-role">BSIT Student · PUP</span>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">KC</div>
+                    <div class="team-info">
+                        <span class="team-name">Karylle Cabrido</span>
+                        <span class="team-role">BSIT Student · PUP</span>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">JA</div>
+                    <div class="team-info">
+                        <span class="team-name">Julia Allary Aquino</span>
+                        <span class="team-role">BSIT Student · PUP</span>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">RV</div>
+                    <div class="team-info">
+                        <span class="team-name">Rochelle Mae Velasco</span>
+                        <span class="team-role">BSIT Student · PUP</span>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">AT</div>
+                    <div class="team-info">
+                        <span class="team-name">Akhicia Mae Torreliza</span>
+                        <span class="team-role">BSIT Student · PUP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Version -->
+        <div class="about-version">
+            <img src="assets/img/InTire.svg" alt="InTire" class="about-version-logo">
+            <p class="about-version-text">Version 1.0.0</p>
+            <p class="about-version-school">Polytechnic University of the Philippines</p>
+        </div>
+
     </main>
 
     <footer class="bottom-nav">
@@ -75,5 +172,4 @@ We are a group of five BSIT students from the Polytechnic University of the Phil
     </footer>
 
 </body>
-
 </html>

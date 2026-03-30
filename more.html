@@ -355,8 +355,12 @@
             input.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
         }
+        fetch('drawer.js')
+            .then(res => res.text())
+            .then(data => {
+                eval(data);
+            });
     </script>
-
 </body>
 
 </html>

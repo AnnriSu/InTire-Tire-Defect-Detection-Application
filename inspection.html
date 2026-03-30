@@ -761,7 +761,7 @@
         const classes = ["Puncture", "Crack", "Bulge", "Worn Tread"];
         const API_URL = "http://127.0.0.1:5000/predict";
 
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => video.srcObject = stream)
             .catch(err => alert("Camera error: " + err));
 

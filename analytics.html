@@ -257,6 +257,12 @@
 
         // Init
         renderChart(chartData.week.bars, chartData.week.labels);
+        
+        fetch('drawer.js')
+            .then(res => res.text())
+            .then(data => {
+                eval(data);
+            });
     </script>
 
 </body>

@@ -2024,3 +2024,282 @@ body {
     .stats-grid { grid-template-columns: 1fr 1fr; }
     .vehicle-info { width: 120px; }
 }
+
+/* ===== START HERE ANG KAY AKI ===== */
+/*=================
+   drawer.css
+   profile.html
+   ================================ */
+:root {
+    --header-height: 70px;
+}
+
+/* ===== HEADER FIX ===== */
+.site-header {
+    position: relative;
+    z-index: 1002;
+    height: var(--header-height);
+}
+
+/* Hamburger button */
+.menu-toggle {
+    position: relative;
+    z-index: 1003;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ===== OVERLAY ===== */
+.overlay {
+    position: fixed;
+    top: var(--header-height); /* 👈 BELOW HEADER */
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 998;
+}
+
+/* ===== DRAWER ===== */
+.drawer {
+    position: fixed;
+    top: var(--header-height); /* 👈 BELOW HEADER */
+    left: -300px;
+    width: 280px;
+    height: calc(100% - var(--header-height));
+    background: #F4B04F;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s ease;
+    z-index: 999;
+}
+
+/* Active state */
+.drawer.active {
+    left: 0;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== PROFILE ===== */
+.drawer-profile {
+    background: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 15px 15px;
+}
+
+.drawer-avatar {
+    width: 50px;
+    height: 50px;
+    background: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* ===== MENU ===== */
+.drawer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    flex: 1;
+}
+
+.drawer-menu li {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.drawer-menu li i {
+    margin-right: 10px;
+}
+
+.drawer-menu li:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* ===== BOTTOM ===== */
+.drawer-bottom {
+    padding: 20px;
+}
+
+.logout {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.logout:hover {
+    opacity: 0.7;
+}
+
+.drawer-bottom p {
+    font-size: 12px;
+    text-align: center;
+}
+
+/* ===== SAFETY FIX (prevents overlap issues) ===== */
+.tab-nav {
+    position: relative;
+    z-index: 1;
+}
+/*=================
+   END OF drawer.css
+   Start of profile.html styles
+   ================================ */
+
+   /* PROFILE PAGE */
+.profile-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.profile-avatar-large {
+    width: 100px;
+    height: 100px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+}
+
+.profile-card h2 {
+    margin: 10px 0 5px;
+}
+
+.profile-card .email {
+    color: gray;
+    font-size: 14px;
+}
+
+.profile-details {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.detail-item {
+    margin-bottom: 15px;
+}
+
+.detail-item span {
+    font-size: 12px;
+    color: gray;
+}
+
+.edit-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #F4B04F;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+/* ================================
+   END OF profile.html styles
+   start of settings.html styles
+   ================================ */
+   /* SETTINGS PAGE */
+.settings-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.settings-section {
+    margin-bottom: 25px;
+}
+
+.settings-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.settings-item span {
+    font-size: 14px;
+    color: #555;
+}
+
+.settings-item button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #F4B04F;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.settings-item p {
+    font-size: 14px;
+    color: gray;
+    margin: 0;
+}
+
+/* SWITCH TOGGLE */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 22px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #F4B04F;
+}
+
+input:checked + .slider:before {
+    transform: translateX(23px);
+}
+

@@ -116,6 +116,12 @@
             const active = document.querySelector('.tab-link.active');
             if (active) moveSlider(active);
         });
+
+        fetch('drawer.js')
+            .then(res => res.text())
+            .then(data => {
+                eval(data);
+            });
     </script>
 
 </body>

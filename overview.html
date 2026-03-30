@@ -64,10 +64,14 @@
     </main>
 
     <footer class="bottom-nav">
-        <button class="nav-item" onclick="window.location.href='overview.html'"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item" onclick="window.location.href='notifications.html'"><i class="fas fa-bell"></i><span>Notifications</span></button>
-        <button class="nav-item" onclick="window.location.href='analytics.html'"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
-        <button class="nav-item" onclick="window.location.href='more.html'"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i
+                class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="window.location.href='notifications.html'"><i
+                class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'"><i
+                class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="window.location.href='more.html'"><i
+                class="fas fa-ellipsis-h"></i><span>More</span></button>
     </footer>
 
     <script>
@@ -98,6 +102,12 @@
             const active = document.querySelector('.tab-link.active');
             if (active) moveSlider(active);
         });
+
+        fetch('drawer.js')
+            .then(res => res.text())
+            .then(data => {
+                eval(data);
+            });
     </script>
 
 </body>

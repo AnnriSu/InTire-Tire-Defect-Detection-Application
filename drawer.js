@@ -1,7 +1,7 @@
 // drawer.js
 const currentUser = {
-    name: "Anne Ritchel Sumague",
-    email: "annesumague@gmail.com"
+    name: "User",
+    email: "user@gmail.com"
 };
 
 // Load drawer.html and initialize

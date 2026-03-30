@@ -49,7 +49,8 @@
                 </div>
                 <div class="notif-body">
                     <p class="notif-title">Critical Tire Damage Detected</p>
-                    <p class="notif-desc">Puncture found on Toyota Corolla UHA 198 — Front Right. Immediate action required.</p>
+                    <p class="notif-desc">Puncture found on Toyota Corolla UHA 198 — Front Right. Immediate action
+                        required.</p>
                     <span class="notif-time">10:24 AM</span>
                 </div>
                 <div class="notif-dot"></div>
@@ -61,7 +62,8 @@
                 </div>
                 <div class="notif-body">
                     <p class="notif-title">Low Tire Pressure Warning</p>
-                    <p class="notif-desc">Mitsubishi Montero XYZ 789 — Rear Right tire pressure is at 28 PSI. Recommended: 32 PSI.</p>
+                    <p class="notif-desc">Mitsubishi Montero XYZ 789 — Rear Right tire pressure is at 28 PSI.
+                        Recommended: 32 PSI.</p>
                     <span class="notif-time">08:51 AM</span>
                 </div>
                 <div class="notif-dot"></div>
@@ -100,7 +102,8 @@
                 </div>
                 <div class="notif-body">
                     <p class="notif-title">Inspection Report Ready</p>
-                    <p class="notif-desc">Your inspection report for Toyota Vios ABC 456 has been saved and is ready to view.</p>
+                    <p class="notif-desc">Your inspection report for Toyota Vios ABC 456 has been saved and is ready to
+                        view.</p>
                     <span class="notif-time">Yesterday, 2:15 PM</span>
                 </div>
             </div>
@@ -126,10 +129,14 @@
     </main>
 
     <footer class="bottom-nav">
-        <button class="nav-item" onclick="window.location.href='overview.html'"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item active-nav" onclick="window.location.href='notifications.html'"><i class="fas fa-bell"></i><span>Notifications</span></button>
-        <button class="nav-item" onclick="window.location.href='analytics.html'"><i class="fas fa-chart-bar"></i><span>Analytics</span></button>
-        <button class="nav-item" onclick="window.location.href='more.html'"><i class="fas fa-ellipsis-h"></i><span>More</span></button>
+        <button class="nav-item" onclick="window.location.href='overview.html'"><i
+                class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item active-nav" onclick="window.location.href='notifications.html'"><i
+                class="fas fa-bell"></i><span>Notifications</span></button>
+        <button class="nav-item" onclick="window.location.href='analytics.html'"><i
+                class="fas fa-chart-bar"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="window.location.href='more.html'"><i
+                class="fas fa-ellipsis-h"></i><span>More</span></button>
     </footer>
 
     <script>
@@ -182,6 +189,11 @@
 
             document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
         }
+        fetch('drawer.js')
+            .then(res => res.text())
+            .then(data => {
+                eval(data);
+            });
     </script>
 
 </body>

@@ -742,6 +742,9 @@
             <div class="modal-title">Inspection Saved!</div>
             <div class="modal-body">Your inspection data has been saved successfully.</div>
             <div class="modal-btn-group">
+                <button class="modal-btn-primary" onclick="addAnotherDefect()">
+                    <i class="fas fa-plus"></i> Add Another Defect
+                </button>
                 <button class="modal-btn-primary" onclick="location.href='overview.html'">Go to Home</button>
                 <button class="modal-btn-outline" onclick="location.href='history.html'">View History</button>
             </div>
@@ -830,6 +833,15 @@
                 </div>`;
                 }
             }, "image/jpeg");
+        }
+
+        function addAnotherDefect() {
+            // Close the modal
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.querySelector('.bottom-nav').style.display = 'flex';
+
+            // Reset the camera view so they can scan again
+            retake();
         }
 
         /* ── Retake ── */

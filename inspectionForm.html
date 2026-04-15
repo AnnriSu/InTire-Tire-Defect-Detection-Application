@@ -175,50 +175,45 @@
         }
 
         // Validate and proceed
+        function showError(msg) {
+            const errorEl = document.getElementById('formError');
+            const errorTxt = document.getElementById('formErrorText');
+            errorTxt.textContent = msg;
+            errorEl.classList.remove('hidden');
+        }
+
         function submitForm() {
             const plate = document.getElementById('plateNumber').value.trim();
             const carType = document.getElementById('carType').value;
+            const model = document.getElementById('vehicleModel').value.trim();
             const position = document.getElementById('tirePosition').value;
-            const pressure = document.getElementById('tirePressure').value.trim();
             const inspector = document.getElementById('inspectedBy').value.trim();
             const date = document.getElementById('inspectionDate').value;
+            const dotCode = document.getElementById('tireExpiryDate').value.trim();
 
             const errorEl = document.getElementById('formError');
-            const errorTxt = document.getElementById('formErrorText');
 
-            // Validate
-            if (!plate) {
-                showError('Please enter the plate number.'); return;
-            }
-            if (!carType) {
-                showError('Please select a vehicle type.'); return;
-            }
-            if (!position) {
-                showError('Please select a tire position.'); return;
-            }
-            if (!pressure) {
-                showError('Please enter the tire pressure.'); return;
-            }
-            if (!inspector) {
-                showError('Please enter the inspector\'s name.'); return;
-            }
-            if (!date) {
-                showError('Please select a date of inspection.'); return;
-            }
+            if (!plate) { showError('Please enter the plate number.'); return; }
+            if (!carType) { showError('Please select a vehicle type.'); return; }
+            if (!model) { showError('Please enter the vehicle model.'); return; }
+            if (!position) { showError('Please select a tire position.'); return; }
+            if (!dotCode) { showError('Please enter the tire DOT code.'); return; }
+            if (!inspector) { showError('Please enter the inspector\'s name.'); return; }
+            if (!date) { showError('Please select a date of inspection.'); return; }
 
             errorEl.classList.add('hidden');
 
-            // Save to sessionStorage to pass data to inspection.html
             sessionStorage.setItem('inspectionData', JSON.stringify({
                 plateNumber: plate,
                 carType,
+                vehicleModel: model,
                 tirePosition: position,
-                tirePressure: pressure + ' PSI',
                 inspectedBy: inspector,
-                date
+                date,
+                dotCode
             }));
 
-            window.location.href = 'inspection.html';
+            window.location.href = 'inspection.html'; // ✅ was missing
         }
 
         function showError(msg) {

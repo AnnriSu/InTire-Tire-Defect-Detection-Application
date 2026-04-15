@@ -28,13 +28,13 @@
         <div class="profile-hero-bg"></div>
         <div class="profile-avatar-wrap">
             <div class="profile-avatar">
-                <span class="profile-initials">AS</span>
+                <span class="profile-initials" id="pfInitials">—</span>
             </div>
             <button class="avatar-edit-btn" title="Change photo">
                 <i class="fas fa-camera"></i>
             </button>
         </div>
-        <h2 class="profile-name">Anne Ritchel Sumague</h2>
+        <h2 class="profile-name" id="pfName">—</h2>
         <p class="profile-role">InTire Member</p>
     </div>
 
@@ -48,7 +48,7 @@
             </div>
             <div class="profile-info-body">
                 <span class="profile-info-label">Email Address</span>
-                <span class="profile-info-value">annesumague@gmail.com</span>
+                <span class="profile-info-value" id="pfEmail">—</span>
             </div>
         </div>
 
@@ -60,7 +60,7 @@
             </div>
             <div class="profile-info-body">
                 <span class="profile-info-label">Phone Number</span>
-                <span class="profile-info-value">+63 912 345 6789</span>
+                <span class="profile-info-value" id="pfPhone">—</span>
             </div>
         </div>
 
@@ -79,7 +79,7 @@
 
 
     <!-- Logout -->
-    <button class="profile-logout-btn" onclick="window.location.href='index.html'">
+    <button class="profile-logout-btn" onclick="logout()">
         <i class="fas fa-right-from-bracket"></i> Log Out
     </button>
 
@@ -99,6 +99,56 @@
         <i class="fas fa-ellipsis-h"></i><span>More</span>
     </button>
 </footer>
+
+</footer>
+
+<script>
+    const API_BASE = "http://127.0.0.1:5000";
+
+    function initialsFor(fname, lname) {
+        const a = (fname || "").trim()[0] || "";
+        const b = (lname || "").trim()[0] || "";
+        const out = (a + b).toUpperCase();
+        return out || "U";
+    }
+
+    async function loadProfile() {
+        try {
+            const res = await fetch(`${API_BASE}/me`, { credentials: "include" });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                // Not logged in → send to sign in
+                window.location.href = "signIn.html";
+                return;
+            }
+
+            if (data.isGuest) {
+                document.getElementById("pfName").textContent = "Guest";
+                document.getElementById("pfInitials").textContent = "G";
+                document.getElementById("pfEmail").textContent = "—";
+                document.getElementById("pfPhone").textContent = "—";
+                return;
+            }
+
+            const fullName = [data.fname, data.mname, data.lname].filter(Boolean).join(" ");
+            document.getElementById("pfName").textContent = fullName || "User";
+            document.getElementById("pfInitials").textContent = initialsFor(data.fname, data.lname);
+            document.getElementById("pfEmail").textContent = data.email || "—";
+            document.getElementById("pfPhone").textContent = data.mobileNo || "—";
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function logout() {
+        try {
+            await fetch(`${API_BASE}/logout`, { method: "POST", credentials: "include" });
+        } catch {}
+        window.location.href = "index.html";
+    }
+
+    loadProfile();
+</script>
 
 </body>
 </html>

@@ -916,7 +916,7 @@
                     <span class="stat-trend up">↑ 12%</span>
                 </div>
                 <div>
-                    <div class="stat-number">142</div>
+                    <div class="stat-number" id="admTotalUsers">—</div>
                     <div class="stat-label">Total Users</div>
                 </div>
             </div>
@@ -926,7 +926,7 @@
                     <span class="stat-trend up">↑ 8%</span>
                 </div>
                 <div>
-                    <div class="stat-number">1,284</div>
+                    <div class="stat-number" id="admTotalInspections">—</div>
                     <div class="stat-label">Total Inspections</div>
                 </div>
             </div>
@@ -936,7 +936,7 @@
                     <span class="stat-trend down">↑ 3%</span>
                 </div>
                 <div>
-                    <div class="stat-number">87</div>
+                    <div class="stat-number" id="admActiveIssues">—</div>
                     <div class="stat-label">Active Issues</div>
                 </div>
             </div>
@@ -946,7 +946,7 @@
                     <span class="stat-trend up">↑ 5%</span>
                 </div>
                 <div>
-                    <div class="stat-number">93%</div>
+                    <div class="stat-number" id="admResolutionRate">—</div>
                     <div class="stat-label">Resolution Rate</div>
                 </div>
             </div>
@@ -968,31 +968,7 @@
                     <span class="content-card-title">Most Active Users</span>
                     <button class="content-card-action">View All</button>
                 </div>
-                <div class="user-item">
-                    <div class="user-avatar">AS</div>
-                    <div class="user-info"><div class="user-name">Anne Ritchel Sumague</div><div class="user-email">annesumague@gmail.com</div></div>
-                    <span class="user-inspect-count">24</span>
-                </div>
-                <div class="user-item">
-                    <div class="user-avatar">KC</div>
-                    <div class="user-info"><div class="user-name">Karylle Cabrido</div><div class="user-email">karylle@gmail.com</div></div>
-                    <span class="user-inspect-count">19</span>
-                </div>
-                <div class="user-item">
-                    <div class="user-avatar">CR</div>
-                    <div class="user-info"><div class="user-name">Carlos Reyes</div><div class="user-email">creyes@gmail.com</div></div>
-                    <span class="user-inspect-count">15</span>
-                </div>
-                <div class="user-item">
-                    <div class="user-avatar">MS</div>
-                    <div class="user-info"><div class="user-name">Maria Santos</div><div class="user-email">msantos@gmail.com</div></div>
-                    <span class="user-inspect-count">12</span>
-                </div>
-                <div class="user-item">
-                    <div class="user-avatar">AL</div>
-                    <div class="user-info"><div class="user-name">Ana Lim</div><div class="user-email">analim@gmail.com</div></div>
-                    <span class="user-inspect-count">9</span>
-                </div>
+                <div id="admUsersList"></div>
             </div>
         </div>
 
@@ -1002,41 +978,7 @@
                 <div class="content-card-header">
                     <span class="content-card-title">Issue Breakdown</span>
                 </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-row">
-                        <span class="breakdown-name"><i class="fas fa-circle-dot" style="color:#e74c3c;font-size:10px"></i> Puncture</span>
-                        <span class="breakdown-count">38</span>
-                    </div>
-                    <div class="breakdown-track"><div class="breakdown-fill" style="width:82%;background:#e74c3c;"></div></div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-row">
-                        <span class="breakdown-name"><i class="fas fa-exclamation-triangle" style="color:#f39c12;font-size:10px"></i> Worn Tread</span>
-                        <span class="breakdown-count">31</span>
-                    </div>
-                    <div class="breakdown-track"><div class="breakdown-fill" style="width:67%;background:#f39c12;"></div></div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-row">
-                        <span class="breakdown-name"><i class="fas fa-icicles" style="color:#e67e22;font-size:10px"></i> Crack</span>
-                        <span class="breakdown-count">24</span>
-                    </div>
-                    <div class="breakdown-track"><div class="breakdown-fill" style="width:52%;background:#e67e22;"></div></div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-row">
-                        <span class="breakdown-name"><i class="fas fa-circle" style="color:#3498db;font-size:10px"></i> Bulge</span>
-                        <span class="breakdown-count">18</span>
-                    </div>
-                    <div class="breakdown-track"><div class="breakdown-fill" style="width:39%;background:#3498db;"></div></div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-row">
-                        <span class="breakdown-name"><i class="fas fa-check-circle" style="color:#27ae60;font-size:10px"></i> No Damage</span>
-                        <span class="breakdown-count">46</span>
-                    </div>
-                    <div class="breakdown-track"><div class="breakdown-fill" style="width:100%;background:#27ae60;"></div></div>
-                </div>
+                <div id="admBreakdown"></div>
             </div>
 
             <div class="content-card">
@@ -1087,53 +1029,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td class="td-vehicle">Toyota Corolla UHA 198</td>
-                            <td class="td-user">Anne Sumague</td>
-                            <td>Front Right</td>
-                            <td><span class="defect-tag">Puncture</span></td>
-                            <td>Mar 30, 2026</td>
-                            <td><span class="status-pill active">Active</span></td>
-                            <td><button class="action-btn-sm">View</button></td>
-                        </tr>
-                        <tr>
-                            <td class="td-vehicle">Honda Civic BBA 123</td>
-                            <td class="td-user">Maria Santos</td>
-                            <td>Front Left</td>
-                            <td><span class="defect-tag none">No Damage</span></td>
-                            <td>Mar 28, 2026</td>
-                            <td><span class="status-pill resolved">Resolved</span></td>
-                            <td><button class="action-btn-sm">View</button></td>
-                        </tr>
-                        <tr>
-                            <td class="td-vehicle">Mitsubishi Montero XYZ 789</td>
-                            <td class="td-user">Carlos Reyes</td>
-                            <td>Rear Right</td>
-                            <td><span class="defect-tag">Worn Tread</span></td>
-                            <td>Mar 25, 2026</td>
-                            <td><span class="status-pill active">Active</span></td>
-                            <td><button class="action-btn-sm">View</button></td>
-                        </tr>
-                        <tr>
-                            <td class="td-vehicle">Toyota Vios ABC 456</td>
-                            <td class="td-user">Ana Lim</td>
-                            <td>Rear Left</td>
-                            <td><span class="defect-tag none">No Damage</span></td>
-                            <td>Mar 22, 2026</td>
-                            <td><span class="status-pill resolved">Resolved</span></td>
-                            <td><button class="action-btn-sm">View</button></td>
-                        </tr>
-                        <tr>
-                            <td class="td-vehicle">Toyota Corolla UHA 198</td>
-                            <td class="td-user">Anne Sumague</td>
-                            <td>Rear Left</td>
-                            <td><span class="defect-tag">Crack</span></td>
-                            <td>Mar 20, 2026</td>
-                            <td><span class="status-pill active">Active</span></td>
-                            <td><button class="action-btn-sm">View</button></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="admRecentTbody"></tbody>
                 </table>
             </div>
         </div>
@@ -1176,21 +1072,131 @@
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-    // Bar chart
-    const bars   = [14, 22, 18, 30, 25, 19, 28];
-    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const max    = Math.max(...bars);
+    const API_BASE = "http://127.0.0.1:5000";
 
-    document.getElementById('adminBarChart').innerHTML = bars.map((v) => `
-        <div class="bar-col">
-            <span class="bar-val">${v}</span>
-            <div class="bar-fill" style="height:${Math.round((v/max)*100)}%"></div>
-        </div>
-    `).join('');
+    function iconFor(name) {
+        const map = {
+            'Surface Crack': 'fa-icicles',
+            'Bulge': 'fa-circle',
+            'Worn Tread': 'fa-exclamation-triangle',
+            'Puncture Hole': 'fa-circle-dot',
+            'Puncture Object': 'fa-thumbtack',
+            'No Damage': 'fa-check-circle'
+        };
+        return map[name] || 'fa-exclamation-circle';
+    }
 
-    document.getElementById('adminBarLabels').innerHTML = labels.map(l =>
-        `<span class="bar-lbl" style="flex:1;text-align:center">${l}</span>`
-    ).join('');
+    function colorFor(name) {
+        if (name === 'No Damage') return '#27ae60';
+        const danger = new Set(['Surface Crack', 'Puncture Hole', 'Puncture Object']);
+        const warning = new Set(['Bulge', 'Worn Tread']);
+        if (danger.has(name)) return '#e74c3c';
+        if (warning.has(name)) return '#f39c12';
+        return '#3498db';
+    }
+
+    function renderBarChart(bars, labels) {
+        const max = Math.max(...bars, 1);
+        document.getElementById('adminBarChart').innerHTML = bars.map((v) => `
+            <div class="bar-col">
+                <span class="bar-val">${v}</span>
+                <div class="bar-fill" style="height:${Math.round((v/max)*100)}%"></div>
+            </div>
+        `).join('');
+
+        document.getElementById('adminBarLabels').innerHTML = labels.map(l =>
+            `<span class="bar-lbl" style="flex:1;text-align:center">${l}</span>`
+        ).join('');
+    }
+
+    function renderUsers(list) {
+        const el = document.getElementById("admUsersList");
+        if (!Array.isArray(list) || !list.length) {
+            el.innerHTML = `<div style="padding:8px 0;color:#888;font-weight:600;">No user activity yet.</div>`;
+            return;
+        }
+        el.innerHTML = list.map(u => `
+            <div class="user-item">
+                <div class="user-avatar">${u.initials || 'U'}</div>
+                <div class="user-info">
+                    <div class="user-name">${u.name || 'Unknown'}</div>
+                    <div class="user-email">${u.email || ''}</div>
+                </div>
+                <span class="user-inspect-count">${u.count || 0}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderBreakdown(items) {
+        const el = document.getElementById("admBreakdown");
+        if (!Array.isArray(items) || !items.length) {
+            el.innerHTML = `<div style="padding:8px 0;color:#888;font-weight:600;">No breakdown data.</div>`;
+            return;
+        }
+        const max = Math.max(...items.map(i => i.count || 0), 1);
+        el.innerHTML = items.map(i => {
+            const name = i.name || "Unknown";
+            const count = Number(i.count || 0);
+            const pct = Math.round((count / max) * 100);
+            const color = colorFor(name);
+            return `
+                <div class="breakdown-item">
+                    <div class="breakdown-row">
+                        <span class="breakdown-name"><i class="fas ${iconFor(name)}" style="color:${color};font-size:10px"></i> ${name}</span>
+                        <span class="breakdown-count">${count}</span>
+                    </div>
+                    <div class="breakdown-track"><div class="breakdown-fill" style="width:${pct}%;background:${color};"></div></div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderRecent(rows) {
+        const el = document.getElementById("admRecentTbody");
+        if (!Array.isArray(rows) || !rows.length) {
+            el.innerHTML = `<tr><td colspan="7" style="padding:14px 10px;color:#888;font-weight:600;">No inspections yet.</td></tr>`;
+            return;
+        }
+        el.innerHTML = rows.map(r => {
+            const defect = r.defect || "No Damage";
+            const status = (r.status || "resolved").toLowerCase();
+            const defectClass = defect === "No Damage" ? "defect-tag none" : "defect-tag";
+            const statusClass = status === "active" ? "status-pill active" : "status-pill resolved";
+            const statusText = status === "active" ? "Active" : "Resolved";
+            return `
+                <tr>
+                    <td class="td-vehicle">${r.vehicle || ''}</td>
+                    <td class="td-user">${r.user || ''}</td>
+                    <td>${r.position || ''}</td>
+                    <td><span class="${defectClass}">${defect}</span></td>
+                    <td>${r.date || ''}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td><button class="action-btn-sm" type="button">View</button></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    async function loadAdmin() {
+        const res = await fetch(`${API_BASE}/admin-dashboard`);
+        return await res.json();
+    }
+
+    (async function initAdmin() {
+        try {
+            const d = await loadAdmin();
+            document.getElementById("admTotalUsers").textContent = d?.stats?.totalUsers ?? 0;
+            document.getElementById("admTotalInspections").textContent = d?.stats?.totalInspections ?? 0;
+            document.getElementById("admActiveIssues").textContent = d?.stats?.activeIssues ?? 0;
+            document.getElementById("admResolutionRate").textContent = d?.stats?.resolutionRate ?? "0%";
+            renderBarChart(d?.week?.bars || [], d?.week?.labels || []);
+            renderUsers(d?.mostActiveUsers || []);
+            renderBreakdown(d?.breakdown || []);
+            renderRecent(d?.recentInspections || []);
+        } catch (e) {
+            console.error(e);
+        }
+    })();
 
     // Sidebar
     function toggleSidebar() {

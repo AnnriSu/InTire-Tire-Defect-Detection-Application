@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, session
 from ultralytics import YOLO
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
+from werkzeug.security import generate_password_hash, check_password_hash
 import cv2
 import numpy as np
 import os
@@ -10,7 +11,15 @@ import json
 from datetime import date, datetime, timedelta
 
 app = Flask(__name__, static_folder=".")
-CORS(app)
+# Required for cookie-based sessions (login state)
+app.config["SECRET_KEY"] = os.environ.get("INTIRE_SECRET_KEY", "dev-secret-change-me")
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+# Keep user logged in until they explicitly log out (within this lifetime).
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+
+# Allow browser to send cookies to the API (used by /sign-in and /me)
+CORS(app, supports_credentials=True)
 
 # ── Database config ──
 import os
@@ -407,6 +416,222 @@ def analytics():
         "breakdown": defect_counts,
         "vehicles": vehicles
     })
+
+@app.route("/admin-dashboard", methods=["GET"])
+def admin_dashboard():
+    """
+    Aggregates data for admin.html dashboard.
+    """
+    # Totals (all-time)
+    total_users = Account.query.count()
+    inspections_all = Inspection.query.all()
+    total_inspections = len(inspections_all)
+
+    # Active/resolved based on whether the inspection's plate_no has defects
+    plate_nos = [i.plate_no for i in inspections_all if i.plate_no]
+    active_plate_nos = set()
+    if plate_nos:
+        active_plate_nos = set(
+            r[0] for r in db.session.query(TireDefect.plate_no)
+            .filter(TireDefect.plate_no.in_(plate_nos))
+            .distinct()
+            .all()
+        )
+    active_issues = sum(1 for i in inspections_all if i.plate_no in active_plate_nos)
+    resolved = max(0, total_inspections - active_issues)
+    resolution_rate = (resolved / total_inspections) if total_inspections else 0.0
+
+    # Inspections this week (last 7 days incl today)
+    today = date.today()
+    start = today - timedelta(days=6)
+    week_labels = [(start + timedelta(days=i)).strftime("%a") for i in range(7)]
+    week_bars = [0] * 7
+
+    inspections_with_dates = []
+    for insp in inspections_all:
+        d = _parse_yyyy_mm_dd(insp.date_inspected or insp.inspection_date)
+        if not d:
+            continue
+        inspections_with_dates.append((insp, d))
+        if start <= d <= today:
+            idx = (d - start).days
+            if 0 <= idx < 7:
+                week_bars[idx] += 1
+
+    # Most active users (by Inspection.inspector, top 5)
+    inspector_counts = {}
+    for insp, _ in inspections_with_dates:
+        name = (insp.inspector or "").strip()
+        if not name:
+            continue
+        inspector_counts[name] = inspector_counts.get(name, 0) + 1
+    top_users = sorted(inspector_counts.items(), key=lambda kv: kv[1], reverse=True)[:5]
+    users = []
+    for name, count in top_users:
+        initials = "".join([p[0].upper() for p in name.split()[:2] if p])[:2] or "U"
+        users.append({
+            "name": name,
+            "email": "",  # inspections table doesn't store email
+            "initials": initials,
+            "count": int(count)
+        })
+
+    # Issue breakdown (all-time defect counts by defect type + No Damage)
+    rows = (
+        db.session.query(DefectType.defect_type, func.count(TireDefect.id))
+        .join(TireDefect, TireDefect.defect_code == DefectType.defect_code)
+        .group_by(DefectType.defect_type)
+        .order_by(func.count(TireDefect.id).desc())
+        .all()
+    )
+    breakdown = [{"name": r[0], "count": int(r[1])} for r in rows]
+    breakdown.append({"name": "No Damage", "count": int(resolved)})
+
+    # Recent inspections (latest 8 inspections by inspection_no)
+    recent = []
+    latest = Inspection.query.order_by(Inspection.inspection_no.desc()).limit(8).all()
+    for insp in latest:
+        tires = TireDefect.query.filter_by(plate_no=insp.plate_no).all() if insp.plate_no else []
+        if tires:
+            # One row per inspection, use first tire defect for summary
+            t = tires[0]
+            defect = DefectType.query.get(t.defect_code)
+            defect_name = defect.defect_type if defect else "Unknown"
+            position = t.tire_position or ""
+            status = "active"
+        else:
+            defect_name = "No Damage"
+            position = ""
+            status = "resolved"
+
+        vehicle_title = " · ".join([p for p in [(insp.vehicle_model or "").strip(), (insp.plate_no or "").strip()] if p]) or f"Inspection #{insp.inspection_no}"
+        recent.append({
+            "inspectionNo": insp.inspection_no,
+            "vehicle": vehicle_title,
+            "user": (insp.inspector or "").strip(),
+            "position": position,
+            "defect": defect_name,
+            "date": (insp.date_inspected or insp.inspection_date or "").strip(),
+            "status": status
+        })
+
+    return jsonify({
+        "stats": {
+            "totalUsers": int(total_users),
+            "totalInspections": int(total_inspections),
+            "activeIssues": int(active_issues),
+            "resolutionRate": f"{int(round(resolution_rate * 100))}%"
+        },
+        "week": {
+            "bars": week_bars,
+            "labels": week_labels
+        },
+        "mostActiveUsers": users,
+        "breakdown": breakdown,
+        "recentInspections": recent
+    })
+
+@app.route("/sign-up", methods=["POST"])
+def sign_up():
+    data = request.get_json() or {}
+
+    fname = (data.get("fname") or "").strip()
+    mname = (data.get("mname") or "").strip()
+    lname = (data.get("lname") or "").strip()
+    mobile_no = (data.get("mobileNo") or "").strip()
+    email = (data.get("email") or "").strip().lower()
+    password = (data.get("password") or "")
+
+    if not fname or not lname or not mobile_no or not email or not password:
+        return jsonify({"success": False, "error": "Please fill in all required fields."}), 400
+
+    if "@" not in email or "." not in email:
+        return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
+
+    if len(password) < 6:
+        return jsonify({"success": False, "error": "Password must be at least 6 characters."}), 400
+
+    if Account.query.filter_by(email=email).first():
+        return jsonify({"success": False, "error": "Email already registered."}), 409
+
+    acc = Account(
+        fname=fname,
+        mname=mname,
+        lname=lname,
+        mobile_no=mobile_no,
+        email=email,
+        password=generate_password_hash(password),
+        role_code=1
+    )
+    db.session.add(acc)
+    db.session.commit()
+    return jsonify({"success": True, "accountNo": acc.account_no})
+
+@app.route("/sign-in", methods=["POST"])
+def sign_in():
+    data = request.get_json() or {}
+    email = (data.get("email") or "").strip().lower()
+    password = data.get("password") or ""
+
+    if not email or not password:
+        return jsonify({"success": False, "error": "Please enter email and password."}), 400
+
+    acc = Account.query.filter_by(email=email).first()
+    if not acc or not acc.password or not check_password_hash(acc.password, password):
+        return jsonify({"success": False, "error": "Invalid email or password."}), 401
+
+    session.permanent = True
+    session["account_no"] = acc.account_no
+    return jsonify({
+        "success": True,
+        "accountNo": acc.account_no,
+        "fname": acc.fname,
+        "mname": acc.mname,
+        "lname": acc.lname,
+        "email": acc.email,
+        "mobileNo": acc.mobile_no,
+        "roleCode": acc.role_code
+    })
+
+@app.route("/me", methods=["GET"])
+def me():
+    if session.get("is_guest"):
+        return jsonify({
+            "success": True,
+            "isGuest": True,
+            "roleCode": 3
+        })
+    account_no = session.get("account_no")
+    if not account_no:
+        return jsonify({"success": False, "error": "Not logged in."}), 401
+    acc = Account.query.get(account_no)
+    if not acc:
+        session.pop("account_no", None)
+        return jsonify({"success": False, "error": "Not logged in."}), 401
+    return jsonify({
+        "success": True,
+        "accountNo": acc.account_no,
+        "fname": acc.fname,
+        "mname": acc.mname,
+        "lname": acc.lname,
+        "email": acc.email,
+        "mobileNo": acc.mobile_no,
+        "roleCode": acc.role_code
+    })
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.pop("account_no", None)
+    session.pop("is_guest", None)
+    return jsonify({"success": True})
+
+@app.route("/guest-session", methods=["POST"])
+def guest_session():
+    # Create a guest session (no account in DB)
+    session.clear()
+    session.permanent = True
+    session["is_guest"] = True
+    return jsonify({"success": True, "isGuest": True})
 
 
 if __name__ == "__main__":

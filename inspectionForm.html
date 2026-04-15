@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTire | Inspection Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/inspectionForm.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button onclick="window.history.back()" class="menu-toggle">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-logo">
+            <img src="assets/img/InTire.svg" alt="InTire" class="logo-img pt-3">
+        </div>
+        <div style="width:36px"></div>
+    </header>
+
+    <main class="form-container">
+
+        <div class="form-hero">
+            <div class="form-hero-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div>
+                <h1 class="form-title">Inspection Form</h1>
+                <p class="form-subtitle">Fill in the details before scanning</p>
+            </div>
+        </div>
+
+        <!-- Vehicle Info -->
+        <div class="form-section-card">
+            <p class="form-section-label">
+                <i class="fas fa-car"></i> Vehicle Information
+            </p>
+
+            <div class="form-group">
+                <label class="form-label" for="plateNumber">Plate Number <span class="required">*</span></label>
+                <div class="input-wrap">
+                    <i class="fas fa-id-card input-icon"></i>
+                    <input type="text" id="plateNumber" class="form-input" placeholder="e.g. ABC 1234" maxlength="10">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="carType">Type of Vehicle <span class="required">*</span></label>
+                <div class="input-wrap">
+                    <i class="fas fa-car-side input-icon"></i>
+                    <select id="carType" class="form-input form-select">
+                        <option value="" disabled selected>Select vehicle type</option>
+                        <option>Sedan</option>
+                        <option>SUV</option>
+                        <option>Pickup Truck</option>
+                        <option>Van</option>
+                        <option>Motorcycle</option>
+                        <option>Bus</option>
+                        <option>Truck</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="vehicleModel">Specific Vehicle Model <span class="required">*</span></label>
+                <div class="input-wrap">
+                    <i class="fas fa-id-card input-icon"></i>
+                    <input type="text" id="vehicleModel" class="form-input" placeholder="e.g. Toyota Camry" maxlength="100">
+                </div>
+            </div>
+        </div>
+
+        <!-- Tire Info -->
+        <div class="form-section-card">
+            <p class="form-section-label">
+                <i class="fas fa-tire"></i> Tire Details
+            </p>
+
+            <div class="form-group">
+                <label class="form-label">Tire Position <span class="required">*</span></label>
+                <div class="tire-grid">
+                    <button type="button" class="tire-btn" data-value="Front Left" onclick="selectTire(this)">
+                        <i class="fas fa-circle-dot"></i>
+                        <span>Front Left</span>
+                    </button>
+                    <button type="button" class="tire-btn" data-value="Front Right" onclick="selectTire(this)">
+                        <i class="fas fa-circle-dot"></i>
+                        <span>Front Right</span>
+                    </button>
+                    <button type="button" class="tire-btn" data-value="Rear Left" onclick="selectTire(this)">
+                        <i class="fas fa-circle-dot"></i>
+                        <span>Rear Left</span>
+                    </button>
+                    <button type="button" class="tire-btn" data-value="Rear Right" onclick="selectTire(this)">
+                        <i class="fas fa-circle-dot"></i>
+                        <span>Rear Right</span>
+                    </button>
+                    <button type="button" class="tire-btn spare" data-value="Spare" onclick="selectTire(this)">
+                        <i class="fas fa-circle-dot"></i>
+                        <span>Spare</span>
+                    </button>
+                </div>
+                <input type="hidden" id="tirePosition">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="tirePressure">
+                    Tire Pressure (PSI) <span class="required">*</span>
+                </label>
+                <div class="input-wrap">
+                    <i class="fas fa-gauge-high input-icon"></i>
+                    <input type="number" id="tirePressure" class="form-input" placeholder="e.g. 32" min="0" max="100">
+                    <span class="input-suffix">PSI</span>
+                </div>
+                <p class="form-hint">Recommended: 30–35 PSI for most passenger vehicles</p>
+            </div>
+        </div>
+
+        <!-- Inspector Info -->
+        <div class="form-section-card">
+            <p class="form-section-label">
+                <i class="fas fa-user-check"></i> Inspector Details
+            </p>
+
+            <div class="form-group">
+                <label class="form-label" for="inspectedBy">Inspected By <span class="required">*</span></label>
+                <div class="input-wrap">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="inspectedBy" class="form-input" placeholder="Full name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="inspectionDate">Date of Inspection <span class="required">*</span></label>
+                <div class="input-wrap">
+                    <i class="fas fa-calendar input-icon"></i>
+                    <input type="date" id="inspectionDate" class="form-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Error message -->
+        <div class="form-error hidden" id="formError">
+            <i class="fas fa-circle-exclamation"></i>
+            <span id="formErrorText">Please fill in all required fields.</span>
+        </div>
+
+        <!-- Submit -->
+        <button class="form-submit-btn" onclick="submitForm()">
+            <i class="fas fa-camera"></i> Start Inspection
+        </button>
+
+    </main>
+
+    <script>
+        // Set today's date as default
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('inspectionDate').value = today;
+
+        // Tire position selector
+        function selectTire(btn) {
+            document.querySelectorAll('.tire-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('tirePosition').value = btn.dataset.value;
+        }
+
+        // Validate and proceed
+        function submitForm() {
+            const plate    = document.getElementById('plateNumber').value.trim();
+            const carType  = document.getElementById('carType').value;
+            const position = document.getElementById('tirePosition').value;
+            const pressure = document.getElementById('tirePressure').value.trim();
+            const inspector = document.getElementById('inspectedBy').value.trim();
+            const date     = document.getElementById('inspectionDate').value;
+
+            const errorEl  = document.getElementById('formError');
+            const errorTxt = document.getElementById('formErrorText');
+
+            // Validate
+            if (!plate) {
+                showError('Please enter the plate number.'); return;
+            }
+            if (!carType) {
+                showError('Please select a vehicle type.'); return;
+            }
+            if (!position) {
+                showError('Please select a tire position.'); return;
+            }
+            if (!pressure) {
+                showError('Please enter the tire pressure.'); return;
+            }
+            if (!inspector) {
+                showError('Please enter the inspector\'s name.'); return;
+            }
+            if (!date) {
+                showError('Please select a date of inspection.'); return;
+            }
+
+            errorEl.classList.add('hidden');
+
+            // Save to sessionStorage to pass data to inspection.html
+            sessionStorage.setItem('inspectionData', JSON.stringify({
+                plateNumber: plate,
+                carType,
+                tirePosition: position,
+                tirePressure: pressure + ' PSI',
+                inspectedBy: inspector,
+                date
+            }));
+
+            window.location.href = 'inspection.html';
+        }
+
+        function showError(msg) {
+            const errorEl  = document.getElementById('formError');
+            document.getElementById('formErrorText').textContent = msg;
+            errorEl.classList.remove('hidden');
+            errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+
+</body>
+</html>

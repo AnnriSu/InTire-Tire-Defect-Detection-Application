@@ -3433,3 +3433,44 @@ body {
 
 .form-submit-btn:active { transform: scale(0.98); }
 
+.dot-result {
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 12px 16px;
+    border: 1px solid;
+}
+.dot-valid   { background: #eaf3de; border-color: #639922; color: #3b6d11; }
+.dot-warning { background: #faeeda; border-color: #ba7517; color: #854f0b; }
+.dot-expired { background: #fcebeb; border-color: #a32d2d; color: #791f1f; }
+
+.dot-status {
+    font-weight: 500;
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+.dot-details {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.dot-details li {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255,255,255,0.55);
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+.dot-details li span { opacity: 0.7; font-size: 11px; margin-bottom: 2px; }
+.dot-error {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #791f1f;
+    background: #fcebeb;
+    border: 1px solid #a32d2d;
+    border-radius: 6px;
+    padding: 8px 12px;
+}

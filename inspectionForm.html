@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/inspectionForm.css">
 </head>
+
 <body>
 
     <header class="site-header">
@@ -65,10 +67,12 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="vehicleModel">Specific Vehicle Model <span class="required">*</span></label>
+                <label class="form-label" for="vehicleModel">Specific Vehicle Model <span
+                        class="required">*</span></label>
                 <div class="input-wrap">
                     <i class="fas fa-id-card input-icon"></i>
-                    <input type="text" id="vehicleModel" class="form-input" placeholder="e.g. Toyota Camry" maxlength="100">
+                    <input type="text" id="vehicleModel" class="form-input" placeholder="e.g. Toyota Camry"
+                        maxlength="100">
                 </div>
             </div>
         </div>
@@ -107,15 +111,17 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="tirePressure">
-                    Tire Pressure (PSI) <span class="required">*</span>
+                <label class="form-label" for="tireExpiryDate">
+                    Tire DOT Code <span class="required">*</span>
                 </label>
                 <div class="input-wrap">
-                    <i class="fas fa-gauge-high input-icon"></i>
-                    <input type="number" id="tirePressure" class="form-input" placeholder="e.g. 32" min="0" max="100">
-                    <span class="input-suffix">PSI</span>
+                    <i class="fas fa-calendar input-icon"></i>
+                    <input type="text" id="tireExpiryDate" class="form-input" maxlength="4" inputmode="numeric"
+                        placeholder="e.g. 2616" autocomplete="off">
                 </div>
-                <p class="form-hint">Recommended: 30–35 PSI for most passenger vehicles</p>
+                <p class="form-hint">Enter the 4-digit DOT code from the tire sidewall (week + year, e.g. 2616 = week 26
+                    of 2016)</p>
+                <div id="tireDotResult"></div>
             </div>
         </div>
 
@@ -134,7 +140,8 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="inspectionDate">Date of Inspection <span class="required">*</span></label>
+                <label class="form-label" for="inspectionDate">Date of Inspection <span
+                        class="required">*</span></label>
                 <div class="input-wrap">
                     <i class="fas fa-calendar input-icon"></i>
                     <input type="date" id="inspectionDate" class="form-input">
@@ -169,14 +176,14 @@
 
         // Validate and proceed
         function submitForm() {
-            const plate    = document.getElementById('plateNumber').value.trim();
-            const carType  = document.getElementById('carType').value;
+            const plate = document.getElementById('plateNumber').value.trim();
+            const carType = document.getElementById('carType').value;
             const position = document.getElementById('tirePosition').value;
             const pressure = document.getElementById('tirePressure').value.trim();
             const inspector = document.getElementById('inspectedBy').value.trim();
-            const date     = document.getElementById('inspectionDate').value;
+            const date = document.getElementById('inspectionDate').value;
 
-            const errorEl  = document.getElementById('formError');
+            const errorEl = document.getElementById('formError');
             const errorTxt = document.getElementById('formErrorText');
 
             // Validate
@@ -215,12 +222,80 @@
         }
 
         function showError(msg) {
-            const errorEl  = document.getElementById('formError');
+            const errorEl = document.getElementById('formError');
             document.getElementById('formErrorText').textContent = msg;
             errorEl.classList.remove('hidden');
             errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
+    <script>document.getElementById('tireExpiryDate').addEventListener('input', function () {
+            const raw = this.value.replace(/\D/g, '');
+            this.value = raw;
+            if (raw.length === 4) calculateTireDot(raw);
+            else document.getElementById('tireDotResult').innerHTML = '';
+        });
+
+        function calculateTireDot(code) {
+            const resultEl = document.getElementById('tireDotResult');
+
+            const week = parseInt(code.slice(0, 2), 10);
+            const yr2 = parseInt(code.slice(2, 4), 10);
+            const year = yr2 + 2000;
+
+            if (week < 1 || week > 53) {
+                resultEl.innerHTML = '<p class="dot-error">Invalid week number. Must be 01–53.</p>';
+                return;
+            }
+
+            const madeDate = weekToDate(week, year);
+            const expiryDate = new Date(madeDate);
+            expiryDate.setFullYear(expiryDate.getFullYear() + 5);
+
+            const now = new Date();
+            const expired = now > expiryDate;
+            const ageDays = Math.floor((now - madeDate) / 86400000);
+            const ageYears = (ageDays / 365.25).toFixed(1);
+            const daysLeft = Math.floor((expiryDate - now) / 86400000);
+            const daysAgo = Math.floor((now - expiryDate) / 86400000);
+
+            const makeStr = madeDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            const expiryStr = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            let statusClass, statusText;
+            if (expired) {
+                statusClass = 'dot-expired';
+                statusText = `Expired ${daysAgo.toLocaleString()} days ago`;
+            } else if (daysLeft < 180) {
+                statusClass = 'dot-warning';
+                statusText = `Expiring soon — ${daysLeft} days left`;
+            } else {
+                statusClass = 'dot-valid';
+                statusText = `Valid — ${daysLeft.toLocaleString()} days remaining`;
+            }
+
+            resultEl.innerHTML = `
+        <div class="dot-result ${statusClass}">
+            <p class="dot-status">${statusText}</p>
+            <ul class="dot-details">
+                <li><span>Week manufactured</span><strong>Week ${week}</strong></li>
+                <li><span>Year manufactured</span><strong>${year}</strong></li>
+                <li><span>Manufacture date</span><strong>${makeStr}</strong></li>
+                <li><span>Expiry date</span><strong>${expiryStr}</strong></li>
+                <li><span>Tire age</span><strong>${ageYears} years (${ageDays.toLocaleString()} days)</strong></li>
+                <li><span>5-year validity</span><strong>${expired ? 'Exceeded' : 'Within limit'}</strong></li>
+            </ul>
+        </div>`;
+        }
+
+        function weekToDate(week, year) {
+            const jan4 = new Date(year, 0, 4);
+            const startOfWeek1 = new Date(jan4);
+            startOfWeek1.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7));
+            const d = new Date(startOfWeek1);
+            d.setDate(d.getDate() + (week - 1) * 7);
+            return d;
+        }</script>
 
 </body>
+
 </html>

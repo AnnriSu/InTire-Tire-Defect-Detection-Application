@@ -163,133 +163,148 @@
     </main>
 
     <script>
-        // Set today's date as default
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('inspectionDate').value = today;
+    // Set today's date as default
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('inspectionDate').value = today;
 
-        // Tire position selector
-        function selectTire(btn) {
-            document.querySelectorAll('.tire-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            document.getElementById('tirePosition').value = btn.dataset.value;
+    // Tire position selector
+    function selectTire(btn) {
+        document.querySelectorAll('.tire-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('tirePosition').value = btn.dataset.value;
+    }
+
+    function showError(msg) {
+        const errorEl = document.getElementById('formError');
+        document.getElementById('formErrorText').textContent = msg;
+        errorEl.classList.remove('hidden');
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Store DOT calculated values globally so submitForm can access them
+    let dotData = null;
+
+    function submitForm() {
+        const plate    = document.getElementById('plateNumber').value.trim();
+        const carType  = document.getElementById('carType').value;
+        const model    = document.getElementById('vehicleModel').value.trim();
+        const position = document.getElementById('tirePosition').value;
+        const inspector = document.getElementById('inspectedBy').value.trim();
+        const date     = document.getElementById('inspectionDate').value;
+        const dotCode  = document.getElementById('tireExpiryDate').value.trim();
+
+        const errorEl = document.getElementById('formError');
+
+        if (!plate)    { showError('Please enter the plate number.'); return; }
+        if (!carType)  { showError('Please select a vehicle type.'); return; }
+        if (!model)    { showError('Please enter the vehicle model.'); return; }
+        if (!position) { showError('Please select a tire position.'); return; }
+        if (!dotCode || dotCode.length < 4) { showError('Please enter a valid 4-digit tire DOT code.'); return; }
+        if (!dotData)  { showError('DOT code could not be calculated. Please re-enter it.'); return; }
+        if (!inspector){ showError('Please enter the inspector\'s name.'); return; }
+        if (!date)     { showError('Please select a date of inspection.'); return; }
+
+        errorEl.classList.add('hidden');
+
+        sessionStorage.setItem('inspectionData', JSON.stringify({
+            plateNumber:     plate,
+            carType:         carType,
+            vehicleModel:    model,
+            tirePosition:    position,
+            inspectedBy:     inspector,
+            date:            date,
+            dotCode:         dotCode,
+            manufactureDate: dotData.manufactureDate,
+            expiryDate:      dotData.expiryDate,
+            tireAge:         dotData.tireAge,
+            validity:        dotData.validity
+        }));
+
+        window.location.href = 'inspection.html';
+    }
+</script>
+
+<script>
+    document.getElementById('tireExpiryDate').addEventListener('input', function () {
+        const raw = this.value.replace(/\D/g, '');
+        this.value = raw;
+        if (raw.length === 4) calculateTireDot(raw);
+        else {
+            document.getElementById('tireDotResult').innerHTML = '';
+            dotData = null;
+        }
+    });
+
+    function calculateTireDot(code) {
+        const resultEl = document.getElementById('tireDotResult');
+
+        const week = parseInt(code.slice(0, 2), 10);
+        const yr2  = parseInt(code.slice(2, 4), 10);
+        const year = yr2 + 2000;
+
+        if (week < 1 || week > 53) {
+            resultEl.innerHTML = '<p class="dot-error">Invalid week number. Must be 01–53.</p>';
+            dotData = null;
+            return;
         }
 
-        // Validate and proceed
-        function showError(msg) {
-            const errorEl = document.getElementById('formError');
-            const errorTxt = document.getElementById('formErrorText');
-            errorTxt.textContent = msg;
-            errorEl.classList.remove('hidden');
+        const madeDate   = weekToDate(week, year);
+        const expiryDate = new Date(madeDate);
+        expiryDate.setFullYear(expiryDate.getFullYear() + 5);
+
+        const now      = new Date();
+        const expired  = now > expiryDate;
+        const ageDays  = Math.floor((now - madeDate) / 86400000);
+        const ageYears = (ageDays / 365.25).toFixed(1);
+        const daysLeft = Math.floor((expiryDate - now) / 86400000);
+        const daysAgo  = Math.floor((now - expiryDate) / 86400000);
+
+        const makeStr   = madeDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const expiryStr = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        // ── Store globally so submitForm() can use it ──
+        dotData = {
+            manufactureDate: makeStr,
+            expiryDate:      expiryStr,
+            tireAge:         `${ageYears} years`,
+            validity:        expired ? 'Exceeded' : 'Within limit'
+        };
+
+        let statusClass, statusText;
+        if (expired) {
+            statusClass = 'dot-expired';
+            statusText  = `Expired ${daysAgo.toLocaleString()} days ago`;
+        } else if (daysLeft < 180) {
+            statusClass = 'dot-warning';
+            statusText  = `Expiring soon — ${daysLeft} days left`;
+        } else {
+            statusClass = 'dot-valid';
+            statusText  = `Valid — ${daysLeft.toLocaleString()} days remaining`;
         }
 
-        function submitForm() {
-            const plate = document.getElementById('plateNumber').value.trim();
-            const carType = document.getElementById('carType').value;
-            const model = document.getElementById('vehicleModel').value.trim();
-            const position = document.getElementById('tirePosition').value;
-            const inspector = document.getElementById('inspectedBy').value.trim();
-            const date = document.getElementById('inspectionDate').value;
-            const dotCode = document.getElementById('tireExpiryDate').value.trim();
+        resultEl.innerHTML = `
+            <div class="dot-result ${statusClass}">
+                <p class="dot-status">${statusText}</p>
+                <ul class="dot-details">
+                    <li><span>Week manufactured</span><strong>Week ${week}</strong></li>
+                    <li><span>Year manufactured</span><strong>${year}</strong></li>
+                    <li><span>Manufacture date</span><strong>${makeStr}</strong></li>
+                    <li><span>Expiry date</span><strong>${expiryStr}</strong></li>
+                    <li><span>Tire age</span><strong>${ageYears} years (${ageDays.toLocaleString()} days)</strong></li>
+                    <li><span>5-year validity</span><strong>${expired ? 'Exceeded' : 'Within limit'}</strong></li>
+                </ul>
+            </div>`;
+    }
 
-            const errorEl = document.getElementById('formError');
-
-            if (!plate) { showError('Please enter the plate number.'); return; }
-            if (!carType) { showError('Please select a vehicle type.'); return; }
-            if (!model) { showError('Please enter the vehicle model.'); return; }
-            if (!position) { showError('Please select a tire position.'); return; }
-            if (!dotCode) { showError('Please enter the tire DOT code.'); return; }
-            if (!inspector) { showError('Please enter the inspector\'s name.'); return; }
-            if (!date) { showError('Please select a date of inspection.'); return; }
-
-            errorEl.classList.add('hidden');
-
-            sessionStorage.setItem('inspectionData', JSON.stringify({
-                plateNumber: plate,
-                carType,
-                vehicleModel: model,
-                tirePosition: position,
-                inspectedBy: inspector,
-                date,
-                dotCode
-            }));
-
-            window.location.href = 'inspection.html'; // ✅ was missing
-        }
-
-        function showError(msg) {
-            const errorEl = document.getElementById('formError');
-            document.getElementById('formErrorText').textContent = msg;
-            errorEl.classList.remove('hidden');
-            errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    </script>
-    <script>document.getElementById('tireExpiryDate').addEventListener('input', function () {
-            const raw = this.value.replace(/\D/g, '');
-            this.value = raw;
-            if (raw.length === 4) calculateTireDot(raw);
-            else document.getElementById('tireDotResult').innerHTML = '';
-        });
-
-        function calculateTireDot(code) {
-            const resultEl = document.getElementById('tireDotResult');
-
-            const week = parseInt(code.slice(0, 2), 10);
-            const yr2 = parseInt(code.slice(2, 4), 10);
-            const year = yr2 + 2000;
-
-            if (week < 1 || week > 53) {
-                resultEl.innerHTML = '<p class="dot-error">Invalid week number. Must be 01–53.</p>';
-                return;
-            }
-
-            const madeDate = weekToDate(week, year);
-            const expiryDate = new Date(madeDate);
-            expiryDate.setFullYear(expiryDate.getFullYear() + 5);
-
-            const now = new Date();
-            const expired = now > expiryDate;
-            const ageDays = Math.floor((now - madeDate) / 86400000);
-            const ageYears = (ageDays / 365.25).toFixed(1);
-            const daysLeft = Math.floor((expiryDate - now) / 86400000);
-            const daysAgo = Math.floor((now - expiryDate) / 86400000);
-
-            const makeStr = madeDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            const expiryStr = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-            let statusClass, statusText;
-            if (expired) {
-                statusClass = 'dot-expired';
-                statusText = `Expired ${daysAgo.toLocaleString()} days ago`;
-            } else if (daysLeft < 180) {
-                statusClass = 'dot-warning';
-                statusText = `Expiring soon — ${daysLeft} days left`;
-            } else {
-                statusClass = 'dot-valid';
-                statusText = `Valid — ${daysLeft.toLocaleString()} days remaining`;
-            }
-
-            resultEl.innerHTML = `
-        <div class="dot-result ${statusClass}">
-            <p class="dot-status">${statusText}</p>
-            <ul class="dot-details">
-                <li><span>Week manufactured</span><strong>Week ${week}</strong></li>
-                <li><span>Year manufactured</span><strong>${year}</strong></li>
-                <li><span>Manufacture date</span><strong>${makeStr}</strong></li>
-                <li><span>Expiry date</span><strong>${expiryStr}</strong></li>
-                <li><span>Tire age</span><strong>${ageYears} years (${ageDays.toLocaleString()} days)</strong></li>
-                <li><span>5-year validity</span><strong>${expired ? 'Exceeded' : 'Within limit'}</strong></li>
-            </ul>
-        </div>`;
-        }
-
-        function weekToDate(week, year) {
-            const jan4 = new Date(year, 0, 4);
-            const startOfWeek1 = new Date(jan4);
-            startOfWeek1.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7));
-            const d = new Date(startOfWeek1);
-            d.setDate(d.getDate() + (week - 1) * 7);
-            return d;
-        }</script>
+    function weekToDate(week, year) {
+        const jan4 = new Date(year, 0, 4);
+        const startOfWeek1 = new Date(jan4);
+        startOfWeek1.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7));
+        const d = new Date(startOfWeek1);
+        d.setDate(d.getDate() + (week - 1) * 7);
+        return d;
+    }
+</script>
 
 </body>
 

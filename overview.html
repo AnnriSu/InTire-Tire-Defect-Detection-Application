@@ -47,15 +47,15 @@
             </div>
             <div class="summary-stats">
                 <div class="stat-item">
-                    <span class="stat-number">12</span>
+                    <span class="stat-number" id="sumResolved">—</span>
                     <span class="stat-label">resolved issues</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">12</span>
+                    <span class="stat-number" id="sumActive">—</span>
                     <span class="stat-label">active issues</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">12</span>
+                    <span class="stat-number" id="sumTotal">—</span>
                     <span class="stat-label">total inspected</span>
                 </div>
             </div>
@@ -102,6 +102,23 @@
             const active = document.querySelector('.tab-link.active');
             if (active) moveSlider(active);
         });
+
+        // Load Inspection Summary from DB
+        (async function loadSummary() {
+            try {
+                // Use "year" to represent overall summary (year-to-date).
+                // If you want all-time instead, we can add a dedicated endpoint.
+                const res = await fetch('http://127.0.0.1:5000/analytics?period=year');
+                const data = await res.json();
+                const stats = data?.stats || {};
+                document.getElementById('sumResolved').textContent = stats.resolved ?? 0;
+                document.getElementById('sumActive').textContent = stats.active ?? 0;
+                document.getElementById('sumTotal').textContent = stats.total ?? 0;
+            } catch (e) {
+                console.error(e);
+                // Keep placeholders if offline
+            }
+        })();
 
         fetch('drawer.js')
             .then(res => res.text())

@@ -745,194 +745,212 @@
                 <button class="modal-btn-primary" onclick="addAnotherDefect()">
                     <i class="fas fa-plus"></i> Add Another Defect
                 </button>
-                <button class="modal-btn-primary" onclick="location.href='overview.html'">Go to Home</button>
-                <button class="modal-btn-outline" onclick="location.href='history.html'">View History</button>
+                <button class="modal-btn-primary" onclick="goHome()">Go to Home</button>
+                <button class="modal-btn-outline" onclick="viewHistory()">View History</button>
             </div>
         </div>
     </div>
 
     <script>
-    /* ── Date ── */
-    const dateEl = document.getElementById('todayDate');
-    const now = new Date();
-    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        /* ── Date ── */
+        const dateEl = document.getElementById('todayDate');
+        const now = new Date();
+        dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-    /* ── Camera ── */
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const classes = ["Surface Crack", "Bulge", "Worn Tread", "Puncture Hole", "Puncture Object"];
-    const API_URL = "http://127.0.0.1:5000/predict";
+        /* ── Camera ── */
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const classes = ["Surface Crack", "Bulge", "Worn Tread", "Puncture Hole", "Puncture Object"];
+        const API_URL = "http://127.0.0.1:5000/predict";
 
-    const defectMap = {
-        'Surface Crack':   1,
-        'Bulge':           2,
-        'Worn Tread':      3,
-        'Puncture Hole':   4,
-        'Puncture Object': 5
-    };
+        const defectMap = {
+            'Surface Crack': 1,
+            'Bulge': 2,
+            'Worn Tread': 3,
+            'Puncture Hole': 4,
+            'Puncture Object': 5
+        };
 
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => video.srcObject = stream)
-        .catch(err => alert("Camera error: " + err));
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => video.srcObject = stream)
+            .catch(err => alert("Camera error: " + err));
 
-    /* ── Capture ── */
-    async function capture() {
-        if (!video.videoWidth) { alert("Camera not ready!"); return; }
+        /* ── Capture ── */
+        async function capture() {
+            if (!video.videoWidth) { alert("Camera not ready!"); return; }
 
-        video.classList.add('hidden');
-        canvas.classList.remove('hidden');
-        hideViewfinder(true);
+            video.classList.add('hidden');
+            canvas.classList.remove('hidden');
+            hideViewfinder(true);
 
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0);
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
 
-        document.getElementById('captureRow').classList.add('hidden');
-        document.getElementById('postCaptureRow').classList.remove('hidden');
+            document.getElementById('captureRow').classList.add('hidden');
+            document.getElementById('postCaptureRow').classList.remove('hidden');
 
-        const panel = document.getElementById('resultsPanel');
-        const content = document.getElementById('resultsContent');
-        panel.classList.add('visible');
-        content.innerHTML = `<div class="result-loading"><div class="spinner"></div>Analyzing tire condition…</div>`;
+            const panel = document.getElementById('resultsPanel');
+            const content = document.getElementById('resultsContent');
+            panel.classList.add('visible');
+            content.innerHTML = `<div class="result-loading"><div class="spinner"></div>Analyzing tire condition…</div>`;
 
-        canvas.toBlob(async (blob) => {
-            const fd = new FormData();
-            fd.append("image", blob, "image.jpg");
-            try {
-                const res = await fetch(API_URL, { method: "POST", body: fd });
-                const data = await res.json();
+            canvas.toBlob(async (blob) => {
+                const fd = new FormData();
+                fd.append("image", blob, "image.jpg");
+                try {
+                    const res = await fetch(API_URL, { method: "POST", body: fd });
+                    const data = await res.json();
 
-                ctx.lineWidth = 4;
-                ctx.strokeStyle = "#f39c12";
-                ctx.fillStyle = "#f39c12";
-                ctx.font = "bold 18px 'Segoe UI', sans-serif";
-
-                if (!data.length) {
-                    content.innerHTML = `<div class="result-no-damage"><i class="fas fa-check-circle"></i>No damage detected</div>`;
-                    return;
-                }
-
-                content.innerHTML = "";
-                data.forEach(d => {
-                    const [x1, y1, x2, y2] = d.bbox;
-                    const name = classes[d.class];
-                    const conf = (d.confidence * 100).toFixed(1);
-                    const label = `${name} ${conf}%`;
-
-                    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-                    const tw = ctx.measureText(label).width;
-                    ctx.fillRect(x1, y1 - 30, tw + 12, 30);
-                    ctx.fillStyle = "#fff";
-                    ctx.fillText(label, x1 + 6, y1 - 8);
+                    ctx.lineWidth = 4;
+                    ctx.strokeStyle = "#f39c12";
                     ctx.fillStyle = "#f39c12";
+                    ctx.font = "bold 18px 'Segoe UI', sans-serif";
 
-                    content.innerHTML += `
+                    if (!data.length) {
+                        content.innerHTML = `<div class="result-no-damage"><i class="fas fa-check-circle"></i>No damage detected</div>`;
+                        return;
+                    }
+
+                    content.innerHTML = "";
+                    data.forEach(d => {
+                        const [x1, y1, x2, y2] = d.bbox;
+                        const name = classes[d.class];
+                        const conf = (d.confidence * 100).toFixed(1);
+                        const label = `${name} ${conf}%`;
+
+                        ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+                        const tw = ctx.measureText(label).width;
+                        ctx.fillRect(x1, y1 - 30, tw + 12, 30);
+                        ctx.fillStyle = "#fff";
+                        ctx.fillText(label, x1 + 6, y1 - 8);
+                        ctx.fillStyle = "#f39c12";
+
+                        content.innerHTML += `
                         <div class="result-item" data-defect="${name}">
                             <div class="result-icon"><i class="fas ${iconFor(name)}"></i></div>
                             <span>${name}</span>
                             <span class="result-conf">${conf}%</span>
                         </div>`;
-                });
-            } catch {
-                content.innerHTML = `<div class="result-item" style="border-color:rgba(231,76,60,0.3);background:rgba(231,76,60,0.08);color:#e74c3c;">
+                    });
+                } catch {
+                    content.innerHTML = `<div class="result-item" style="border-color:rgba(231,76,60,0.3);background:rgba(231,76,60,0.08);color:#e74c3c;">
                     <div class="result-icon" style="background:#e74c3c"><i class="fas fa-wifi"></i></div>
                     <span>Error connecting to AI server</span>
                 </div>`;
-            }
-        }, "image/jpeg");
-    }
+                }
+            }, "image/jpeg");
+        }
 
-    /* ── Add Another Defect ── */
-    function addAnotherDefect() {
-        document.getElementById('modalOverlay').classList.remove('open');
-        document.querySelector('.bottom-nav').style.display = 'flex';
-        retake();
-    }
+        /* ── Add Another Defect ── */
+        function addAnotherDefect() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.querySelector('.bottom-nav').style.display = 'flex';
+            retake();
+        }
 
-    /* ── Retake ── */
-    function retake() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.classList.add('hidden');
-        video.classList.remove('hidden');
-        hideViewfinder(false);
-        document.getElementById('resultsPanel').classList.remove('visible');
-        document.getElementById('resultsContent').innerHTML = '';
-        document.getElementById('captureRow').classList.remove('hidden');
-        document.getElementById('postCaptureRow').classList.add('hidden');
-    }
+        /* ── Retake ── */
+        function retake() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.classList.add('hidden');
+            video.classList.remove('hidden');
+            hideViewfinder(false);
+            document.getElementById('resultsPanel').classList.remove('visible');
+            document.getElementById('resultsContent').innerHTML = '';
+            document.getElementById('captureRow').classList.remove('hidden');
+            document.getElementById('postCaptureRow').classList.add('hidden');
+        }
 
-    /* ── Done ── */
-    async function done() {
-        const formData = JSON.parse(sessionStorage.getItem('inspectionData') || '{}');
+        /* ── Done ── */
+        async function done() {
+            const formData = JSON.parse(sessionStorage.getItem('inspectionData') || '{}');
 
-        // Collect defect codes from detected result items
-        const defectCodes = [];
-        document.querySelectorAll('.result-item[data-defect]').forEach(el => {
-            const name = el.dataset.defect;
-            if (defectMap[name] && !defectCodes.includes(defectMap[name])) {
-                defectCodes.push(defectMap[name]);
-            }
-        });
-
-        // Show saving state on the Done button
-        const doneBtn = document.querySelector('.btn-success-action');
-        doneBtn.disabled = true;
-        doneBtn.innerHTML = '<div class="spinner" style="border-top-color:#fff"></div> Saving…';
-
-        try {
-            const res = await fetch('http://127.0.0.1:5000/save-inspection', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    defects: defectCodes
-                })
+            // Collect defect codes from detected result items
+            const defectCodes = [];
+            document.querySelectorAll('.result-item[data-defect]').forEach(el => {
+                const name = el.dataset.defect;
+                if (defectMap[name] && !defectCodes.includes(defectMap[name])) {
+                    defectCodes.push(defectMap[name]);
+                }
             });
 
-            const result = await res.json();
+            // Show saving state on the Done button
+            const doneBtn = document.querySelector('.btn-success-action');
+            doneBtn.disabled = true;
+            doneBtn.innerHTML = '<div class="spinner" style="border-top-color:#fff"></div> Saving…';
 
-            if (result.success) {
-                sessionStorage.removeItem('inspectionData');
-                document.querySelector('.bottom-nav').style.display = 'none';
-                document.getElementById('modalOverlay').classList.add('open');
-            } else {
-                alert('Failed to save. Please try again.');
+            try {
+                const res = await fetch('http://127.0.0.1:5000/save-inspection', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...formData,
+                        // If we've already created an Inspection record, keep using it
+                        // so "Add Another Defect" appends to the same inspection.
+                        inspectionNo: formData.inspectionNo || null,
+                        defects: defectCodes
+                    })
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    // Keep the inspection form data so "Add Another Defect" retains it.
+                    // Store the inspectionNo returned by the backend for subsequent saves.
+                    sessionStorage.setItem('inspectionData', JSON.stringify({
+                        ...formData,
+                        inspectionNo: result.inspection_no
+                    }));
+                    document.querySelector('.bottom-nav').style.display = 'none';
+                    document.getElementById('modalOverlay').classList.add('open');
+                } else {
+                    alert('Failed to save. Please try again.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Could not connect to the server. Make sure Flask is running.');
+            } finally {
+                doneBtn.disabled = false;
+                doneBtn.innerHTML = '<i class="fas fa-check"></i> Done';
             }
-        } catch (err) {
-            console.error(err);
-            alert('Could not connect to the server. Make sure Flask is running.');
-        } finally {
-            doneBtn.disabled = false;
-            doneBtn.innerHTML = '<i class="fas fa-check"></i> Done';
         }
-    }
 
-    /* ── Helpers ── */
-    function hideViewfinder(hide) {
-        ['viewfinder', 'cornerTR', 'cornerBL', 'scanLine'].forEach(id => {
-            document.getElementById(id).style.display = hide ? 'none' : '';
+        /* ── Helpers ── */
+        function hideViewfinder(hide) {
+            ['viewfinder', 'cornerTR', 'cornerBL', 'scanLine'].forEach(id => {
+                document.getElementById(id).style.display = hide ? 'none' : '';
+            });
+        }
+
+        function iconFor(name) {
+            const map = {
+                'Surface Crack': 'fa-icicles',
+                'Bulge': 'fa-circle',
+                'Worn Tread': 'fa-exclamation-triangle',
+                'Puncture Hole': 'fa-circle-dot',
+                'Puncture Object': 'fa-thumbtack'
+            };
+            return map[name] || 'fa-exclamation-circle';
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.classList.remove('open');
+                document.querySelector('.bottom-nav').style.display = 'flex';
+            }
         });
-    }
 
-    function iconFor(name) {
-        const map = {
-            'Surface Crack':   'fa-icicles',
-            'Bulge':           'fa-circle',
-            'Worn Tread':      'fa-exclamation-triangle',
-            'Puncture Hole':   'fa-circle-dot',
-            'Puncture Object': 'fa-thumbtack'
-        };
-        return map[name] || 'fa-exclamation-circle';
-    }
-
-    document.getElementById('modalOverlay').addEventListener('click', function (e) {
-        if (e.target === this) {
-            this.classList.remove('open');
-            document.querySelector('.bottom-nav').style.display = 'flex';
+        function goHome() {
+            sessionStorage.removeItem('inspectionData');
+            location.href = 'overview.html';
         }
-    });
-</script>
+
+        function viewHistory() {
+            sessionStorage.removeItem('inspectionData');
+            location.href = 'history.html';
+        }
+    </script>
 </body>
 
 </html>

@@ -89,53 +89,7 @@
             <div class="analytics-card-header">
                 <span class="analytics-card-title">Issue Breakdown</span>
             </div>
-            <div class="breakdown-list">
-                <div class="breakdown-item">
-                    <div class="breakdown-label-row">
-                        <span class="breakdown-name"><i class="fas fa-circle-dot"></i> Puncture</span>
-                        <span class="breakdown-count">8</span>
-                    </div>
-                    <div class="breakdown-bar-track">
-                        <div class="breakdown-bar" style="width: 67%; background: #e74c3c;"></div>
-                    </div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-label-row">
-                        <span class="breakdown-name"><i class="fas fa-icicles"></i> Crack</span>
-                        <span class="breakdown-count">5</span>
-                    </div>
-                    <div class="breakdown-bar-track">
-                        <div class="breakdown-bar" style="width: 42%; background: #f39c12;"></div>
-                    </div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-label-row">
-                        <span class="breakdown-name"><i class="fas fa-circle"></i> Bulge</span>
-                        <span class="breakdown-count">4</span>
-                    </div>
-                    <div class="breakdown-bar-track">
-                        <div class="breakdown-bar" style="width: 33%; background: #e67e22;"></div>
-                    </div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-label-row">
-                        <span class="breakdown-name"><i class="fas fa-exclamation-triangle"></i> Worn Tread</span>
-                        <span class="breakdown-count">7</span>
-                    </div>
-                    <div class="breakdown-bar-track">
-                        <div class="breakdown-bar" style="width: 58%; background: #f39c12;"></div>
-                    </div>
-                </div>
-                <div class="breakdown-item">
-                    <div class="breakdown-label-row">
-                        <span class="breakdown-name"><i class="fas fa-check-circle" style="color:#27ae60"></i> No Damage</span>
-                        <span class="breakdown-count">12</span>
-                    </div>
-                    <div class="breakdown-bar-track">
-                        <div class="breakdown-bar" style="width: 100%; background: #27ae60;"></div>
-                    </div>
-                </div>
-            </div>
+            <div class="breakdown-list" id="breakdownList"></div>
         </div>
 
         <!-- Most Inspected Vehicles -->
@@ -143,48 +97,7 @@
             <div class="analytics-card-header">
                 <span class="analytics-card-title">Most Inspected Vehicles</span>
             </div>
-            <div class="vehicle-list">
-                <div class="vehicle-item">
-                    <div class="vehicle-rank">1</div>
-                    <div class="vehicle-info">
-                        <span class="vehicle-name">Toyota Corolla UHA 198</span>
-                        <span class="vehicle-count">9 inspections</span>
-                    </div>
-                    <div class="vehicle-bar-wrap">
-                        <div class="vehicle-bar" style="width:90%"></div>
-                    </div>
-                </div>
-                <div class="vehicle-item">
-                    <div class="vehicle-rank">2</div>
-                    <div class="vehicle-info">
-                        <span class="vehicle-name">Mitsubishi Montero XYZ 789</span>
-                        <span class="vehicle-count">7 inspections</span>
-                    </div>
-                    <div class="vehicle-bar-wrap">
-                        <div class="vehicle-bar" style="width:70%"></div>
-                    </div>
-                </div>
-                <div class="vehicle-item">
-                    <div class="vehicle-rank">3</div>
-                    <div class="vehicle-info">
-                        <span class="vehicle-name">Honda Civic BBA 123</span>
-                        <span class="vehicle-count">5 inspections</span>
-                    </div>
-                    <div class="vehicle-bar-wrap">
-                        <div class="vehicle-bar" style="width:50%"></div>
-                    </div>
-                </div>
-                <div class="vehicle-item">
-                    <div class="vehicle-rank">4</div>
-                    <div class="vehicle-info">
-                        <span class="vehicle-name">Toyota Vios ABC 456</span>
-                        <span class="vehicle-count">3 inspections</span>
-                    </div>
-                    <div class="vehicle-bar-wrap">
-                        <div class="vehicle-bar" style="width:30%"></div>
-                    </div>
-                </div>
-            </div>
+            <div class="vehicle-list" id="vehicleList"></div>
         </div>
 
     </main>
@@ -202,39 +115,93 @@
         const now = new Date();
         dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-        // Chart data per period
-        const chartData = {
-            week: {
-                label: 'This Week',
-                bars: [2, 5, 3, 7, 4, 6, 3],
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                total: 24, active: 6, resolved: 18, rate: '75%'
-            },
-            month: {
-                label: 'This Month',
-                bars: [8, 12, 7, 15],
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                total: 42, active: 10, resolved: 32, rate: '76%'
-            },
-            year: {
-                label: 'This Year',
-                bars: [5, 8, 6, 10, 14, 9, 12, 16, 11, 18, 13, 20],
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                total: 142, active: 28, resolved: 114, rate: '80%'
+        const API_BASE = "http://127.0.0.1:5000";
+        const state = { period: "week" };
+
+        function iconFor(name) {
+            const map = {
+                'Surface Crack': 'fa-icicles',
+                'Bulge': 'fa-circle',
+                'Worn Tread': 'fa-exclamation-triangle',
+                'Puncture Hole': 'fa-circle-dot',
+                'Puncture Object': 'fa-thumbtack',
+                'No Damage': 'fa-check-circle'
+            };
+            return map[name] || 'fa-exclamation-circle';
+        }
+
+        function colorFor(name) {
+            if (name === 'No Damage') return '#27ae60';
+            const danger = new Set(['Surface Crack', 'Puncture Hole', 'Puncture Object']);
+            const warning = new Set(['Bulge', 'Worn Tread']);
+            if (danger.has(name)) return '#e74c3c';
+            if (warning.has(name)) return '#f39c12';
+            return '#e67e22';
+        }
+
+        async function loadAnalytics(period) {
+            const res = await fetch(`${API_BASE}/analytics?period=${encodeURIComponent(period)}`);
+            return await res.json();
+        }
+
+        function renderBreakdown(items) {
+            const el = document.getElementById("breakdownList");
+            if (!Array.isArray(items) || !items.length) {
+                el.innerHTML = `<div style="padding:10px;color:#888;font-weight:600;">No breakdown data.</div>`;
+                return;
             }
-        };
+            const max = Math.max(...items.map(i => i.count || 0), 1);
+            el.innerHTML = items.map(i => {
+                const name = i.name || "Unknown";
+                const count = Number(i.count || 0);
+                const pct = Math.round((count / max) * 100);
+                const color = colorFor(name);
+                const icon = iconFor(name);
+                return `
+                    <div class="breakdown-item">
+                        <div class="breakdown-label-row">
+                            <span class="breakdown-name"><i class="fas ${icon}" style="${name === 'No Damage' ? 'color:#27ae60' : ''}"></i> ${name}</span>
+                            <span class="breakdown-count">${count}</span>
+                        </div>
+                        <div class="breakdown-bar-track">
+                            <div class="breakdown-bar" style="width:${pct}%; background:${color};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderVehicles(items) {
+            const el = document.getElementById("vehicleList");
+            if (!Array.isArray(items) || !items.length) {
+                el.innerHTML = `<div style="padding:10px;color:#888;font-weight:600;">No vehicles yet.</div>`;
+                return;
+            }
+            const max = Math.max(...items.map(i => i.count || 0), 1);
+            el.innerHTML = items.map((i, idx) => {
+                const name = i.name || `Vehicle ${idx + 1}`;
+                const count = Number(i.count || 0);
+                const pct = Math.round((count / max) * 100);
+                return `
+                    <div class="vehicle-item">
+                        <div class="vehicle-rank">${idx + 1}</div>
+                        <div class="vehicle-info">
+                            <span class="vehicle-name">${name}</span>
+                            <span class="vehicle-count">${count} inspection${count === 1 ? '' : 's'}</span>
+                        </div>
+                        <div class="vehicle-bar-wrap">
+                            <div class="vehicle-bar" style="width:${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         function setPeriod(period, btn) {
             document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
-            const d = chartData[period];
-            document.getElementById('chartLabel').textContent  = d.label;
-            document.getElementById('statTotal').textContent   = d.total;
-            document.getElementById('statActive').textContent  = d.active;
-            document.getElementById('statResolved').textContent = d.resolved;
-            document.getElementById('statRate').textContent    = d.rate;
-            renderChart(d.bars, d.labels);
+            state.period = period;
+            refresh();
         }
 
         function renderChart(bars, labels) {
@@ -255,8 +222,24 @@
             ).join('');
         }
 
-        // Init
-        renderChart(chartData.week.bars, chartData.week.labels);
+        async function refresh() {
+            try {
+                const d = await loadAnalytics(state.period);
+                document.getElementById('chartLabel').textContent = d.label || '';
+                document.getElementById('statTotal').textContent = d?.stats?.total ?? 0;
+                document.getElementById('statActive').textContent = d?.stats?.active ?? 0;
+                document.getElementById('statResolved').textContent = d?.stats?.resolved ?? 0;
+                document.getElementById('statRate').textContent = d?.stats?.rate ?? '0%';
+                renderChart(d.bars || [], d.barLabels || []);
+                renderBreakdown(d.breakdown || []);
+                renderVehicles(d.vehicles || []);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Init (Week)
+        refresh();
         
         fetch('drawer.js')
             .then(res => res.text())

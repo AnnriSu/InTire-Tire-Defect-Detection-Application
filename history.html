@@ -262,97 +262,7 @@
         </div>
 
         <section class="list-wrapper" id="cardList">
-
-            <div class="inspection-card" data-date="2026-03-30" data-id="1">
-                <div class="card-accent"></div>
-                <div class="card-content">
-                    <div class="info-group">
-                        <i class="fa-regular fa-circle-dot tire-circle"></i>
-                        <div class="car-details">
-                            <h3>Toyota Corolla UHA 198</h3>
-                            <p>Front Right</p>
-                        </div>
-                    </div>
-                    <div class="action-group">
-                        <button class="view-btn" onclick="openDetail('1')">View</button>
-                        <span class="date-label">Date of Inspection</span>
-                        <span class="date-value">03-30-2026</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inspection-card" data-date="2026-03-25" data-id="2">
-                <div class="card-accent"></div>
-                <div class="card-content">
-                    <div class="info-group">
-                        <i class="fa-regular fa-circle-dot tire-circle"></i>
-                        <div class="car-details">
-                            <h3>Toyota Corolla UHA 198</h3>
-                            <p>Rear Left</p>
-                        </div>
-                    </div>
-                    <div class="action-group">
-                        <button class="view-btn" onclick="openDetail('2')">View</button>
-                        <span class="date-label">Date of Inspection</span>
-                        <span class="date-value">03-25-2026</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inspection-card" data-date="2026-03-15" data-id="3">
-                <div class="card-accent"></div>
-                <div class="card-content">
-                    <div class="info-group">
-                        <i class="fa-regular fa-circle-dot tire-circle"></i>
-                        <div class="car-details">
-                            <h3>Honda Civic BBA 123</h3>
-                            <p>Front Left</p>
-                        </div>
-                    </div>
-                    <div class="action-group">
-                        <button class="view-btn" onclick="openDetail('3')">View</button>
-                        <span class="date-label">Date of Inspection</span>
-                        <span class="date-value">03-15-2026</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inspection-card" data-date="2026-02-10" data-id="4">
-                <div class="card-accent"></div>
-                <div class="card-content">
-                    <div class="info-group">
-                        <i class="fa-regular fa-circle-dot tire-circle"></i>
-                        <div class="car-details">
-                            <h3>Mitsubishi Montero XYZ 789</h3>
-                            <p>Rear Right</p>
-                        </div>
-                    </div>
-                    <div class="action-group">
-                        <button class="view-btn" onclick="openDetail('4')">View</button>
-                        <span class="date-label">Date of Inspection</span>
-                        <span class="date-value">02-10-2026</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inspection-card" data-date="2026-01-05" data-id="5">
-                <div class="card-accent"></div>
-                <div class="card-content">
-                    <div class="info-group">
-                        <i class="fa-regular fa-circle-dot tire-circle"></i>
-                        <div class="car-details">
-                            <h3>Toyota Vios ABC 456</h3>
-                            <p>Front Right</p>
-                        </div>
-                    </div>
-                    <div class="action-group">
-                        <button class="view-btn" onclick="openDetail('5')">View</button>
-                        <span class="date-label">Date of Inspection</span>
-                        <span class="date-value">01-05-2026</span>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Cards are rendered from the database via /inspection-history -->
         </section>
     </main>
 
@@ -389,12 +299,12 @@
                     <div class="detail-info-value" id="detailPosition">—</div>
                 </div>
                 <div class="detail-info-item">
-                    <div class="detail-info-label">Tread Depth</div>
-                    <div class="detail-info-value" id="detailTread">—</div>
+                    <div class="detail-info-label">Validity</div>
+                    <div class="detail-info-value" id="detailValidity">—</div>
                 </div>
                 <div class="detail-info-item">
-                    <div class="detail-info-label">Tire Pressure</div>
-                    <div class="detail-info-value" id="detailPressure">—</div>
+                    <div class="detail-info-label">DOT code</div>
+                    <div class="detail-info-value" id="detaildot">—</div>
                 </div>
                 <div class="detail-info-item">
                     <div class="detail-info-label">Inspected By</div>
@@ -413,102 +323,185 @@
     </div>
 
     <script>
-        /* ── Mock inspection data ── */
-        const inspectionData = {
-            '1': {
-                title: 'Toyota Corolla UHA 198',
-                date: 'March 30, 2026 · 10:24 AM',
-                position: 'Front Right',
-                tread: '4.2 mm',
-                pressure: '32 PSI',
-                user: 'Juan dela Cruz',
-                status: 'active',
-                findings: [
-                    { type: 'danger', icon: 'fa-icicles', name: 'Surface Crack', desc: 'Visible crack on sidewall — immediate attention needed', conf: '91.4%' },
-                    { type: 'warning', icon: 'fa-exclamation-triangle', name: 'Worn Tread', desc: 'Tread depth approaching minimum safe level', conf: '78.2%' }
-                ]
-            },
-            '2': {
-                title: 'Toyota Corolla UHA 198',
-                date: 'March 25, 2026 · 02:15 PM',
-                position: 'Rear Left',
-                tread: '5.8 mm',
-                pressure: '31 PSI',
-                user: 'Juan dela Cruz',
-                status: 'resolved',
-                findings: [
-                    { type: 'warning', icon: 'fa-circle', name: 'Minor Bulge', desc: 'Small bulge detected on inner sidewall', conf: '83.7%' }
-                ]
-            },
-            '3': {
-                title: 'Honda Civic BBA 123',
-                date: 'March 15, 2026 · 09:05 AM',
-                position: 'Front Left',
-                tread: '6.1 mm',
-                pressure: '33 PSI',
-                user: 'Maria Santos',
-                status: 'resolved',
-                findings: [
-                    { type: 'safe', icon: 'fa-check-circle', name: 'No Damage Detected', desc: 'Tire is in good condition — no issues found', conf: '97.1%' }
-                ]
-            },
-            '4': {
-                title: 'Mitsubishi Montero XYZ 789',
-                date: 'February 10, 2026 · 04:45 PM',
-                position: 'Rear Right',
-                tread: '3.1 mm',
-                pressure: '28 PSI',
-                user: 'Carlos Reyes',
-                status: 'active',
-                findings: [
-                    { type: 'danger', icon: 'fa-circle-dot', name: 'Puncture', desc: 'Nail puncture detected near center tread', conf: '95.6%' },
-                    { type: 'danger', icon: 'fa-exclamation-triangle', name: 'Severely Worn Tread', desc: 'Tread depth below minimum — replace immediately', conf: '89.3%' }
-                ]
-            },
-            '5': {
-                title: 'Toyota Vios ABC 456',
-                date: 'January 5, 2026 · 11:30 AM',
-                position: 'Front Right',
-                tread: '7.0 mm',
-                pressure: '34 PSI',
-                user: 'Ana Lim',
-                status: 'resolved',
-                findings: [
-                    { type: 'safe', icon: 'fa-check-circle', name: 'No Damage Detected', desc: 'Tire is in excellent condition', conf: '98.8%' }
-                ]
-            }
+        const API_BASE = "http://127.0.0.1:5000";
+        const state = {
+            inspections: [],
+            byId: new Map(),
+            sortOrder: "desc",
+            dateFilter: ""
         };
 
+        function safeText(v, fallback = "—") {
+            const s = (v ?? "").toString().trim();
+            return s.length ? s : fallback;
+        }
+
+        function toISODate(dateStr) {
+            const s = (dateStr ?? "").toString().trim();
+            // Expecting yyyy-mm-dd from your form. If not, we best-effort parse.
+            if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+            const d = new Date(s);
+            if (Number.isNaN(d.getTime())) return "";
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, "0");
+            const dd = String(d.getDate()).padStart(2, "0");
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function formatCardDate(iso) {
+            if (!iso) return "—";
+            // Convert yyyy-mm-dd -> mm-dd-yyyy (matches your old UI)
+            const [y, m, d] = iso.split("-");
+            if (!y || !m || !d) return iso;
+            return `${m}-${d}-${y}`;
+        }
+
+        function iconForDefect(name) {
+            const map = {
+                'Surface Crack': 'fa-icicles',
+                'Bulge': 'fa-circle',
+                'Worn Tread': 'fa-exclamation-triangle',
+                'Puncture Hole': 'fa-circle-dot',
+                'Puncture Object': 'fa-thumbtack',
+                'No Damage Detected': 'fa-check-circle'
+            };
+            return map[name] || 'fa-exclamation-circle';
+        }
+
+        function findingStyle(defectType) {
+            // Basic severity mapping for your defect types
+            const danger = new Set(['Surface Crack', 'Puncture Hole', 'Puncture Object']);
+            const warning = new Set(['Bulge', 'Worn Tread']);
+            if (danger.has(defectType)) return 'danger';
+            if (warning.has(defectType)) return 'warning';
+            return 'safe';
+        }
+
+        function computeStatus(tires) {
+            // If there are any detected defects, treat as active issue. Otherwise resolved.
+            return (tires && tires.length) ? 'active' : 'resolved';
+        }
+
+        function buildTitle(insp) {
+            const model = safeText(insp.vehicleModel, "");
+            const plate = safeText(insp.plateNo, "");
+            const joined = [model, plate].filter(Boolean).join(" · ");
+            return joined || `Inspection #${insp.inspectionNo}`;
+        }
+
+        function renderCards() {
+            const list = document.getElementById("cardList");
+            list.innerHTML = "";
+
+            const filtered = state.inspections
+                .filter(insp => {
+                    const iso = toISODate(insp.dateInspected);
+                    return state.dateFilter ? iso === state.dateFilter : true;
+                })
+                .sort((a, b) => {
+                    const da = new Date(toISODate(a.dateInspected) || 0).getTime();
+                    const db = new Date(toISODate(b.dateInspected) || 0).getTime();
+                    return state.sortOrder === "desc" ? (db - da) : (da - db);
+                });
+
+            if (!filtered.length) {
+                list.innerHTML = `<div style="padding:14px;color:#888;font-weight:600;">No inspection history found.</div>`;
+                return;
+            }
+
+            filtered.forEach(insp => {
+                const tires = insp.tires || [];
+                const firstTire = tires[0];
+                const pos = firstTire ? safeText(firstTire.tirePosition) : "No findings";
+                const iso = toISODate(insp.dateInspected);
+
+                const card = document.createElement("div");
+                card.className = "inspection-card";
+                card.dataset.date = iso || "";
+                card.dataset.id = String(insp.inspectionNo);
+                card.innerHTML = `
+                    <div class="card-accent"></div>
+                    <div class="card-content">
+                        <div class="info-group">
+                            <i class="fa-regular fa-circle-dot tire-circle"></i>
+                            <div class="car-details">
+                                <h3>${buildTitle(insp)}</h3>
+                                <p>${pos}</p>
+                            </div>
+                        </div>
+                        <div class="action-group">
+                            <button class="view-btn" type="button" data-view-id="${insp.inspectionNo}">View</button>
+                            <span class="date-label">Date of Inspection</span>
+                            <span class="date-value">${formatCardDate(iso)}</span>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+
+            // wire view buttons
+            list.querySelectorAll("[data-view-id]").forEach(btn => {
+                btn.addEventListener("click", () => openDetail(btn.dataset.viewId));
+            });
+        }
+
         function openDetail(id) {
-            const d = inspectionData[id];
-            if (!d) return;
+            const insp = state.byId.get(String(id));
+            if (!insp) return;
 
-             document.querySelector('.bottom-nav').style.display = 'none';
+            document.querySelector('.bottom-nav').style.display = 'none';
 
-            document.getElementById('detailTitle').textContent    = d.title;
-            document.getElementById('detailDate').textContent     = d.date;
-            document.getElementById('detailPosition').textContent = d.position;
-            document.getElementById('detailTread').textContent    = d.tread;
-            document.getElementById('detailPressure').textContent = d.pressure;
-            document.getElementById('detailUser').textContent     = d.user;
+            const tires = insp.tires || [];
+            const firstTire = tires[0] || {};
+
+            document.getElementById('detailTitle').textContent = buildTitle(insp);
+            document.getElementById('detailDate').textContent = safeText(insp.dateInspected);
+            document.getElementById('detailPosition').textContent = safeText(firstTire.tirePosition);
+            document.getElementById('detailValidity').textContent = safeText(firstTire.validity);
+            document.getElementById('detaildot').textContent = safeText(firstTire.dotCode);
+            document.getElementById('detailUser').textContent = safeText(insp.inspector);
 
             // Status badge
+            const status = computeStatus(tires);
             const statusEl = document.getElementById('detailStatus');
-            statusEl.textContent = d.status === 'active' ? 'Active Issue' : 'Resolved';
-            statusEl.className = 'detail-status-badge ' + (d.status === 'active' ? 'badge-active' : 'badge-resolved');
+            statusEl.textContent = status === 'active' ? 'Active Issue' : 'Resolved';
+            statusEl.className = 'detail-status-badge ' + (status === 'active' ? 'badge-active' : 'badge-resolved');
 
             // Findings
             const findingsEl = document.getElementById('detailFindings');
-            findingsEl.innerHTML = d.findings.map(f => `
-                <div class="detail-finding ${f.type}">
-                    <div class="detail-finding-icon"><i class="fas ${f.icon}"></i></div>
-                    <div>
-                        <div class="detail-finding-name">${f.name}</div>
-                        <div class="detail-finding-desc">${f.desc}</div>
+            if (!tires.length) {
+                findingsEl.innerHTML = `
+                    <div class="detail-finding safe">
+                        <div class="detail-finding-icon"><i class="fas ${iconForDefect('No Damage Detected')}"></i></div>
+                        <div>
+                            <div class="detail-finding-name">No Damage Detected</div>
+                            <div class="detail-finding-desc">No defect records were saved for this inspection.</div>
+                        </div>
+                        <span class="detail-finding-conf">—</span>
                     </div>
-                    <span class="detail-finding-conf">${f.conf}</span>
-                </div>
-            `).join('');
+                `;
+            } else {
+                findingsEl.innerHTML = tires.map(t => {
+                    const name = safeText(t.defectType, "Unknown");
+                    const type = findingStyle(name);
+                    const descParts = [];
+                    const pos = safeText(t.tirePosition, "");
+                    const dot = safeText(t.dotCode, "");
+                    if (pos) descParts.push(pos);
+                    if (dot) descParts.push(`DOT ${dot}`);
+                    const desc = descParts.length ? descParts.join(" · ") : "Detected defect";
+                    return `
+                        <div class="detail-finding ${type}">
+                            <div class="detail-finding-icon"><i class="fas ${iconForDefect(name)}"></i></div>
+                            <div>
+                                <div class="detail-finding-name">${name}</div>
+                                <div class="detail-finding-desc">${desc}</div>
+                            </div>
+                            <span class="detail-finding-conf">—</span>
+                        </div>
+                    `;
+                }).join("");
+            }
 
             document.getElementById('detailOverlay').classList.add('open');
         }
@@ -539,29 +532,17 @@
         dom.filterBtn.addEventListener('click', toggleDropdown);
 
         dom.applyBtn.addEventListener('click', () => {
-            const sortVal = dom.sortOrder.value;
-            const targetDate = dom.dateSelect.value;
-            const allCards = dom.cards();
-
-            allCards.forEach(card => {
-                const isMatch = targetDate ? card.dataset.date === targetDate : true;
-                card.style.display = isMatch ? 'flex' : 'none';
-            });
-
-            const sorted = allCards
-                .filter(card => card.style.display !== 'none')
-                .sort((a, b) => {
-                    const diff = new Date(a.dataset.date) - new Date(b.dataset.date);
-                    return sortVal === 'desc' ? -diff : diff;
-                });
-
-            sorted.forEach(card => dom.list.appendChild(card));
+            state.sortOrder = dom.sortOrder.value;
+            state.dateFilter = dom.dateSelect.value || "";
+            renderCards();
             toggleDropdown();
         });
 
         dom.resetBtn.addEventListener('click', () => {
-            dom.cards().forEach(card => card.style.display = 'flex');
             dom.dateSelect.value = '';
+            state.sortOrder = dom.sortOrder.value || "desc";
+            state.dateFilter = "";
+            renderCards();
             toggleDropdown();
         });
 
@@ -598,6 +579,22 @@
             const active = document.querySelector('.tab-link.active');
             if (active) moveSlider(active);
         });
+
+        async function loadHistory() {
+            try {
+                const res = await fetch(`${API_BASE}/inspection-history`);
+                const data = await res.json();
+                state.inspections = Array.isArray(data) ? data : [];
+                state.byId = new Map(state.inspections.map(i => [String(i.inspectionNo), i]));
+                renderCards();
+            } catch (e) {
+                const list = document.getElementById("cardList");
+                list.innerHTML = `<div style="padding:14px;color:#e74c3c;font-weight:700;">Could not load history. Make sure Flask is running.</div>`;
+                console.error(e);
+            }
+        }
+
+        loadHistory();
 
         fetch('drawer.js')
             .then(res => res.text())

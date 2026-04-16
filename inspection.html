@@ -761,15 +761,17 @@
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const classes = ["Surface Crack", "Bulge", "Worn Tread", "Puncture Hole", "Puncture Object"];
+        const classes = ["Bulge", "Puncture Hole", "Puncture Object", "Surface Crack", "Worn Tread"];
+        //               index 0   index 1           index 2            index 3          index 4
         const API_URL = "http://127.0.0.1:5000/predict";
+        let capturedImageBase64 = '';
 
         const defectMap = {
-            'Surface Crack': 1,
             'Bulge': 2,
-            'Worn Tread': 3,
             'Puncture Hole': 4,
-            'Puncture Object': 5
+            'Puncture Object': 5,
+            'Surface Crack': 1,
+            'Worn Tread': 3
         };
 
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -787,6 +789,13 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0);
+            // Save captured image as base64 (without data URL prefix) for DB storage
+            try {
+                const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                capturedImageBase64 = dataUrl.split(",")[1] || '';
+            } catch {
+                capturedImageBase64 = '';
+            }
 
             document.getElementById('captureRow').classList.add('hidden');
             document.getElementById('postCaptureRow').classList.remove('hidden');
@@ -853,6 +862,7 @@
         /* ── Retake ── */
         function retake() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            capturedImageBase64 = '';
             canvas.classList.add('hidden');
             video.classList.remove('hidden');
             hideViewfinder(false);
@@ -889,6 +899,7 @@
                         // If we've already created an Inspection record, keep using it
                         // so "Add Another Defect" appends to the same inspection.
                         inspectionNo: formData.inspectionNo || null,
+                        imageBase64: capturedImageBase64 || '',
                         defects: defectCodes
                     })
                 });

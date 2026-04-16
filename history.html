@@ -124,6 +124,32 @@
             margin-bottom: 10px;
         }
 
+        /* Defect photo */
+        .defect-photo-wrap {
+            background: #f8f8f8;
+            border: 1px solid #f0f0f0;
+            border-radius: 14px;
+            padding: 10px;
+            margin: 10px 0 14px;
+        }
+
+        .defect-photo {
+            width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            border-radius: 10px;
+            display: none;
+            background: #fff;
+        }
+
+        .defect-photo-hint {
+            font-size: 0.72rem;
+            color: #888;
+            font-weight: 600;
+            text-align: center;
+            padding: 16px 8px;
+        }
+
         .detail-finding {
             display: flex;
             align-items: center;
@@ -313,6 +339,10 @@
             </div>
 
             <div class="detail-section-title">Detected Issues</div>
+            <div class="defect-photo-wrap" id="defectPhotoWrap">
+                <img class="defect-photo" id="defectPhoto" alt="Defect photo">
+                <div class="defect-photo-hint" id="defectPhotoHint">Tap an issue below to view its photo.</div>
+            </div>
             <div id="detailFindings"></div>
 
             <div class="detail-status-row">
@@ -380,6 +410,31 @@
         function computeStatus(tires) {
             // If there are any detected defects, treat as active issue. Otherwise resolved.
             return (tires && tires.length) ? 'active' : 'resolved';
+        }
+
+        function normalizeImageSrc(imageData) {
+            const s = (imageData ?? "").toString().trim();
+            if (!s) return "";
+            // If already a data URL, keep it.
+            if (s.startsWith("data:image/")) return s;
+            // Otherwise assume base64 jpeg
+            return `data:image/jpeg;base64,${s}`;
+        }
+
+        function setDefectPhoto(imageData) {
+            const img = document.getElementById("defectPhoto");
+            const hint = document.getElementById("defectPhotoHint");
+            const src = normalizeImageSrc(imageData);
+            if (!src) {
+                img.removeAttribute("src");
+                img.style.display = "none";
+                hint.textContent = "No photo saved for this issue.";
+                hint.style.display = "block";
+                return;
+            }
+            img.src = src;
+            img.style.display = "block";
+            hint.style.display = "none";
         }
 
         function buildTitle(insp) {
@@ -470,6 +525,7 @@
             // Findings
             const findingsEl = document.getElementById('detailFindings');
             if (!tires.length) {
+                setDefectPhoto("");
                 findingsEl.innerHTML = `
                     <div class="detail-finding safe">
                         <div class="detail-finding-icon"><i class="fas ${iconForDefect('No Damage Detected')}"></i></div>
@@ -491,7 +547,7 @@
                     if (dot) descParts.push(`DOT ${dot}`);
                     const desc = descParts.length ? descParts.join(" · ") : "Detected defect";
                     return `
-                        <div class="detail-finding ${type}">
+                        <div class="detail-finding ${type}" role="button" tabindex="0" data-image="${encodeURIComponent(t.imageData || '')}">
                             <div class="detail-finding-icon"><i class="fas ${iconForDefect(name)}"></i></div>
                             <div>
                                 <div class="detail-finding-name">${name}</div>
@@ -501,7 +557,26 @@
                         </div>
                     `;
                 }).join("");
+
+                // Default: show first available image (or hint)
+                const firstWithImg = tires.find(t => (t.imageData || "").toString().trim().length);
+                setDefectPhoto(firstWithImg ? firstWithImg.imageData : "");
             }
+
+            // Clicking a finding shows its photo
+            findingsEl.querySelectorAll(".detail-finding[data-image]").forEach(item => {
+                const show = () => {
+                    const imgData = decodeURIComponent(item.getAttribute("data-image") || "");
+                    setDefectPhoto(imgData);
+                };
+                item.addEventListener("click", show);
+                item.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        show();
+                    }
+                });
+            });
 
             document.getElementById('detailOverlay').classList.add('open');
         }

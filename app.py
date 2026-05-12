@@ -138,7 +138,7 @@ model = YOLO("assets\\ai model\\best.pt")
 
 @app.route("/")
 def index():
-    return send_from_directory(".", "overview.html")
+    return send_from_directory(".", "index.html")
 
 @app.route("/<path:path>")
 def serve_file(path):

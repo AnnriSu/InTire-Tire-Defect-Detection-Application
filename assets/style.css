@@ -48,6 +48,16 @@
     color: #FFBD59;
 }
 
+/* Guest button: capture clicks while agreements unchecked (disabled buttons don't fire clicks) */
+.guest-btn-wrap:not(.guest-ready) .guest-btn-blocker {
+    z-index: 2;
+    cursor: not-allowed;
+}
+
+.guest-btn-wrap.guest-ready .guest-btn-blocker {
+    display: none;
+}
+
 /* "Or" separator text */
 .or-separator {
     font-size: 0.875rem;

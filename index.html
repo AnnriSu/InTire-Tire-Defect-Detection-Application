@@ -40,18 +40,27 @@
 
                 <p class="text-center m-3 or-separator">Or</p>
 
-                <button type="button" class="btn btn-outline btn-lg w-100 btn-guest" id="guestBtn">Continue as Guest</button>
+                <div class="position-relative guest-btn-wrap" id="guestBtnWrap">
+                    <button type="button" class="btn btn-outline btn-lg w-100 btn-guest" id="guestBtn" disabled
+                        title="Accept the Terms and Conditions and Privacy Policy below to continue">Continue as Guest</button>
+                    <div id="guestBtnBlocker" class="guest-btn-blocker position-absolute top-0 start-0 w-100 h-100 rounded-3"
+                        aria-hidden="true"></div>
+                </div>
+                <div id="guestAgreementReminder" class="alert alert-warning py-2 small text-center mt-2 mb-0 d-none"
+                    role="alert">Please accept both the Terms and Conditions and the Privacy Policy below before
+                    continuing as a guest.</div>
 
-                <div class="mt-5 py-3 px-4 agreement-box">
+                <div class="mt-3 py-3 px-4 agreement-box">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="check1">
-                        <label class="form-check-label" for="check1">
+                        <label class="form-check-label" for="check1" style="font-size:0.9rem;">
                             I agree to the <a href="termsAndConditions.html" class="agreement-link">Terms and Conditions</a>
                         </label>
                     </div>
+
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="check2">
-                        <label class="form-check-label" for="check2">
+                        <label class="form-check-label" for="check2" style="font-size:0.9rem;">
                             I agree to the <a href="privacyPolicy.html" class="agreement-link">Privacy Policy</a>
                         </label>
                     </div>
@@ -69,6 +78,46 @@
     <script>
         const API_BASE = "http://127.0.0.1:5000";
         const guestBtn = document.getElementById("guestBtn");
+        const guestBtnWrap = document.getElementById("guestBtnWrap");
+        const guestBtnBlocker = document.getElementById("guestBtnBlocker");
+        const guestAgreementReminder = document.getElementById("guestAgreementReminder");
+        const termsCheck = document.getElementById("check1");
+        const privacyCheck = document.getElementById("check2");
+
+        let guestReminderHideTimer;
+
+        function hideGuestAgreementReminder() {
+            if (!guestAgreementReminder) return;
+            guestAgreementReminder.classList.add("d-none");
+            clearTimeout(guestReminderHideTimer);
+        }
+
+        function syncGuestButton() {
+            if (!guestBtn || !termsCheck || !privacyCheck) return;
+            const bothAccepted = termsCheck.checked && privacyCheck.checked;
+            guestBtn.disabled = !bothAccepted;
+            guestBtn.title = bothAccepted
+                ? ""
+                : "Accept the Terms and Conditions and Privacy Policy below to continue";
+            if (guestBtnWrap) guestBtnWrap.classList.toggle("guest-ready", bothAccepted);
+            if (bothAccepted) hideGuestAgreementReminder();
+        }
+
+        if (guestBtnBlocker && guestAgreementReminder) {
+            guestBtnBlocker.addEventListener("click", () => {
+                if (guestBtnWrap && guestBtnWrap.classList.contains("guest-ready")) return;
+                guestAgreementReminder.classList.remove("d-none");
+                clearTimeout(guestReminderHideTimer);
+                guestReminderHideTimer = setTimeout(hideGuestAgreementReminder, 6000);
+            });
+        }
+
+        if (termsCheck && privacyCheck) {
+            termsCheck.addEventListener("change", syncGuestButton);
+            privacyCheck.addEventListener("change", syncGuestButton);
+            syncGuestButton();
+        }
+
         if (guestBtn) {
             guestBtn.addEventListener("click", async () => {
                 try {

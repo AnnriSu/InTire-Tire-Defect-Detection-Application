@@ -4,14 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forgot Password - InTire</title>
+    <title>OTP Verification - InTire</title>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-        crossorigin="anonymous"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/style.css">
 
     <style>
@@ -33,32 +29,35 @@
 
 <body>
 
-    <!-- Forgot Password Form Section -->
+    <!-- OTP Verification Form Section -->
     <div class="signup-wrapper m-4">
 
-        <h5 class="signup-title mb-3">Forgot Password</h5>
+        <h5 class="signup-title mb-3">OTP Verification</h5>
 
         <div id="customAlert" class="alert d-none text-center" role="alert"></div>
 
         <p class="signup-subtitle mb-4">
-            Enter your registered email address or phone number to reset your password.
+            Enter the 6-digit OTP sent to your registered email address.
         </p>
 
-        <form class="signup-form-area" id="forgotPasswordForm">
+        <form class="signup-form-area" id="otpForm">
 
-            <div class="mb-2">
-                <input
-                    type="text"
-                    class="form-control signup-input"
-                    id="identifier"
-                    placeholder="Email Address or Phone Number"
-                >
+            <div class="mb-3">
+                <input type="text" class="form-control signup-input text-center" id="otp" name="otp" maxlength="6"
+                    placeholder="Enter OTP">
             </div>
 
-            <div class="d-flex justify-content-center mb-4">
-                <button type="submit" class="btn signup-btn px-5" id="verifyBtn">
-                    Verify
+            <div class="d-flex justify-content-center mb-3">
+                <button type="submit" class="btn signup-btn px-5" id="verifyOtpBtn">
+                    Verify OTP
                 </button>
+            </div>
+
+            <div class="text-center">
+                <small>
+                    Didn't receive the OTP?
+                    <a href="#" class="text-decoration-none" id="resendOtp">Resend OTP</a>
+                </small>
             </div>
 
         </form>
@@ -85,12 +84,6 @@
             and other signs of wear in real time.
         </p>
 
-        <p class="signup-brand-text">
-            With an easy-to-use interface and intelligent detection features, the app helps drivers
-            monitor tire condition, track inspection history, and receive safety recommendations
-            to ensure a safer driving experience.
-        </p>
-
         <!-- Commercial Video Placeholder -->
         <div class="signup-video-placeholder mb-4">
             <span class="signup-video-label">Commercial Video</span>
@@ -115,44 +108,67 @@
             setTimeout(() => alertBox.classList.add("d-none"), 3000);
         }
 
-        document.getElementById("forgotPasswordForm").addEventListener("submit", async function (e) {
+        document.getElementById("otpForm").addEventListener("submit", async function (e) {
             e.preventDefault();
 
-            const identifier = document.getElementById("identifier").value.trim();
+            const otp = document.getElementById("otp").value.trim();
+            const email = localStorage.getItem("resetEmail");
 
-            if (!identifier) {
-                showAlert("Please enter your email or phone number.", "error");
+            if (!otp) {
+                showAlert("Please enter the OTP.", "error");
                 return;
             }
 
             try {
-                const response = await fetch("http://127.0.0.1:5000/forgot-password", {
+                const response = await fetch("http://127.0.0.1:5000/verify-otp", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ identifier })
+                    body: JSON.stringify({ email, otp })
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    localStorage.setItem("resetEmail", data.email);
-                    showAlert("OTP sent successfully!", "success");
-                    setTimeout(() => window.location.href = "otpVerification.html", 1500);
+                    showAlert("OTP verified successfully!", "success");
+                    window.location.href = "resetPassword.html";
                 } else {
-                    showAlert(data.error || "Something went wrong.", "error");
+                    showAlert(data.error || "Invalid OTP.", "error");
                 }
             } catch (error) {
                 console.error(error);
-                showAlert("Server error.", "error");
+                showAlert("Could not connect to the server.", "error");
+            }
+        });
+
+        document.getElementById("resendOtp").addEventListener("click", async function (e) {
+            e.preventDefault();
+
+            const email = localStorage.getItem("resetEmail");
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/forgot-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ identifier: email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert("A new OTP has been sent.", "success");
+                } else {
+                    showAlert(data.error || "Failed to resend OTP.", "error");
+                }
+            } catch (error) {
+                console.error(error);
+                showAlert("Could not connect to the server.", "error");
             }
         });
     </script>
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"
-    ></script>
+        crossorigin="anonymous"></script>
 
 </body>
 

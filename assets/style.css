@@ -68,7 +68,7 @@
 
 /* Checkbox label text */
 .form-check-label {
-    font-size: 0.775rem;
+    
 }
 
 /* Agreement links */
@@ -224,6 +224,7 @@
     padding: 2.5rem 1.5rem 2rem;
     background-color: #ffffff;
     font-family: 'Inter', sans-serif;
+    border-radius: 8px;
 }
 
 .signup-title {
@@ -407,6 +408,8 @@
     color: #FFBD59;
     font-weight: 700;
 }
+
+
 
 /* ================================
    intro.css
